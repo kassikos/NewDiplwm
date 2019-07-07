@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    tools:context=".Register">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/imgviewLinear"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/gradient_green_blue"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/biglogo"
+            android:contentDescription="@string/imageDesc"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/RnicknameLayout"
+        app:layout_constraintTop_toBottomOf="@+id/imgviewLinear"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_width="0dp"
+        app:boxStrokeColor="@color/black"
+        app:hintTextColor="@color/black"
+        app:startIconDrawable="@drawable/person24"
+        android:focusableInTouchMode="true"
+        app:hintAnimationEnabled="true"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/RnicknameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:focusableInTouchMode="true"
+            android:hint="@string/nickname"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@color/purple"
+            android:textSize="25sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/RbirthdateLayout"
+        app:layout_constraintTop_toBottomOf="@+id/RnicknameLayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_width="0dp"
+        app:boxStrokeColor="@color/black"
+        app:hintTextColor="@color/black"
+        app:startIconDrawable="@drawable/calendar24"
+        android:focusable="false"
+        app:hintAnimationEnabled="true"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/RbirthdateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="@string/birthdate"
+            android:textColor="@color/purple"
+            android:focusable="false"
+            android:textSize="25sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/ReducationLayout"
+        app:layout_constraintTop_toBottomOf="@+id/RbirthdateLayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_width="0dp"
+        app:boxStrokeColor="@color/black"
+        app:hintTextColor="@color/black"
+        android:hint="@string/education"
+        app:startIconDrawable="@drawable/baseline_school_black_24dp"
+        app:hintAnimationEnabled="true"
+        android:layout_height="wrap_content">
+
+        <!-- <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/ReducationEditText"
+             android:layout_width="match_parent"
+             android:layout_height="100dp"
+             android:hint="@string/education"
+             android:drawableEnd="@drawable/arrowdown24"
+             android:textColor="@color/purple"
+             android:textSize="25sp" />-->
+        <AutoCompleteTextView
+            android:id="@+id/filled_exposed_dropdown"
+            android:layout_width="match_parent"
+            android:textSize="25sp"
+            android:hint="@string/education"
+            android:focusable="false"
+            android:textColor="@color/purple"
+            android:layout_height="wrap_content"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <!--   <RadioGroup
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:checkedButton="@+id/first"
+           android:layout_marginTop="50dp"
+           app:layout_constraintRight_toRightOf="parent"
+           app:layout_constraintLeft_toLeftOf="parent"
+           android:id="@+id/radioEdu"
+           app:layout_constraintTop_toBottomOf="@+id/RbirthdateLayout"
+           android:orientation="vertical">
+           <RadioButton
+               android:id="@+id/Enone"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="35sp"
+               android:text="@string/kamia" />
+           <RadioButton
+               android:id="@+id/Edimotiko"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="35sp"
+               android:text="@string/dimotiko" />
+           <RadioButton
+               android:id="@+id/Egimnasio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="35sp"
+               android:text="@string/gimnasio" />
+           <RadioButton
+               android:id="@+id/Elikio"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="35sp"
+               android:text="@string/likio" />
+           <RadioButton
+               android:id="@+id/Epanep"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="35sp"
+               android:text="@string/panep" />
+       </RadioGroup>
+   -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/GTextview"
+        app:layout_constraintTop_toBottomOf="@+id/ReducationLayout"
+        android:text="@string/gender"
+        android:textSize="45sp"
+        android:textColor="@color/purple"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/radioSex"
+        app:layout_constraintTop_toBottomOf="@+id/GTextview"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:layout_marginEnd="60dp"
+            android:text="@string/radioM" />
+        <RadioButton
+            android:id="@+id/second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:textSize="35sp"
+            android:text="@string/radioF" />
+    </RadioGroup>
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialBtnRegister"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:text="@string/register"
+        android:textSize="30sp"
+        android:layout_width="400dp"
+        android:padding="8dp"
+        android:textColor="@color/purple"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/radioSex"
+        android:layout_marginTop="65dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,94 @@
+<resources>
+    <!--Register-->
+    <string name="app_name">NewDiplwm</string>
+    <string name="nickname">Όνομα Χρήστη</string>
+    <string name="birthdate">Ημερομηνία Γέννησης</string>
+    <string name="gender">Φύλο</string>
+    <string name="genderLand">Φύλο       :</string>
+
+    <string name="radioM">Άνδρας</string>
+    <string name="radioF">Γυναίκα</string>
+    <string name="register">Δημιουργία</string>
+    <string name="logRegister">Δημιουργία Νέου Λογαριασμού</string>
+
+    <!-- education-->
+    <string name="education">Εκπαίδευση</string>
+    <string name="kamia">Καμία</string>
+    <string name="dimotiko">Δημοτικό</string>
+    <string name="gimnasio">Γυμνάσιο</string>
+    <string name="likio">Λύκειο</string>
+    <string name="panep">Πανεπιστήμιο</string>
+
+
+    <!--Login-->
+    <string name="login">Σύνδεση</string>
+    <string name="Lnickname">Όνομα Χρήστη</string>
+
+
+    <!--settings-->
+    <string name="settings">Δυσκολία</string>
+    <string name="statistics">Σταστιστικά</string>
+    <string name="home">Αρχική</string>
+    <string name="info">Πληροφορίες</string>
+    <string name="logout">Αποσύνδεση</string>
+    <string name="profile">Προφίλ</string>
+
+
+    <!--labels-->
+    <string name="difficultyLabel">Δυσκολία</string>
+
+    <string name="all">Όλα τα επίπεδα</string>
+    <string name="easy">Εύκολο</string>
+    <string name="medium">Μεσαίο</string>
+    <string name="advanced">Προχωρημένο</string>
+    <string name="easy_medium">Εύκολο έως Μεσαίο</string>
+
+
+    <!--values-->
+    <string name="difficultyKey" translatable="false">Difficulty</string>
+
+    <string name="allValue" translatable="false">ALL</string>
+    <string name="easyValue" translatable="false">EASY</string>
+    <string name="mediumValue" translatable="false">MEDIUM</string>
+    <string name="advancedValue" translatable="false">ADVANCED</string>
+    <string name="easymediumValue" translatable="false">EASYtoMEDIUM</string>
+
+    <!--RockPaperScissors Activity -->
+    <string name="Time">Χρόνος</string>
+    <string name="Result">Αποτέλεσμα</string>
+    <string name="Rounds">Γύροι</string>
+    <string name="Question">Ερώτηση</string>
+    <string name="Start">Έναρξη Παιχνιδιού</string>
+    <string name="AdvancedTimer">Advanced Timer</string>
+
+
+    <!--SCALING GAME STRINGS-->
+    <string name="equal">=</string>
+    <string name="greater">Μεγαλύτερη</string>
+    <string name="less">Μικρότερη</string>
+
+    <string name="label">Επέλεξε ποιά πλευρά είναι μεγαλύτερη ή αν είναι ίσες.</string>
+
+
+    <!--STATISTICS-->
+    <string name="gameName">Παιχνίδι</string>
+    <string name="hit">Νίκες</string>
+    <string name="miss">Ήττες</string>
+    <string name="playTotalTime">Συνολικός Χρόνος</string>
+    <string name="score">Πόντοι</string>
+    <string name="days">Μέρες</string>
+    <string name="responseTime">Χρόνος Απόκρισης</string>
+    <string name="accuracy">Ευστοχία</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <string name="title">Τίτλος</string>
+    <string name="description">Περιγραφή</string>
+    <string name="imageDesc">imageDesc</string>
+
+
+    <string name="ok">sinexise</string>
+
+
+</resources>

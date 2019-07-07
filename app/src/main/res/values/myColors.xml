@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="magenda">#8B008B</color>
+    <color name="purple">#8A2BE2</color>
+    <color name="fuxia">#FF00FF</color>
+    <color name="pink">#DA70D6</color>
+    <color name="blueRegister">#0000CD</color>
+    <color name="white">#FFFF</color>
+    <color name="black">#000000</color>
+    <color name="statisticColor">#BEE9E4</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#CCFFCC</color>
+</resources>

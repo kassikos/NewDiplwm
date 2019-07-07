@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="difficulty_options">
+        <item>@string/all</item>
+        <item>@string/easy</item>
+        <item>@string/medium</item>
+        <item>@string/advanced</item>
+        <item>@string/easy_medium</item>
+    </array>
+
+    <array name="difficulty_values">
+        <item>@string/allValue</item>
+        <item>@string/easyValue</item>
+        <item>@string/mediumValue</item>
+        <item>@string/advancedValue</item>
+        <item>@string/easymediumValue</item>
+    </array>
+
+</resources>
