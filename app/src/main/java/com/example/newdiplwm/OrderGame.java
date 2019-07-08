@@ -47,7 +47,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private int user_id, game_id, currentRound=0 , TotalRounds=0 ;
     private String menuDifficulty,currentDifficulty;
 
-    private int click=0;
+    private int click=0 , rightpick;
 
     private Timestamp startTime;
     private Timestamp endTime;
@@ -74,7 +74,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                click=0;
+                rightpick=0;
                 createRound();
             }
         });
@@ -150,6 +150,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     private void displayGameEz(final int randlist)
     {
+        unclickable();
 
         Random rand = new Random();
         int randpick = rand.nextInt(3);
@@ -174,16 +175,16 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+                    clickable();
 
                 }
             }
         };
         Timer.start();
-
-
     }
 
     private void displayGameMedium(final int randlist){
+        unclickable();
         Random rand = new Random();
         int randpick1 = rand.nextInt(2);
         int randpick2 = rand.nextInt(2)+2;
@@ -213,6 +214,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+                    clickable();
 
                 }
             }
@@ -221,7 +223,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     }
     private void displayGameAdv(final int randlist){
- //       Random rand = new Random();
+        unclickable();
         ArrayList<Integer> randomNums = new ArrayList<Integer>();
         for (int i = 0 ; i<5; i++)
         {
@@ -258,6 +260,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+                    clickable();
 
                 }
             }
@@ -269,6 +272,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
 
+        click++;
         Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long l) { }
@@ -287,20 +291,47 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 pickedImages.clear();
             }
         };
-        click++;
-        if (click == 1 && currentDifficulty.equals(getResources().getString(R.string.easyValue)) && pickedImages.contains(imageIDS.get(view.getId())))
-        {
-            Timer.start();
-        }
-        else if (click == 2 && currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && pickedImages.contains(imageIDS.get(view.getId())))
-        {
-            Timer.start();
-        }
-        else if (click == 3 && currentDifficulty.equals(getResources().getString(R.string.advancedValue)) && pickedImages.contains(imageIDS.get(view.getId())))
-        {
-            Timer.start();
-        }
 
+
+        if (imageIDS.containsKey(view.getId()))
+        {
+            if (pickedImages.contains(imageIDS.get(view.getId())))
+            {
+                view.setClickable(false);
+                rightpick++;
+
+            }
+
+
+            if (currentDifficulty.equals(getResources().getString(R.string.easyValue)) && rightpick == pickedImages.size())
+            {
+
+                Timer.start();
+
+            }
+            else if(currentDifficulty.equals(getResources().getString(R.string.easyValue)) && rightpick == 0){
+
+                //exases ton gyro
+            }
+            else if (rightpick == pickedImages.size() && currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+            {
+
+                Timer.start();
+            }
+            else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && rightpick <2){
+                //exases ton giro med
+            }
+            else if (rightpick == pickedImages.size() && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+            {
+
+                Timer.start();
+            }
+            else
+            {
+                //exases genika
+            }
+
+        }
     }
 
 
@@ -321,9 +352,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
-
-
     private void assignAllButtons(){
 
         imagebutton1 = findViewById(R.id.imageView1OG);
@@ -342,6 +370,21 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         imagebutton3.setOnClickListener(this);
         imagebutton4.setOnClickListener(this);
         imagebutton5.setOnClickListener(this);
+    }
+
+    private void clickable(){
+        imagebutton1.setClickable(true);
+        imagebutton2.setClickable(true);
+        imagebutton3.setClickable(true);
+        imagebutton4.setClickable(true);
+        imagebutton5.setClickable(true);
+    }
+    private  void unclickable(){
+        imagebutton1.setClickable(false);
+        imagebutton2.setClickable(false);
+        imagebutton3.setClickable(false);
+        imagebutton4.setClickable(false);
+        imagebutton5.setClickable(false);
     }
 
     private void initialiseLists(){
@@ -391,7 +434,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         jankfoodList.add(R.drawable.og_sn_steak);
 
     }
-    //TODO θελουμε λιστα picked gia na 3eroyme tin arxiki paraggelia gt etsi opws to exw einai panta true
     //TODO sto advanced να φτιαξω το feat me to na leipoyn antikeimena
     //TODO otan xanei to idio animation me OS
     //TODO oso epilegei na kanw kati na fainetai ayto poy exei epil3ei kai na kleinw ton click listener gia na min mporei na to 3anaepile3ei
