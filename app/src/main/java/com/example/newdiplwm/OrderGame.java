@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 public class OrderGame extends AppCompatActivity implements View.OnClickListener{
 
@@ -35,7 +38,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Integer> fruitsList = new ArrayList<>();
     private ArrayList<Integer> jankfoodList = new ArrayList<>();
 
-    private HashMap<Integer, ArrayList<Integer>> listselection = new HashMap<>();
+    private HashMap<Integer, ArrayList<Integer>> listselection = new HashMap<Integer, ArrayList<Integer>>();
+    private CountDownTimer Timer;
+    private static final long START_TIME_IN_MILLIS = 2000;
+    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
 
 
 
@@ -45,6 +51,8 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     private int user_id, game_id, currentRound=0 , TotalRounds=0 ;
     private String menuDifficulty,currentDifficulty;
+
+    private int click=0;
 
     private Timestamp startTime;
     private Timestamp endTime;
@@ -56,7 +64,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_game);
         assignAllButtons();
+        fillListImageview();
         initialiseLists();
+
+
 
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
@@ -67,12 +78,24 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         user_id = extras.getInt(USER_ID);
         game_id = extras.getInt(GAME_ID);
         menuDifficulty = extras.getString(DIFFICULTY);
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                click=0;
+                createRound();
+            }
+        });
     }
 
     private void createRound(){
 
         initHashmaplistSelection();
-        //Collections.shuffle(listselection.keySet());
+
+        Random rand = new Random();
+
+        int randlist = rand.nextInt(5)+1;
+        Collections.shuffle(listselection.get(randlist));
 
         if (currentRound == 0)
         {
@@ -82,13 +105,13 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         if (menuDifficulty.equals(getResources().getString(R.string.easyValue))){
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            displayGameEz();
+            displayGameEz(randlist);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            displayGameMedium();
+            displayGameMedium(randlist);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
         {
@@ -102,12 +125,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             if (currentRound<=1){
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                displayGameEz();
+                displayGameEz(randlist);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                displayGameMedium();
+                displayGameMedium(randlist);
             }
         }
         else
@@ -116,12 +139,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             if (currentRound<1)
             {
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                displayGameEz();
+                displayGameEz(randlist);
             }
             else if (currentRound>=1 && currentRound<=2)
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                displayGameMedium();
+                displayGameMedium(randlist);
             }
             else
             {
@@ -133,8 +156,35 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    private void displayGameEz()
+    private void displayGameEz(final int randlist)
     {
+
+        Random rand = new Random();
+        int randpick = rand.nextInt(3);
+        int picked  = listselection.get(randlist).get(randpick);
+        imagebutton2.setImageResource(picked);
+
+        Timer = new CountDownTimer(4000, 1000) {
+            @Override
+            public void onTick(long l) {
+                textTimer.setText("Remain "+ l/1000+" Seconds");
+            }
+
+            @Override
+            public void onFinish() {
+                textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+                imagebutton2.setImageResource(0);
+
+                for (int i=0;i<3;i++)
+                {
+                    ImageView v = findViewById(imageviews.get(i));
+                    v.setImageResource(listselection.get(randlist).get(i));
+                    imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+
+                }
+            }
+        };
+        Timer.start();
 
 
     }
@@ -142,8 +192,82 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
 
 
-    private void displayGameMedium(){}
+    private void displayGameMedium(final int randlist){
+        Random rand = new Random();
+        int randpick1 = rand.nextInt(2);
+        int randpick2 = rand.nextInt(2)+2;
+        int picked1  = listselection.get(randlist).get(randpick1);
+        int picked2  = listselection.get(randlist).get(randpick2);
+        imagebutton2.setImageResource(picked1);
+        imagebutton3.setImageResource(picked2);
+
+        Timer = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long l) {
+                textTimer.setText("Remain "+ l/1000+" Seconds");
+            }
+
+            @Override
+            public void onFinish() {
+                textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+                imagebutton2.setImageResource(0);
+                imagebutton3.setImageResource(0);
+
+                for (int i=0;i<4;i++)
+                {
+                    ImageView v = findViewById(imageviews.get(i));
+                    v.setImageResource(listselection.get(randlist).get(i));
+                    imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+
+                }
+            }
+        };
+        Timer.start();
+
+    }
     private void displayGameAdv(){}
+
+
+    @Override
+    public void onClick(View view) {
+
+        Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long l) { }
+
+            @Override
+            public void onFinish() {
+                for (int key : imageIDS.keySet()) {
+                    ImageView v = findViewById(key);
+                    v.setImageResource(0);
+//                    startButton.setText("next Round");
+//                    startButton.setVisibility(View.VISIBLE);
+
+                }
+
+                imageIDS.clear();
+            }
+        };
+        click++;
+        if (click == 1 && currentDifficulty.equals(getResources().getString(R.string.easyValue)) && imageIDS.containsKey(view.getId()))
+        {
+            Timer.start();
+        }
+        else if (click == 2 && currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && imageIDS.containsKey(view.getId()))
+        {
+            Timer.start();
+        }
+
+    }
+
+
+    private  void fillListImageview(){
+        imageviews.add(R.id.imageView1OG);
+        imageviews.add(R.id.imageView2OG);
+        imageviews.add(R.id.imageView3OG);
+        imageviews.add(R.id.imageView4OG);
+        imageviews.add(R.id.imageView5OG);
+    }
 
     private void initHashmaplistSelection(){
         listselection.put(1,cleanList);
@@ -222,13 +346,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         jankfoodList.add(R.drawable.og_sn_pizza);
         jankfoodList.add(R.drawable.og_sn_salad);
         jankfoodList.add(R.drawable.og_sn_steak);
-
-    }
-
-
-
-    @Override
-    public void onClick(View view) {
 
     }
 }

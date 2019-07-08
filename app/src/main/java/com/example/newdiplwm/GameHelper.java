@@ -79,6 +79,7 @@ public class GameHelper {
                 new Game("Calcution","skill",numericDesc),
                 new Game("MemoryMatrix","memory",MemoryDesc),
                 new Game("ObjectSelector","memory",OsDesc),
+                new Game("OrderGame","memory",OsDesc),
 
         };
 
