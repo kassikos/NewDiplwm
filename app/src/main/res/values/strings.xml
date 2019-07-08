@@ -90,5 +90,8 @@
 
     <string name="ok">sinexise</string>
 
+    <!--OG-->
+    <string name="MissingObjects">Λείπουν Αντικείμενα</string>
+
 
 </resources>

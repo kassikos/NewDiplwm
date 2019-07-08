@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".OrderGame">
+
+
+<TextView
+    android:id="@+id/textRoundsOG"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:fontFamily="@font/alfa_slab_one"
+    android:gravity="center"
+    android:textSize="40sp"
+    app:layout_constraintBottom_toTopOf="@id/gridLayoutOrderGame"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+<GridLayout
+
+    android:id="@+id/gridLayoutOrderGame"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:columnCount="3"
+    android:layout_gravity="center"
+    android:padding="24dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textRoundsOG"
+    app:layout_constraintBottom_toTopOf="@id/missingObjectsOG"
+    android:rowCount="3">
+
+    <ImageView
+        android:id="@+id/imageView1OG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView2OG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView3OG"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView4OG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView5OG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+
+</GridLayout>
+
+
+<!--<FrameLayout
+    android:id="@+id/frameLayoutOS"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textRoundsOS"
+    app:layout_constraintBottom_toTopOf="@id/startButtonOS"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_margin="16dp" /> -->
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:id="@+id/AnimPointsOG"
+    android:layout_alignTop="@+id/missingObjectsOG"
+    app:layout_constraintBottom_toTopOf="@id/missingObjectsOG"
+    android:layout_alignParentStart="true"
+    app:layout_constraintTop_toTopOf="parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/AnimTextPointsOG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alfa_slab_one"
+        android:textSize="80sp"
+        android:gravity="center"/>
+
+</LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/missingObjectsOG"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/Start"
+        android:textColor="@color/purple"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/startButtonOG"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayoutOrderGame"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp" />
+
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/startButtonOG"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:gravity="center_horizontal"
+    android:padding="8dp"
+    android:text="@string/Start"
+    android:textColor="@color/purple"
+    android:textSize="35sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/missingObjectsOG"
+    app:strokeColor="@color/black"
+    app:strokeWidth="3dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -175,11 +175,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             fillListImageview();
         }
 
-
-
-
-
-
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
@@ -190,7 +185,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 gameInit = true;
                 loseHelper = false;
                 initializeUnpickedList();
-                int sizeee = unpicked.size();
                 createRound();
                 startButton.setVisibility(View.INVISIBLE);
 
@@ -494,9 +488,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     }
 
                 }
-                int tempsize = picked.size();
-                int temppp = unpicked.size();
-                int ss = imageviews.size();
 
                 if (picked.size() == 3 && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
                 {
