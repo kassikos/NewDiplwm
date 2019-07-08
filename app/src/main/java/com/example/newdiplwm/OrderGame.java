@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
@@ -33,6 +34,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Integer> sweetsList = new ArrayList<>();
     private ArrayList<Integer> fruitsList = new ArrayList<>();
     private ArrayList<Integer> jankfoodList = new ArrayList<>();
+
     private ArrayList<Integer> pickedImages = new ArrayList<>();
 
     private HashMap<Integer, ArrayList<Integer>> listselection = new HashMap<Integer, ArrayList<Integer>>();
@@ -53,6 +55,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private Timestamp endTime;
     private Timestamp startSpeed;
     private Timestamp endSpeed;
+    ImageButton a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         Random rand = new Random();
 
         int randlist = rand.nextInt(5)+1;
+
         Collections.shuffle(listselection.get(randlist));
 
         if (currentRound == 0)
@@ -153,8 +157,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         unclickable();
 
         Random rand = new Random();
+
         int randpick = rand.nextInt(3);
+
         int pickedImage  = listselection.get(randlist).get(randpick);
+
         imagebutton2.setImageResource(pickedImage);
 
         pickedImages.add(listselection.get(randlist).get(pickedImage));
@@ -434,8 +441,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         jankfoodList.add(R.drawable.og_sn_steak);
 
     }
+
+
+
     //TODO sto advanced να φτιαξω το feat me to na leipoyn antikeimena
     //TODO otan xanei to idio animation me OS
-    //TODO oso epilegei na kanw kati na fainetai ayto poy exei epil3ei kai na kleinw ton click listener gia na min mporei na to 3anaepile3ei
+    //TODO oso epilegei na kanw kati na fainetai ayto poy exei epil3ei
     //TODO na krataw instance tis o8onis otan kanei rotate
 }
