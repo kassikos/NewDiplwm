@@ -124,13 +124,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
             imageIDS = (HashMap<Integer, Integer>) savedInstanceState.getSerializable(MATCH);
-
-            for (int key : imageIDS.keySet())
-            {
-                ImageView v = findViewById(key) ;
-                v.setImageResource(imageIDS.get(key));
-
-            }
             imageviews = savedInstanceState.getIntegerArrayList(IMAGEVIEWS);
             pickedImages = savedInstanceState.getIntegerArrayList(PICKEDIMAGES);
             cleanList = savedInstanceState.getIntegerArrayList(CLEANLIST);
@@ -140,12 +133,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             jankfoodList = savedInstanceState.getIntegerArrayList(JANKFOODLIST);
             listselection = (HashMap<Integer, ArrayList<Integer>>) savedInstanceState.getSerializable(LISTSELECTION);
             helperwhenRotate = savedInstanceState.getIntegerArrayList(HELPERWHENROTATE);
-            for (int imgv:helperwhenRotate)
-            {
-                ImageView iv= findViewById(imgv);
-                iv.setClickable(false);
-                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
-            }
             currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
             mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
             randlist = savedInstanceState.getInt(RANDLIST);
@@ -167,13 +154,19 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
             currentRound = savedInstanceState.getInt(CURRENTROUND);
 
+
+
             if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
             {
-                for (int i=0; i<pickedImages.size();i++)
-                {
-                    ImageView v = findViewById(imageviews.get(i));
-                    v.setImageResource(pickedImages.get(i));
 
+                if (helperwhenRotate.isEmpty()) {
+
+                    for (int i = 0; i < pickedImages.size(); i++) {
+                        ImageView v = findViewById(imageviews.get(i));
+                        v.setClickable(false);
+                        v.setImageResource(pickedImages.get(i));
+
+                    }
                 }
                 Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
                     @Override
@@ -187,6 +180,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
                         mTimeLeftInMillis=0;
                         setTimerobjAdv(randlist);
+                        for (int imgv:helperwhenRotate)
+                        {
+                            ImageView iv= findViewById(imgv);
+                            iv.setClickable(false);
+                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                        }
 
                     }
                 }.start();
@@ -194,8 +193,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             }
             else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
             {
-                imagebutton1.setImageResource(pickedImages.get(0));
-                imagebutton2.setImageResource(pickedImages.get(1));
+                if (helperwhenRotate.isEmpty()) {
+                    imagebutton1.setClickable(false);
+                    imagebutton2.setClickable(false);
+                    imagebutton1.setImageResource(pickedImages.get(0));
+                    imagebutton2.setImageResource(pickedImages.get(1));
+                }
                 Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
                     @Override
                     public void onTick(long l) {
@@ -208,12 +211,19 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
                         mTimeLeftInMillis=0;
                         setTimerobjmed(randlist);
+                        for (int imgv:helperwhenRotate)
+                        {
+                            ImageView iv= findViewById(imgv);
+                            iv.setClickable(false);
+                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                        }
 
                     }
                 }.start();
             }
             else
             {
+                imagebutton2.setClickable(false);
                 imagebutton2.setImageResource(pickedImages.get(0));
                 Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
                     @Override
@@ -226,11 +236,22 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     public void onFinish() {
                         mTimeLeftInMillis=0;
                         setTimerobjez(randlist);
+                        for (int imgv:helperwhenRotate)
+                        {
+                            ImageView iv= findViewById(imgv);
+                            iv.setClickable(false);
+                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                        }
+
+
 
                     }
                 }.start();
 
             }
+
+
+
 
         }
         else{
@@ -501,7 +522,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        //mTimeLeftInMillis = 2000;
         Timer = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long l) { }
@@ -513,6 +533,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     v.setImageResource(0);
                     v.setColorFilter(0);
                 }
+                mTimeLeftInMillis=0;
 
                 falsepick = false;
                 currentRound++;
