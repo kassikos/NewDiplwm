@@ -1,5 +1,6 @@
 package com.example.newdiplwm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +31,35 @@ import java.util.concurrent.TimeUnit;
 
 public class OrderGame extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String MISSPOINTS = "MISSPOINTS";
+    private static final String HIT = "HIT";
+    private static final String MISS = "MISS";
+    private static final String TOTALPOINTS = "TOTALPOINTS";
+    private static final String TRUECOUNTER = "TRUECOUNTER";
+    private static final String TOTALSPEED = "TOTALSPEED";
+    private static final String STARTTIME = "STARTTIME";
+    private static final String ENDTIME = "ENDTIME";
+    private static final String STARTSPEED = "STARTSPEED";
+    private static final String ENDSPEED = "ENDSPEED";
+    private static final String CURRENTROUND = "CURRENTROUND";
+    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
+    private static final String TOTALROUNDS = "TOTALROUNDS";
+    private static final String MATCH = "MATCH";
+    private static final String IMAGEVIEWS = "IMAGEVIEWS";
+    private static final String CLICK = "CLICK";
+    private static final String MENUDIFFICULTY = "MENUDIFFICULTY";
+    private static final String PICKEDIMAGES = "PICKEDIMAGES";
+    private static final String LISTSELECTION = "LISTSELECTION";
+    private static final String RIGHTPICK = "RIGHTPICK";
+    private static final String CASEMISSOBJ = "CASEMISSOBJ";
+    private static final String FAlSEPICK = "FAlSEPICK";
+    private static final String CLEANLIST = "CLEANLIST";
+    private static final String ELECTRONICSLIST = "ELECTRONICSLIST";
+    private static final String SWEETSLIST = "SWEETSLIST";
+    private static final String FRUITSlIST = "FRUITSlIST";
+    private static final String JANKFOODLIST = "JANKFOODLIST";
+    private static final String CLOCK = "CLOCK";
+
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5;
     private MaterialButton startButton, missingObj;
     private TextView textRounds, textTimer, animPointsText;
@@ -52,9 +82,8 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private HashMap<Integer, ArrayList<Integer>> listselection = new HashMap<Integer, ArrayList<Integer>>();
     private CountDownTimer Timer;
     private static final long START_TIME_IN_MILLIS = 2000;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long mTimeLeftInMillis = 0;
 
-    private ArrayList<Integer> picked = new ArrayList<Integer>();
     private HashMap<Integer, Integer> imageIDS = new HashMap<Integer, Integer>();
     private ArrayList<Integer> imageviews = new ArrayList<Integer>();
 
@@ -76,6 +105,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private Timestamp endspeed;
     private double totalspeed = 0;
 
+    private ArrayList<Integer> helperwhenRotate = new ArrayList<>();
+    private static final String HELPERWHENROTATE = "HELPERWHENROTATE";
+    private static final String RANDLIST = "RANDLIST";
+    private int randlist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +117,139 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         setContentView(R.layout.activity_order_game);
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         assignAllButtons();
-        fillListImageview();
-        initialiseLists();
+
+        if (savedInstanceState != null)
+        {
+            startButton.setVisibility(View.INVISIBLE);
+            user_id = savedInstanceState.getInt(USER_ID);
+            game_id = savedInstanceState.getInt(GAME_ID);
+            imageIDS = (HashMap<Integer, Integer>) savedInstanceState.getSerializable(MATCH);
+
+            for (int key : imageIDS.keySet())
+            {
+                ImageView v = findViewById(key) ;
+                v.setImageResource(imageIDS.get(key));
+
+            }
+            imageviews = savedInstanceState.getIntegerArrayList(IMAGEVIEWS);
+            pickedImages = savedInstanceState.getIntegerArrayList(PICKEDIMAGES);
+            cleanList = savedInstanceState.getIntegerArrayList(CLEANLIST);
+            electonicsList = savedInstanceState.getIntegerArrayList(ELECTRONICSLIST);
+            sweetsList = savedInstanceState.getIntegerArrayList(SWEETSLIST);
+            fruitsList = savedInstanceState.getIntegerArrayList(FRUITSlIST);
+            jankfoodList = savedInstanceState.getIntegerArrayList(JANKFOODLIST);
+            listselection = (HashMap<Integer, ArrayList<Integer>>) savedInstanceState.getSerializable(LISTSELECTION);
+            helperwhenRotate = savedInstanceState.getIntegerArrayList(HELPERWHENROTATE);
+            for (int imgv:helperwhenRotate)
+            {
+                ImageView iv= findViewById(imgv);
+                iv.setClickable(false);
+                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+            }
+            currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
+            mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
+            randlist = savedInstanceState.getInt(RANDLIST);
+            menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
+            TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
+            click =savedInstanceState.getInt(CLICK);
+            caseMissingObj =savedInstanceState.getInt(CASEMISSOBJ);
+            rightpick =savedInstanceState.getInt(RIGHTPICK);
+            hit =savedInstanceState.getInt(HIT);
+            miss =savedInstanceState.getInt(MISS);
+            totalPoints = savedInstanceState.getInt(TOTALPOINTS);
+            trueCounter = savedInstanceState.getInt(TRUECOUNTER);
+            totalspeed = savedInstanceState.getDouble(TOTALSPEED);
+            missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+            falsepick = savedInstanceState.getBoolean(FAlSEPICK);
+            startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
+            endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
+            startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
+            endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
+            currentRound = savedInstanceState.getInt(CURRENTROUND);
+
+            if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+            {
+                for (int i=0; i<pickedImages.size();i++)
+                {
+                    ImageView v = findViewById(imageviews.get(i));
+                    v.setImageResource(pickedImages.get(i));
+
+                }
+                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long l) {
+                        mTimeLeftInMillis=l;
+                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                        mTimeLeftInMillis=0;
+                        setTimerobjAdv(randlist);
+
+                    }
+                }.start();
+
+            }
+            else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+            {
+                imagebutton1.setImageResource(pickedImages.get(0));
+                imagebutton2.setImageResource(pickedImages.get(1));
+                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long l) {
+                        mTimeLeftInMillis=l;
+                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                        mTimeLeftInMillis=0;
+                        setTimerobjmed(randlist);
+
+                    }
+                }.start();
+            }
+            else
+            {
+                imagebutton2.setImageResource(pickedImages.get(0));
+                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long l) {
+                        mTimeLeftInMillis=l;
+                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        mTimeLeftInMillis=0;
+                        setTimerobjez(randlist);
+
+                    }
+                }.start();
+
+            }
+
+        }
+        else{
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            user_id = extras.getInt(USER_ID);
+            game_id = extras.getInt(GAME_ID);
+            menuDifficulty = extras.getString(DIFFICULTY);
+            initialiseLists();
+            fillListImageview();
+        }
+
+
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +267,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         initHashmaplistSelection();
 
         Random rand = new Random();
-
-        int randlist = rand.nextInt(5)+1;
+        randlist = rand.nextInt(5)+1;
 
         Collections.shuffle(listselection.get(randlist));
 
@@ -185,39 +337,45 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         Random rand = new Random();
 
         int randpick = rand.nextInt(3);
-
         int pickedImage  = listselection.get(randlist).get(randpick);
 
         imagebutton2.setImageResource(pickedImage);
-
         pickedImages.add(listselection.get(randlist).get(randpick));
+        mTimeLeftInMillis = 4000;
 
-        Timer = new CountDownTimer(4000, 1000) {
+        Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long l) {
-                textTimer.setText("Remain "+ l/1000+" Seconds");
+                mTimeLeftInMillis=l;
+                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
             }
 
             @Override
             public void onFinish() {
-                textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
-                imagebutton2.setImageResource(0);
+                mTimeLeftInMillis=0;
+                setTimerobjez(randlist);
 
-                for (int i=0;i<3;i++)
-                {
-                    ImageView v = findViewById(imageviews.get(i));
-                    v.setImageResource(listselection.get(randlist).get(i));
-                    imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-
-
-                }
-                clickable();
-                startspeed = new Timestamp(System.currentTimeMillis());
             }
         };
         Timer.start();
     }
 
+    private void setTimerobjez(int randlist){
+        textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+        imagebutton2.setImageResource(0);
+
+        for (int i=0;i<3;i++)
+        {
+            ImageView v = findViewById(imageviews.get(i));
+            v.setImageResource(listselection.get(randlist).get(i));
+            imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+
+
+        }
+        clickable();
+        startspeed = new Timestamp(System.currentTimeMillis());
+
+    }
     private void displayGameMedium(final int randlist){
         unclickable();
         Random rand = new Random();
@@ -230,35 +388,44 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         pickedImages.add(listselection.get(randlist).get(randpick1));
         pickedImages.add(listselection.get(randlist).get(randpick2));
+        mTimeLeftInMillis = 6000;
 
 
-        Timer = new CountDownTimer(6000, 1000) {
+        Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long l) {
-                textTimer.setText("Remain "+ l/1000+" Seconds");
+                mTimeLeftInMillis=l;
+                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
             }
 
             @Override
             public void onFinish() {
-                textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
-                imagebutton1.setImageResource(0);
-                imagebutton2.setImageResource(0);
+                mTimeLeftInMillis=0;
 
-                for (int i=0;i<4;i++)
-                {
-                    ImageView v = findViewById(imageviews.get(i));
-                    v.setImageResource(listselection.get(randlist).get(i));
-                    imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-
-
-                }
-                clickable();
-                startspeed = new Timestamp(System.currentTimeMillis());
+                setTimerobjmed(randlist);
             }
         };
         Timer.start();
-
     }
+
+    private void setTimerobjmed(int randlist)
+    {
+        textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+        imagebutton1.setImageResource(0);
+        imagebutton2.setImageResource(0);
+
+        for (int i=0;i<4;i++)
+        {
+            ImageView v = findViewById(imageviews.get(i));
+            v.setImageResource(listselection.get(randlist).get(i));
+            imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+
+
+        }
+        clickable();
+        startspeed = new Timestamp(System.currentTimeMillis());
+    }
+
     private void displayGameAdv(final int randlist){
 
         unclickable();
@@ -275,6 +442,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         for (int i=0;i<3;i++)
         {
             ImageView v = findViewById(imageviews.get(i));
+
             v.setImageResource(listselection.get(randlist).get(randomNums.get(i)));
             pickedImages.add(listselection.get(randlist).get(randomNums.get(i)));
         }
@@ -292,42 +460,49 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
             }
         }
+        mTimeLeftInMillis= 9000;
 
-        Timer = new CountDownTimer(9000, 1000) {
+        Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long l) {
-                textTimer.setText("Remain "+ l/1000+" Seconds");
+                mTimeLeftInMillis=l;
+                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
             }
 
             @Override
             public void onFinish() {
-                textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
-                for (int i=0;i<3;i++)
-                {
-                    ImageView v = findViewById(imageviews.get(i));
-                    v.setImageResource(0);
-                }
+                mTimeLeftInMillis=0;
 
-                for (int i=0;i<5;i++)
-                {
-                    ImageView v = findViewById(imageviews.get(i));
-                    v.setImageResource(listselection.get(randlist).get(i));
-                    imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-                }
-                clickable();
-                startspeed = new Timestamp(System.currentTimeMillis());
-                missingObj.setVisibility(View.VISIBLE);
+                setTimerobjAdv(randlist);
 
             }
         };
         Timer.start();
     }
+    private void setTimerobjAdv(int randlist){
+        textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+        for (int i=0;i<3;i++)
+        {
+            ImageView v = findViewById(imageviews.get(i));
+            v.setImageResource(0);
+        }
+
+        for (int i=0;i<5;i++)
+        {
+            ImageView v = findViewById(imageviews.get(i));
+            v.setImageResource(listselection.get(randlist).get(i));
+            imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
+        }
+        clickable();
+        startspeed = new Timestamp(System.currentTimeMillis());
+        missingObj.setVisibility(View.VISIBLE);
+    }
 
 
     @Override
     public void onClick(View view) {
-
-        Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+        //mTimeLeftInMillis = 2000;
+        Timer = new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long l) { }
 
@@ -341,6 +516,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
                 falsepick = false;
                 currentRound++;
+                helperwhenRotate.clear();
                 imageIDS.clear();
                 pickedImages.clear();
                 startButton.setVisibility(View.VISIBLE);
@@ -360,6 +536,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             }
         };
 
+        click++;
         if (missingObj.getId() == view.getId() && caseMissingObj == 1)
         {
             startAnimation();
@@ -372,7 +549,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         }
         else if (imageIDS.containsKey(view.getId()))
         {
-            click++;
+
             endspeed = new Timestamp(System.currentTimeMillis());
             long diffspeed = endspeed.getTime() - startspeed.getTime();
             double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
@@ -383,6 +560,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 rightpick++;
                 ImageView iv = (ImageView)findViewById(view.getId());
                 iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                helperwhenRotate.add(view.getId());
 
             }
             else
@@ -480,6 +658,49 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(objectAnimatorY,alpha);
         animatorSet.start();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(MENUDIFFICULTY,menuDifficulty);
+        outState.putString(CURRENTDIFFICULTY,currentDifficulty);
+        outState.putInt(GAME_ID,game_id);
+        outState.putInt(USER_ID,user_id);
+        outState.putIntegerArrayList(IMAGEVIEWS,imageviews);
+        outState.putIntegerArrayList(PICKEDIMAGES,pickedImages);
+        outState.putIntegerArrayList(ELECTRONICSLIST,electonicsList);
+        outState.putIntegerArrayList(FRUITSlIST,fruitsList);
+        outState.putIntegerArrayList(SWEETSLIST,sweetsList);
+        outState.putIntegerArrayList(JANKFOODLIST,jankfoodList);
+        outState.putIntegerArrayList(CLEANLIST,cleanList);
+        outState.putIntegerArrayList(HELPERWHENROTATE,helperwhenRotate);
+        outState.putSerializable(MATCH,imageIDS);
+        outState.putSerializable(LISTSELECTION,listselection);
+
+
+
+        outState.putInt(TOTALROUNDS,TotalRounds);
+        outState.putInt(CURRENTROUND,currentRound);
+        outState.putInt(RIGHTPICK,rightpick);
+        outState.putInt(CASEMISSOBJ,caseMissingObj);
+        outState.putInt(RANDLIST,randlist);
+
+        outState.putBoolean(MISSPOINTS,missPoints);
+        outState.putBoolean(FAlSEPICK,falsepick);
+        outState.putInt(HIT,hit);
+        outState.putInt(MISS,miss);
+        outState.putInt(TOTALPOINTS,totalPoints);
+        outState.putInt(TRUECOUNTER,trueCounter);
+        outState.putInt(CLICK,click);
+        outState.putDouble(TOTALSPEED,totalspeed);
+        outState.putSerializable(STARTTIME,startTime);
+        outState.putSerializable(ENDTIME,endTime);
+        outState.putSerializable(STARTSPEED,startspeed);
+        outState.putSerializable(ENDSPEED,endspeed);
+        outState.putLong(CLOCK,mTimeLeftInMillis);
+
+
     }
 
     private  void fillListImageview(){
