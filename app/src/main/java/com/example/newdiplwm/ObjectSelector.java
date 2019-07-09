@@ -70,8 +70,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private HashMap<String,Integer> pointsHashMap = new HashMap<String, Integer>();
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
-    boolean missPoints = false;
+    private int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
+    private boolean missPoints = false;
 
     private Timestamp startTime;
     private Timestamp endTime;
@@ -79,7 +79,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private Timestamp endspeed;
     private double totalspeed = 0;
 
-    private int helper=0, vibeduration = 1000;;
+    private int helper=0, vibeduration = 1000;
     private boolean gameInit = false , loseHelper = false;
     private Vibrator vibe;
     private CountDownTimer Timer;
@@ -438,7 +438,21 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
                 }
 
+                picked.clear();
+                unpicked.clear();
+                currentRound++;
                 imageIDS.clear();
+
+                if (currentRound == TotalRounds)
+                {
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id,game_id);
+                    shopPopUp();
+                }
             }
         };
 
@@ -463,9 +477,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 loseHelper = true;
                 miss++;
                 missPoints =true;
-                picked.clear();
-                unpicked.clear();
-                currentRound++;
                 countPoints();
                 Timer.start();
 
@@ -497,10 +508,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     hit++;
                     trueCounter++;
                     //edw nikise
-                    picked.clear();
-                    unpicked.clear();
-
-                    currentRound++;
                     countPoints();
 
                     Timer.start();
@@ -515,9 +522,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     helper = picked.size();
                     hit++;
                     trueCounter++;
-                    picked.clear();
-                    unpicked.clear();
-                    currentRound++;
                     countPoints();
                     Timer.start();
                 }
@@ -531,9 +535,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     helper = picked.size();
                     hit++;
                     trueCounter++;
-                    picked.clear();
-                    unpicked.clear();
-                    currentRound++;
                     countPoints();
                     Timer.start();
                 }
@@ -544,17 +545,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
             }
 
-
-        }
-        if (currentRound == TotalRounds)
-        {
-            endTime = new Timestamp(System.currentTimeMillis());
-            long longTime = endTime.getTime() - startTime.getTime();
-            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
-            gameEventViewModel.insertGameEvent(gameEvent);
-            userViewModel.updatestatsTest(user_id,game_id);
-            shopPopUp();
         }
 
     }
@@ -631,7 +621,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void startAnimation(){
+    private void startAnimation(){
         long duration = 2000;
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText,"y",500f,-500f);
         objectAnimatorY.setDuration(duration);

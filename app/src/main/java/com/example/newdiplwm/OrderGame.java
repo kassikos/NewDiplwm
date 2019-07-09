@@ -1,11 +1,21 @@
 package com.example.newdiplwm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,13 +24,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class OrderGame extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5;
     private MaterialButton startButton, missingObj;
-    private TextView textRounds, textTimer;
+    private TextView textRounds, textTimer, animPointsText;
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -46,24 +58,36 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private HashMap<Integer, Integer> imageIDS = new HashMap<Integer, Integer>();
     private ArrayList<Integer> imageviews = new ArrayList<Integer>();
 
-    private int user_id, game_id, currentRound=0 , TotalRounds=0 ;
+    private HashMap<String,Integer> pointsHashMap = new HashMap<String, Integer>();
+    private int user_id, game_id, currentRound=0 , TotalRounds=0;
+    private int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
+    private boolean missPoints = false;
     private String menuDifficulty,currentDifficulty;
 
-    private int click=0 , rightpick;
+    private int click=0 , rightpick=0 ,vibeduration = 1000, caseMissingObj = 0;
+
+    private  boolean falsepick =false;
+
+    private Vibrator vibe;
 
     private Timestamp startTime;
     private Timestamp endTime;
-    private Timestamp startSpeed;
-    private Timestamp endSpeed;
-    ImageButton a;
+    private Timestamp startspeed;
+    private Timestamp endspeed;
+    private double totalspeed = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_game);
+        vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         assignAllButtons();
         fillListImageview();
         initialiseLists();
+        pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
+        pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
+        pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -81,9 +105,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 createRound();
             }
         });
+
     }
 
     private void createRound(){
+        startButton.setVisibility(View.INVISIBLE);
 
         initHashmaplistSelection();
 
@@ -164,7 +190,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         imagebutton2.setImageResource(pickedImage);
 
-        pickedImages.add(listselection.get(randlist).get(pickedImage));
+        pickedImages.add(listselection.get(randlist).get(randpick));
 
         Timer = new CountDownTimer(4000, 1000) {
             @Override
@@ -182,9 +208,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-                    clickable();
+
 
                 }
+                clickable();
+                startspeed = new Timestamp(System.currentTimeMillis());
             }
         };
         Timer.start();
@@ -213,24 +241,29 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onFinish() {
                 textTimer.setText("Ποια αντικείμενα ήταν στην αρχική παραγγελία;");
+                imagebutton1.setImageResource(0);
                 imagebutton2.setImageResource(0);
-                imagebutton3.setImageResource(0);
 
                 for (int i=0;i<4;i++)
                 {
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-                    clickable();
+
 
                 }
+                clickable();
+                startspeed = new Timestamp(System.currentTimeMillis());
             }
         };
         Timer.start();
 
     }
     private void displayGameAdv(final int randlist){
+
         unclickable();
+        Random rand = new Random();
+        caseMissingObj = rand.nextInt(2);
         ArrayList<Integer> randomNums = new ArrayList<Integer>();
         for (int i = 0 ; i<5; i++)
         {
@@ -246,6 +279,19 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             pickedImages.add(listselection.get(randlist).get(randomNums.get(i)));
         }
 
+        if (caseMissingObj == 1) {
+            Collections.shuffle(pickedImages);
+            ListIterator  itr = listselection.get(randlist).listIterator();
+            while (itr.hasNext())
+            {
+                int temp = (int) itr.next();
+                if (temp == pickedImages.get(0))
+                {
+                    itr.remove();
+                    break;
+                }
+            }
+        }
 
         Timer = new CountDownTimer(9000, 1000) {
             @Override
@@ -267,9 +313,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     ImageView v = findViewById(imageviews.get(i));
                     v.setImageResource(listselection.get(randlist).get(i));
                     imageIDS.put(imageviews.get(i),listselection.get(randlist).get(i));
-                    clickable();
-
                 }
+                clickable();
+                startspeed = new Timestamp(System.currentTimeMillis());
+                missingObj.setVisibility(View.VISIBLE);
+
             }
         };
         Timer.start();
@@ -279,7 +327,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
 
-        click++;
         Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
             public void onTick(long l) { }
@@ -289,58 +336,151 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 for (int imageviewId : imageviews) {
                     ImageView v = findViewById(imageviewId);
                     v.setImageResource(0);
-//                    startButton.setText("next Round");
-//                    startButton.setVisibility(View.VISIBLE);
-
+                    v.setColorFilter(0);
                 }
 
+                falsepick = false;
+                currentRound++;
                 imageIDS.clear();
                 pickedImages.clear();
+                startButton.setVisibility(View.VISIBLE);
+                missingObj.setVisibility(View.INVISIBLE);
+                missingObj.setText(getResources().getString(R.string.MissingObjects));
+
+                if (currentRound == TotalRounds)
+                {
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id,game_id);
+                    shopPopUp();
+                }
             }
         };
 
-
-        if (imageIDS.containsKey(view.getId()))
+        if (missingObj.getId() == view.getId() && caseMissingObj == 1)
         {
+            startAnimation();
+            MaterialButton iv = (MaterialButton)findViewById(view.getId());
+            iv.setText("Σωστά");
+            hit++;
+            trueCounter++;
+            countPoints();
+            Timer.start();
+        }
+        else if (imageIDS.containsKey(view.getId()))
+        {
+            click++;
+            endspeed = new Timestamp(System.currentTimeMillis());
+            long diffspeed = endspeed.getTime() - startspeed.getTime();
+            double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
+            totalspeed += speedseconds;
             if (pickedImages.contains(imageIDS.get(view.getId())))
             {
                 view.setClickable(false);
                 rightpick++;
+                ImageView iv = (ImageView)findViewById(view.getId());
+                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
 
-            }
-
-
-            if (currentDifficulty.equals(getResources().getString(R.string.easyValue)) && rightpick == pickedImages.size())
-            {
-
-                Timer.start();
-
-            }
-            else if(currentDifficulty.equals(getResources().getString(R.string.easyValue)) && rightpick == 0){
-
-                //exases ton gyro
-            }
-            else if (rightpick == pickedImages.size() && currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
-            {
-
-                Timer.start();
-            }
-            else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && rightpick <2){
-                //exases ton giro med
-            }
-            else if (rightpick == pickedImages.size() && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
-            {
-
-                Timer.start();
             }
             else
             {
-                //exases genika
+                falsepick = true;
             }
+
+
+            if (rightpick == pickedImages.size())
+            {
+                startAnimation();
+                hit++;
+                trueCounter++;
+                countPoints();
+                Timer.start();
+            }
+            else if (falsepick)
+            {
+                startAnimation();
+                ImageView iv = (ImageView)findViewById(view.getId());
+                iv.setColorFilter(Color.RED, PorterDuff.Mode.LIGHTEN);
+                Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                view.startAnimation(animShake);
+                vibe.vibrate(vibeduration);
+                miss++;
+                missPoints = true;
+                countPoints();
+                Timer.start();
+            }
+
+        }
+        else
+        {
+            startAnimation();
+            MaterialButton iv = (MaterialButton)findViewById(view.getId());
+            iv.setText("Λαθος");
+            Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animShake);
+            vibe.vibrate(vibeduration);
+            miss++;
+            missPoints = true;
+            countPoints();
+            Timer.start();
 
         }
     }
 
+    private void shopPopUp() {
+        DialogFragment newFragment = new DialogMsg(user_id,OrderGame.this,hit,totalPoints);
+        newFragment.show(getSupportFragmentManager(), "OrderGame");
+    }
+
+    private void countPoints()
+    {
+
+        int currentPoints=0;
+
+        if (!missPoints && trueCounter == 1)
+        {
+            currentPoints += 10;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if(!missPoints && trueCounter == 2){
+            currentPoints += 20;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if (!missPoints && trueCounter >= 3)
+        {
+            currentPoints += 30;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if (missPoints)
+        {
+            currentPoints +=0;
+            trueCounter = 0;
+            missPoints = false;
+        }
+        totalPoints += currentPoints;
+        animPointsText.setText("+ " +String.valueOf(currentPoints));
+        if (currentPoints == 0)
+        {
+            animPointsText.setTextColor(Color.RED);
+        }
+        else
+            animPointsText.setTextColor(Color.GREEN);
+    }
+
+    private void startAnimation(){
+        long duration = 2000;
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText,"y",500f,-500f);
+        objectAnimatorY.setDuration(duration);
+
+        ObjectAnimator alpha =  ObjectAnimator.ofFloat(animPointsText,View.ALPHA,1.0f,0.0f);
+        alpha.setDuration(duration);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.start();
+    }
 
     private  void fillListImageview(){
         imageviews.add(R.id.imageView1OG);
@@ -369,14 +509,17 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         startButton = findViewById(R.id.startButtonOG);
         missingObj = findViewById(R.id.missingObjectsOG);
+        missingObj.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsOG);
         textTimer = findViewById(R.id.textTimerOG);
+        animPointsText = findViewById(R.id.AnimTextPointsOG);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);
         imagebutton3.setOnClickListener(this);
         imagebutton4.setOnClickListener(this);
         imagebutton5.setOnClickListener(this);
+        missingObj.setOnClickListener(this);
     }
 
     private void clickable(){
@@ -439,13 +582,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         jankfoodList.add(R.drawable.og_sn_pizza);
         jankfoodList.add(R.drawable.og_sn_salad);
         jankfoodList.add(R.drawable.og_sn_steak);
-
     }
 
-
-
-    //TODO sto advanced να φτιαξω το feat me to na leipoyn antikeimena
-    //TODO otan xanei to idio animation me OS
-    //TODO oso epilegei na kanw kati na fainetai ayto poy exei epil3ei
     //TODO na krataw instance tis o8onis otan kanei rotate
 }
