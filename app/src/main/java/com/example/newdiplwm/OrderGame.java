@@ -108,7 +108,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Integer> helperwhenRotate = new ArrayList<>();
     private static final String HELPERWHENROTATE = "HELPERWHENROTATE";
     private static final String RANDLIST = "RANDLIST";
+    private static final String GAMEINIT = "GAMEINIT";
     private int randlist;
+    private boolean gameInit =false;
 
 
     @Override
@@ -120,6 +122,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         if (savedInstanceState != null)
         {
+            gameInit = savedInstanceState.getBoolean(GAMEINIT);
             startButton.setVisibility(View.INVISIBLE);
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
@@ -153,105 +156,106 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
             endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
             currentRound = savedInstanceState.getInt(CURRENTROUND);
+            if (gameInit){
 
+                if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+                {
 
+                    if (helperwhenRotate.isEmpty()) {
 
-            if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
-            {
+                        for (int i = 0; i < pickedImages.size(); i++) {
+                            ImageView v = findViewById(imageviews.get(i));
+                            v.setClickable(false);
+                            v.setImageResource(pickedImages.get(i));
 
-                if (helperwhenRotate.isEmpty()) {
-
-                    for (int i = 0; i < pickedImages.size(); i++) {
-                        ImageView v = findViewById(imageviews.get(i));
-                        v.setClickable(false);
-                        v.setImageResource(pickedImages.get(i));
-
+                        }
                     }
-                }
-                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-                    @Override
-                    public void onTick(long l) {
-                        mTimeLeftInMillis=l;
-                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                        mTimeLeftInMillis=0;
-                        setTimerobjAdv(randlist);
-                        for (int imgv:helperwhenRotate)
-                        {
-                            ImageView iv= findViewById(imgv);
-                            iv.setClickable(false);
-                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                    Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                        @Override
+                        public void onTick(long l) {
+                            mTimeLeftInMillis=l;
+                            textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
                         }
 
-                    }
-                }.start();
+                        @Override
+                        public void onFinish() {
 
-            }
-            else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
-            {
-                if (helperwhenRotate.isEmpty()) {
-                    imagebutton1.setClickable(false);
+                            mTimeLeftInMillis=0;
+                            setTimerobjAdv(randlist);
+                            for (int imgv:helperwhenRotate)
+                            {
+                                ImageView iv= findViewById(imgv);
+                                iv.setClickable(false);
+                                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                            }
+
+                        }
+                    }.start();
+
+                }
+                else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+                {
+                    if (helperwhenRotate.isEmpty()) {
+                        imagebutton1.setClickable(false);
+                        imagebutton2.setClickable(false);
+                        imagebutton1.setImageResource(pickedImages.get(0));
+                        imagebutton2.setImageResource(pickedImages.get(1));
+                    }
+                    Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                        @Override
+                        public void onTick(long l) {
+                            mTimeLeftInMillis=l;
+                            textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                            mTimeLeftInMillis=0;
+                            setTimerobjmed(randlist);
+                            for (int imgv:helperwhenRotate)
+                            {
+                                ImageView iv= findViewById(imgv);
+                                iv.setClickable(false);
+                                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                            }
+
+                        }
+                    }.start();
+                }
+                else
+                {
                     imagebutton2.setClickable(false);
-                    imagebutton1.setImageResource(pickedImages.get(0));
-                    imagebutton2.setImageResource(pickedImages.get(1));
-                }
-                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-                    @Override
-                    public void onTick(long l) {
-                        mTimeLeftInMillis=l;
-                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                        mTimeLeftInMillis=0;
-                        setTimerobjmed(randlist);
-                        for (int imgv:helperwhenRotate)
-                        {
-                            ImageView iv= findViewById(imgv);
-                            iv.setClickable(false);
-                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                    imagebutton2.setImageResource(pickedImages.get(0));
+                    Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+                        @Override
+                        public void onTick(long l) {
+                            mTimeLeftInMillis=l;
+                            textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
                         }
 
-                    }
-                }.start();
+                        @Override
+                        public void onFinish() {
+                            mTimeLeftInMillis=0;
+                            setTimerobjez(randlist);
+                            for (int imgv:helperwhenRotate)
+                            {
+                                ImageView iv= findViewById(imgv);
+                                iv.setClickable(false);
+                                iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                            }
+
+
+
+                        }
+                    }.start();
+
+                }
             }
             else
             {
-                imagebutton2.setClickable(false);
-                imagebutton2.setImageResource(pickedImages.get(0));
-                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-                    @Override
-                    public void onTick(long l) {
-                        mTimeLeftInMillis=l;
-                        textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        mTimeLeftInMillis=0;
-                        setTimerobjez(randlist);
-                        for (int imgv:helperwhenRotate)
-                        {
-                            ImageView iv= findViewById(imgv);
-                            iv.setClickable(false);
-                            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
-                        }
-
-
-
-                    }
-                }.start();
-
+                startButton.setVisibility(View.VISIBLE);
             }
-
-
-
 
         }
         else{
@@ -276,6 +280,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 rightpick=0;
+                gameInit = true;
                 createRound();
             }
         });
@@ -535,6 +540,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
                 mTimeLeftInMillis=0;
 
+
                 falsepick = false;
                 currentRound++;
                 helperwhenRotate.clear();
@@ -554,6 +560,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
                 }
+                gameInit = false;
             }
         };
 
@@ -709,6 +716,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         outState.putBoolean(MISSPOINTS,missPoints);
         outState.putBoolean(FAlSEPICK,falsepick);
+        outState.putBoolean(GAMEINIT,gameInit);
         outState.putInt(HIT,hit);
         outState.putInt(MISS,miss);
         outState.putInt(TOTALPOINTS,totalPoints);
