@@ -566,6 +566,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         click++;
         int vibeduration = 1000;
+
+        endspeed = new Timestamp(System.currentTimeMillis());
+        long diffspeed = endspeed.getTime() - startspeed.getTime();
+        double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
+        totalspeed += speedseconds;
+
         if (missingObj.getId() == view.getId() && caseMissingObj == 1)
         {
             startAnimation();
@@ -579,10 +585,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         else if (imageIDS.containsKey(view.getId()))
         {
 
-            endspeed = new Timestamp(System.currentTimeMillis());
-            long diffspeed = endspeed.getTime() - startspeed.getTime();
-            double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
-            totalspeed += speedseconds;
+
             if (pickedImages.contains(imageIDS.get(view.getId())))
             {
                 view.setClickable(false);
