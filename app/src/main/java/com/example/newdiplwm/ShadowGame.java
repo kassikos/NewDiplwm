@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.SparseArray;
@@ -33,6 +34,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
+    private CountDownTimer Timer;
+    private long mTimeLeftInMillis;
 
 
     private static final String USER_ID = "USER_ID";
@@ -105,6 +108,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     }
 
     private void displayGameAdv(){
+        mTimeLeftInMillis = 8000;
         Random rand = new Random();
 
         int picklist = rand.nextInt(pickrandSprceArray.size())+1;
@@ -139,10 +143,12 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         temp.clear();
         imageviews.clear();
         clickable();
+        setTimer(mTimeLeftInMillis);
 
     }
 
     private void displayGameMed(){
+        mTimeLeftInMillis = 12000;
         Random rand  = new Random();
 
         int picklist = rand.nextInt(pickrandSprceArray.size())+1;
@@ -194,6 +200,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             temp.removeAt(otherlistobjects);
 
         }
+        setTimer(mTimeLeftInMillis);
 
         startspeed = new Timestamp(System.currentTimeMillis());
         temp.clear();
@@ -356,6 +363,23 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
+    private void setTimer(long mTimeLeftInMillis){
+
+        Timer = new CountDownTimer(mTimeLeftInMillis,1000) {
+            @Override
+            public void onTick(long l) {
+
+                textTimer.setText("Remain "+ l/1000+" Seconds");
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+    }
+
     private void matchlists(){
         pickrandSprceArray.put(1,animals);
         pickrandSprceArray.put(2,fruits);
@@ -423,6 +447,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     @Override
     public void onClick(View view) {
 
+        if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+        {
+            Timer.cancel();
+        }
 
         click++;
         endspeed = new Timestamp(System.currentTimeMillis());
