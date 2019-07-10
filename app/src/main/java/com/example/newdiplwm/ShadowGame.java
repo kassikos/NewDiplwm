@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,11 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
 
     private SparseIntArray animals = new SparseIntArray(4);
+    private SparseIntArray fruits = new SparseIntArray(4);
+    private SparseIntArray electronics = new SparseIntArray(4);
+
+    private SparseArray pickrandSprceArray = new SparseArray(4);
+
 
 
 
@@ -40,6 +46,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shadow_game);
         assignAllButtons();
+        matchlists();
 
 
         Intent intent = getIntent();
@@ -47,12 +54,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         user_id = extras.getInt(USER_ID);
         game_id = extras.getInt(GAME_ID);
         menuDifficulty = extras.getString(DIFFICULTY);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fillListImageview();
                 initaliseSparceArray();
-                displayGameAdv();
+                displayGameMed();
             }
         });
 
@@ -61,17 +69,17 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private void displayGameAdv(){
         Random rand = new Random();
-        int pick = rand.nextInt(animals.size());
-        imagebuttoncolorfull.setImageResource(animals.keyAt(pick));
+        int pickImage= rand.nextInt(animals.size());
+        imagebuttoncolorfull.setImageResource(animals.keyAt(pickImage));
 
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
-        iv.setImageResource(animals.valueAt(pick));
+        iv.setImageResource(animals.valueAt(pickImage));
 
         int i = 0;
 
         imageviews.remove(imageviewshadow);
-        animals.removeAt(pick);
+        animals.removeAt(pickImage);
 
 
         for (int imgv:imageviews)
@@ -85,6 +93,39 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imageviews.clear();
 
     }
+
+    private void displayGameMed(){
+        Random rand  = new Random();
+        int picklist = rand.nextInt(pickrandSprceArray.size())+1;
+        SparseIntArray temp;
+        temp = (SparseIntArray) pickrandSprceArray.get(picklist);
+
+        int pickImage= rand.nextInt(temp.size());
+        imagebuttoncolorfull.setImageResource(temp.keyAt(pickImage));
+
+        int imageviewshadow  = rand.nextInt(imageviews.size());
+        ImageView iv = findViewById(imageviews.get(imageviewshadow));
+        iv.setImageResource(temp.valueAt(pickImage));
+
+        imageviews.remove(imageviewshadow);
+        temp.removeAt(pickImage);
+        ImageView iv1 = findViewById(imageviews.get(0));
+        iv1.setImageResource(temp.valueAt(rand.nextInt(temp.size())+1));
+        imageviews.remove(0);
+
+        int i=0;
+        for (int imgv :imageviews)
+        {
+            ImageView iv11 = findViewById(imgv);
+            iv11.setImageResource(fruits.valueAt(i));
+            i++;
+        }
+
+        temp.clear();
+        imageviews.clear();
+
+    }
+
     private  void fillListImageview(){
         imageviews.add(R.id.imageView1SHG);
         imageviews.add(R.id.imageView2SHG);
@@ -93,11 +134,29 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
+    private void matchlists(){
+        pickrandSprceArray.put(1,animals);
+        pickrandSprceArray.put(2,fruits);
+        pickrandSprceArray.put(3,electronics);
+    }
+
     private void initaliseSparceArray(){
         animals.put(R.drawable.thing_1,R.drawable.thing_sh_1);
         animals.put(R.drawable.thing_2,R.drawable.thing_sh_2);
         animals.put(R.drawable.thing_3,R.drawable.thing_sh_3);
         animals.put(R.drawable.thing_4,R.drawable.thing_sh_4);
+
+        fruits.put(R.drawable.thing_14,R.drawable.thing_sh_14);
+        fruits.put(R.drawable.thing_15,R.drawable.thing_sh_15);
+        fruits.put(R.drawable.thing_16,R.drawable.thing_sh_16);
+        fruits.put(R.drawable.thing_17,R.drawable.thing_sh_17);
+
+        electronics.put(R.drawable.thing_31,R.drawable.thing_sh_31);
+        electronics.put(R.drawable.thing_32,R.drawable.thing_sh_32);
+        electronics.put(R.drawable.thing_37,R.drawable.thing_sh_37);
+        electronics.put(R.drawable.thing_39,R.drawable.thing_sh_39);
+
+
     }
 
     private void assignAllButtons(){
