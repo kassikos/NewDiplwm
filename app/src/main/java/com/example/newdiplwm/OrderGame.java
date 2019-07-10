@@ -93,7 +93,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private boolean missPoints = false;
     private String menuDifficulty,currentDifficulty;
 
-    private int click=0 , rightpick=0 ,vibeduration = 1000, caseMissingObj = 0;
+    private int click=0;
+    private int rightpick=0;
+    private int caseMissingObj = 0;
 
     private  boolean falsepick =false;
 
@@ -563,6 +565,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         };
 
         click++;
+        int vibeduration = 1000;
         if (missingObj.getId() == view.getId() && caseMissingObj == 1)
         {
             startAnimation();

@@ -85,9 +85,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onClick(View view) {
                 fillListImageview();
                 initaliseSparceArray();
-                displayGameAdv();
+                displayGameMed();
             }
         });
+
 
 
     }
@@ -120,8 +121,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 ivv.setImageResource(temp.valueAt(otherImages));
                 temp.removeAt(otherImages);
         }
-        //temp.clear();
-        //imageviews.clear();
+        temp.clear();
+        imageviews.clear();
 
     }
 
@@ -137,19 +138,34 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
         iv.setImageResource(temp.valueAt(pickImage));
+        displayedImageview.add(imageviews.get(imageviewshadow));
 
         imageviews.remove(imageviewshadow);
         temp.removeAt(pickImage);
-        ImageView iv1 = findViewById(imageviews.get(0));
-        iv1.setImageResource(temp.valueAt(rand.nextInt(temp.size())+1));
-        imageviews.remove(0);
 
-        int i=0;
+        int samelistonemore = rand.nextInt(imageviews.size());
+        ImageView iv1 = findViewById(imageviews.get(samelistonemore));
+        iv1.setImageResource(temp.valueAt(rand.nextInt(temp.size())));
+        imageviews.remove(samelistonemore);
+        //edw isws prepei na kanw kai remove thn eikona apo thn temp lista
+
+        int otherlist = rand.nextInt(pickrandSprceArray.size())+1;
+
+        while (otherlist == picklist)
+        {
+            otherlist = rand.nextInt(pickrandSprceArray.size())+1;
+        }
+
+
         for (int imgv :imageviews)
         {
             ImageView iv11 = findViewById(imgv);
-            iv11.setImageResource(fruits.valueAt(i));
-            i++;
+            temp = (SparseIntArray) pickrandSprceArray.get(otherlist);
+
+            int otherlistobjects = rand.nextInt(temp.size());
+            iv11.setImageResource(temp.valueAt(otherlistobjects));
+            temp.removeAt(otherlistobjects);
+
         }
 
         temp.clear();
@@ -317,7 +333,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             textTimer.setText("SWSTA");
             hit++;
             trueCounter++;
-            countPoints();
+           // countPoints();
         }
         else
         {
@@ -325,8 +341,9 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             vibe.vibrate(vibeduration);
             miss++;
             missPoints = true;
-            countPoints();
+            //countPoints();
         }
+        displayedImageview.clear();
 
     }
 }
