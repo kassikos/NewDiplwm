@@ -2,8 +2,12 @@ package com.example.newdiplwm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,22 +27,37 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull;
     private MaterialButton startButton;
     private TextView textRounds,textTimer;
+    private Vibrator vibe;
+
 
     private static final String USER_ID = "USER_ID";
     private static final String GAME_ID = "GAME_ID";
     private static final String DIFFICULTY = "DIFFICULTY";
-    private int user_id,game_id;
-    private String menuDifficulty;
+
+    private String menuDifficulty , currentDifficulty;
 
     private ArrayList<Integer> imageviews  = new ArrayList<>();
+    private ArrayList<Integer> displayedImageview  = new ArrayList<>();
 
 
     private SparseIntArray animals = new SparseIntArray(4);
     private SparseIntArray fruits = new SparseIntArray(4);
     private SparseIntArray electronics = new SparseIntArray(4);
 
+    private HashMap<String , Integer> pointsHashMap = new HashMap<String, Integer>();
+
     private SparseArray pickrandSprceArray = new SparseArray(4);
 
+    private int user_id, game_id, currentRound=0 , TotalRounds=0;
+
+    private int hit, miss, trueCounter,vibeduration = 1000,totalPoints=0;
+    private boolean missPoints = false;
+
+
+    private Timestamp startTime;
+    private Timestamp endTime;
+    private Timestamp startspeed;
+    private Timestamp endspeed;
 
 
 
@@ -45,8 +65,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shadow_game);
+        vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         assignAllButtons();
         matchlists();
+
+        pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
+        pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
+        pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
 
         Intent intent = getIntent();
@@ -60,7 +85,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onClick(View view) {
                 fillListImageview();
                 initaliseSparceArray();
-                displayGameMed();
+                displayGameAdv();
             }
         });
 
@@ -69,28 +94,34 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private void displayGameAdv(){
         Random rand = new Random();
-        int pickImage= rand.nextInt(animals.size());
-        imagebuttoncolorfull.setImageResource(animals.keyAt(pickImage));
+
+        int picklist = rand.nextInt(pickrandSprceArray.size())+1;
+        SparseIntArray temp;
+        temp = (SparseIntArray) pickrandSprceArray.get(picklist);
+
+        int pickImage= rand.nextInt(temp.size());
+        imagebuttoncolorfull.setImageResource(temp.keyAt(pickImage));
 
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
-        iv.setImageResource(animals.valueAt(pickImage));
+        iv.setImageResource(temp.valueAt(pickImage));
+        displayedImageview.add(imageviews.get(imageviewshadow));
 
-        int i = 0;
+
 
         imageviews.remove(imageviewshadow);
-        animals.removeAt(pickImage);
-
+        temp.removeAt(pickImage);
 
         for (int imgv:imageviews)
         {
 
                 ImageView ivv = findViewById(imgv);
-                ivv.setImageResource(animals.valueAt(i));
-                i++;
+                int otherImages = rand.nextInt(temp.size());
+                ivv.setImageResource(temp.valueAt(otherImages));
+                temp.removeAt(otherImages);
         }
-        animals.clear();
-        imageviews.clear();
+        //temp.clear();
+        //imageviews.clear();
 
     }
 
@@ -124,6 +155,107 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         temp.clear();
         imageviews.clear();
 
+    }
+    private void displayGameEz(){}
+
+
+    private void createRound(){
+        startButton.setVisibility(View.INVISIBLE);
+
+
+        if (currentRound == 0)
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+        }
+
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))){
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            displayGameEz();
+        }
+        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
+        {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            displayGameMed();
+        }
+        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
+        {
+            currentDifficulty = menuDifficulty;
+            TotalRounds=3;
+            displayGameAdv();
+        }
+        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
+        {
+            TotalRounds = 4;
+
+            if (currentRound<=1){
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                displayGameEz();
+            }
+            else
+            {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                displayGameMed();
+            }
+        }
+        else
+        {
+            TotalRounds =5;
+            if (currentRound<1)
+            {
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                displayGameEz();
+            }
+            else if (currentRound>=1 && currentRound<=2)
+            {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                displayGameMed();
+            }
+            else
+            {
+                currentDifficulty = getResources().getString(R.string.advancedValue);
+                displayGameAdv();
+            }
+        }
+        textRounds.setText((currentRound+1)+"/"+TotalRounds);
+
+    }
+
+
+    private void countPoints()
+    {
+
+        int currentPoints=0;
+
+        if (!missPoints && trueCounter == 1)
+        {
+            currentPoints += 10;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if(!missPoints && trueCounter == 2){
+            currentPoints += 20;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if (!missPoints && trueCounter >= 3)
+        {
+            currentPoints += 30;
+            currentPoints += pointsHashMap.get(currentDifficulty);
+        }
+        else if (missPoints)
+        {
+            currentPoints +=0;
+            trueCounter = 0;
+            missPoints = false;
+        }
+        totalPoints += currentPoints;
+//        animPointsText.setText("+ " +String.valueOf(currentPoints));
+//        if (currentPoints == 0)
+//        {
+//            animPointsText.setTextColor(Color.RED);
+//        }
+//        else
+//            animPointsText.setTextColor(Color.GREEN);
     }
 
     private  void fillListImageview(){
@@ -175,11 +307,26 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imagebutton2.setOnClickListener(this);
         imagebutton3.setOnClickListener(this);
         imagebutton4.setOnClickListener(this);
-        imagebuttoncolorfull.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+
+        if (displayedImageview.contains(view.getId()))
+        {
+            textTimer.setText("SWSTA");
+            hit++;
+            trueCounter++;
+            countPoints();
+        }
+        else
+        {
+            textTimer.setText("la8os");
+            vibe.vibrate(vibeduration);
+            miss++;
+            missPoints = true;
+            countPoints();
+        }
 
     }
 }
