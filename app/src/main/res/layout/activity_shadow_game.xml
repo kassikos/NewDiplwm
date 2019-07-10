@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ShadowGame">
+
+
+<TextView
+    android:id="@+id/textRoundsSG"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:fontFamily="@font/alfa_slab_one"
+    android:gravity="center"
+    android:textSize="40sp"
+    app:layout_constraintBottom_toTopOf="@id/textTimerSG"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+<TextView
+    android:id="@+id/textTimerSG"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:fontFamily="@font/alfa_slab_one"
+    android:gravity="center"
+    android:textSize="40sp"
+    app:layout_constraintBottom_toTopOf="@id/gridLayoutShadwGame"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textRoundsSG" />
+
+
+
+
+<GridLayout
+    android:id="@+id/gridLayoutShadwGame"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:columnCount="4"
+    android:layout_gravity="center"
+    android:padding="24dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textTimerSG"
+    app:layout_constraintBottom_toTopOf="@id/picked"
+    android:rowCount="1">
+
+    <ImageView
+        android:id="@+id/imageView1SHG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:src="@drawable/thing_1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView2SHG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:src="@drawable/thing_1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView3SHG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:src="@drawable/thing_1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView4SHG"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:src="@drawable/thing_1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+
+</GridLayout>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/picked"
+        android:layout_margin="80dp"
+        android:src="@drawable/thing_1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/imageDesc"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayoutShadwGame"
+        app:layout_constraintBottom_toTopOf="@+id/startButtonSH"/>
+
+
+<!--<FrameLayout
+    android:id="@+id/frameLayoutOS"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textRoundsOS"
+    app:layout_constraintBottom_toTopOf="@id/startButtonOS"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_margin="16dp" /> -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/AnimPointsOG"
+        android:layout_alignTop="@+id/picked"
+        app:layout_constraintBottom_toTopOf="@id/picked"
+        android:layout_alignParentStart="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/AnimTextPointsOG"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alfa_slab_one"
+            android:textSize="80sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/startButtonSH"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="450dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:gravity="center_horizontal"
+    android:padding="8dp"
+    android:text="@string/Start"
+    android:textColor="@color/purple"
+    android:textSize="35sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/picked"
+    app:strokeColor="@color/black"
+    app:strokeWidth="3dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

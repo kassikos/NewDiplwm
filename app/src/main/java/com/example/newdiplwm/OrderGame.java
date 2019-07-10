@@ -539,8 +539,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     v.setColorFilter(0);
                 }
                 mTimeLeftInMillis=0;
-
-
                 falsepick = false;
                 currentRound++;
                 helperwhenRotate.clear();
@@ -705,15 +703,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         outState.putIntegerArrayList(HELPERWHENROTATE,helperwhenRotate);
         outState.putSerializable(MATCH,imageIDS);
         outState.putSerializable(LISTSELECTION,listselection);
-
-
-
         outState.putInt(TOTALROUNDS,TotalRounds);
         outState.putInt(CURRENTROUND,currentRound);
         outState.putInt(RIGHTPICK,rightpick);
         outState.putInt(CASEMISSOBJ,caseMissingObj);
         outState.putInt(RANDLIST,randlist);
-
         outState.putBoolean(MISSPOINTS,missPoints);
         outState.putBoolean(FAlSEPICK,falsepick);
         outState.putBoolean(GAMEINIT,gameInit);
@@ -833,6 +827,4 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         jankfoodList.add(R.drawable.og_sn_salad);
         jankfoodList.add(R.drawable.og_sn_steak);
     }
-
-    //TODO na krataw instance tis o8onis otan kanei rotate
 }

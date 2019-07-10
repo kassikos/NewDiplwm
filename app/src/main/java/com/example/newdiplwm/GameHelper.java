@@ -80,6 +80,7 @@ public class GameHelper {
                 new Game("MemoryMatrix","memory",MemoryDesc),
                 new Game("ObjectSelector","memory",OsDesc),
                 new Game("OrderGame","memory",OsDesc),
+                new Game("ShadowGame","memory",OsDesc),
 
         };
 
