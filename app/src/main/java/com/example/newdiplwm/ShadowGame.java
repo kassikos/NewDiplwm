@@ -60,7 +60,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private int user_id, game_id, currentRound=0 , TotalRounds=0;
 
-    private int hit, miss, trueCounter,vibeduration = 1000,totalPoints=0;
+    private int hit;
+    private int miss;
+    private int trueCounter;
+    private int totalPoints=0;
     private boolean missPoints = false;
 
 
@@ -391,22 +394,48 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         animals.put(R.drawable.thing_2,R.drawable.thing_sh_2);
         animals.put(R.drawable.thing_3,R.drawable.thing_sh_3);
         animals.put(R.drawable.thing_4,R.drawable.thing_sh_4);
+        animals.put(R.drawable.thing_5,R.drawable.thing_sh_5);
+        animals.put(R.drawable.thing_6,R.drawable.thing_sh_6);
+        animals.put(R.drawable.thing_7,R.drawable.thing_sh_7);
+        animals.put(R.drawable.thing_8,R.drawable.thing_sh_8);
+        animals.put(R.drawable.thing_9,R.drawable.thing_sh_9);
+        animals.put(R.drawable.thing_10,R.drawable.thing_sh_10);
+        animals.put(R.drawable.thing_11,R.drawable.thing_sh_11);
+        animals.put(R.drawable.thing_12,R.drawable.thing_sh_12);
 
+        fruits.put(R.drawable.thing_13,R.drawable.thing_sh_13);
         fruits.put(R.drawable.thing_14,R.drawable.thing_sh_14);
         fruits.put(R.drawable.thing_15,R.drawable.thing_sh_15);
         fruits.put(R.drawable.thing_16,R.drawable.thing_sh_16);
         fruits.put(R.drawable.thing_17,R.drawable.thing_sh_17);
+        fruits.put(R.drawable.thing_18,R.drawable.thing_sh_18);
+        fruits.put(R.drawable.thing_19,R.drawable.thing_sh_19);
+        fruits.put(R.drawable.thing_20,R.drawable.thing_sh_20);
+        fruits.put(R.drawable.thing_23,R.drawable.thing_sh_23);
+        fruits.put(R.drawable.thing_24,R.drawable.thing_sh_24);
+        fruits.put(R.drawable.thing_25,R.drawable.thing_sh_25);
+        fruits.put(R.drawable.thing_26,R.drawable.thing_sh_26);
+        fruits.put(R.drawable.thing_27,R.drawable.thing_sh_27);
+        fruits.put(R.drawable.thing_28,R.drawable.thing_sh_28);
+        fruits.put(R.drawable.thing_29,R.drawable.thing_sh_29);
+        fruits.put(R.drawable.thing_30,R.drawable.thing_sh_30);
 
         electronics.put(R.drawable.thing_31,R.drawable.thing_sh_31);
         electronics.put(R.drawable.thing_32,R.drawable.thing_sh_32);
+        electronics.put(R.drawable.thing_33,R.drawable.thing_sh_33);
+        electronics.put(R.drawable.thing_35,R.drawable.thing_sh_35);
         electronics.put(R.drawable.thing_37,R.drawable.thing_sh_37);
+        electronics.put(R.drawable.thing_38,R.drawable.thing_sh_38);
         electronics.put(R.drawable.thing_39,R.drawable.thing_sh_39);
 
         variety.put(R.drawable.thing_41,R.drawable.thing_sh_41);
         variety.put(R.drawable.thing_43,R.drawable.thing_sh_43);
+        variety.put(R.drawable.thing_49,R.drawable.thing_sh_49);
         variety.put(R.drawable.thing_51,R.drawable.thing_sh_51);
         variety.put(R.drawable.thing_52,R.drawable.thing_sh_52);
+        variety.put(R.drawable.thing_55,R.drawable.thing_sh_55);
         variety.put(R.drawable.thing_56,R.drawable.thing_sh_56);
+        variety.put(R.drawable.thing_57,R.drawable.thing_sh_57);
         variety.put(R.drawable.thing_58,R.drawable.thing_sh_58);
 
 
@@ -471,6 +500,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         else
         {
             textTimer.setText("la8os");
+            int vibeduration = 1000;
             vibe.vibrate(vibeduration);
             miss++;
             missPoints = true;
@@ -495,4 +525,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         startButton.setVisibility(View.VISIBLE);
 
     }
+    //TODO rotate
+    //TODO improvements on medium
+    //TODO anomations
 }
