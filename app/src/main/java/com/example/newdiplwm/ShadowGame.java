@@ -1,5 +1,6 @@
 package com.example.newdiplwm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -9,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.SparseArray;
@@ -28,6 +31,36 @@ import java.util.concurrent.TimeUnit;
 
 public class ShadowGame extends AppCompatActivity implements  View.OnClickListener{
 
+
+    private static final String USER_ID = "USER_ID";
+    private static final String GAME_ID = "GAME_ID";
+    private static final String DIFFICULTY = "DIFFICULTY";
+    private static final String MISSPOINTS = "MISSPOINTS";
+    private static final String HIT = "HIT";
+    private static final String MISS = "MISS";
+    private static final String TOTALPOINTS = "TOTALPOINTS";
+    private static final String TRUECOUNTER = "TRUECOUNTER";
+    private static final String TOTALSPEED = "TOTALSPEED";
+    private static final String STARTTIME = "STARTTIME";
+    private static final String ENDTIME = "ENDTIME";
+    private static final String STARTSPEED = "STARTSPEED";
+    private static final String ENDSPEED = "ENDSPEED";
+    private static final String CURRENTROUND = "CURRENTROUND";
+    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
+    private static final String MENUDIFFICULTY = "MENUDIFFICULTY";
+    private static final String TOTALROUNDS = "TOTALROUNDS";
+    private static final String ANIMALS = "ANIMALS";
+    private static final String FRUITS = "FRUITS";
+    private static final String ELECTRONICS = "ELECTRONICS";
+    private static final String VARIETY = "VARIETY";
+    private static final String DISPLAYEDIMAGEVIEW = "DISPLAYEDIMAGEVIEW";
+    private static final String DISPLAYEDIMAGES = "DISPLAYEDIMAGES";
+    private static final String IMAGEVIEWS = "IMAGEVIEWS";
+    private static final String CLOCK = "CLOCK";
+    private static final String PICKRANDSPARSEARRAY = "PICKRANDSPARSEARRAY";
+    private static final String CLICK = "CLICK";
+    private static final String PICKEDIMAGE= "PICKEDIMAGE";
+
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull;
     private MaterialButton startButton;
     private TextView textRounds,textTimer;
@@ -37,30 +70,28 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private CountDownTimer Timer;
     private long mTimeLeftInMillis;
 
-
-    private static final String USER_ID = "USER_ID";
-    private static final String GAME_ID = "GAME_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-
     private String menuDifficulty , currentDifficulty;
 
     private ArrayList<Integer> imageviews  = new ArrayList<>();
     private ArrayList<Integer> displayedImageview  = new ArrayList<>();
 
 
-    private SparseIntArray animals = new SparseIntArray(4);
-    private SparseIntArray fruits = new SparseIntArray(4);
-    private SparseIntArray electronics = new SparseIntArray(4);
-    private SparseIntArray variety = new SparseIntArray(6);
+    private SparseIntArray animals = new SparseIntArray(12);
+    private SparseIntArray fruits = new SparseIntArray(16);
+    private SparseIntArray electronics = new SparseIntArray(7);
+    private SparseIntArray variety = new SparseIntArray(9);
     private SparseIntArray displayedimages = new SparseIntArray(4);
 
     private HashMap<String , Integer> pointsHashMap = new HashMap<String, Integer>();
 
-    private SparseArray pickrandSprceArray = new SparseArray(4);
+    private SparseArray pickrandSparceArray = new SparseArray(3);
 
     private int user_id, game_id, currentRound=0 , TotalRounds=0;
 
-    private int hit, miss, trueCounter,vibeduration = 1000,totalPoints=0;
+    private int hit;
+    private int miss;
+    private int trueCounter;
+    private int totalPoints=0;
     private boolean missPoints = false;
 
 
@@ -69,7 +100,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private Timestamp startspeed;
     private Timestamp endspeed;
     private double totalspeed = 0;
-    private int click=0;
+    private int click=0 , pickedimg;
 
 
 
@@ -81,19 +112,73 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         assignAllButtons();
-        matchlists();
+
+
+        if (savedInstanceState != null)
+        {
+            user_id = savedInstanceState.getInt(USER_ID);
+            game_id = savedInstanceState.getInt(GAME_ID);
+            menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
+            TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
+            click =savedInstanceState.getInt(CLICK);
+            hit =savedInstanceState.getInt(HIT);
+            miss =savedInstanceState.getInt(MISS);
+            totalPoints = savedInstanceState.getInt(TOTALPOINTS);
+            trueCounter = savedInstanceState.getInt(TRUECOUNTER);
+            totalspeed = savedInstanceState.getDouble(TOTALSPEED);
+            missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+            startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
+            endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
+            startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
+            endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
+            currentRound = savedInstanceState.getInt(CURRENTROUND);
+            currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
+            mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
+            imageviews = savedInstanceState.getIntegerArrayList(IMAGEVIEWS);
+            displayedImageview = savedInstanceState.getIntegerArrayList(DISPLAYEDIMAGEVIEW);
+            //pickrandSparceArray = savedInstanceState.getSparseParcelableArray(PICKRANDSPARSEARRAY);
+            animals = (SparseIntArray) savedInstanceState.getParcelable(ANIMALS);
+            fruits = (SparseIntArray) savedInstanceState.getParcelable(FRUITS);
+            electronics = (SparseIntArray) savedInstanceState.getParcelable(ELECTRONICS);
+            variety = (SparseIntArray) savedInstanceState.getParcelable(VARIETY);
+            displayedimages = (SparseIntArray) savedInstanceState.getParcelable(DISPLAYEDIMAGES);
+            pickedimg = savedInstanceState.getInt(PICKEDIMAGE);
+            imagebuttoncolorfull.setImageResource(pickedimg);
+
+            if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+            {
+                setTimer(mTimeLeftInMillis);
+            }
+
+            for (int i=0;i<displayedimages.size();i++)
+            {
+                ImageView test = findViewById(displayedimages.keyAt(i));
+                test.setImageResource(displayedimages.valueAt(i));
+
+            }
+
+
+        }
+        else{
+
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            user_id = extras.getInt(USER_ID);
+            game_id = extras.getInt(GAME_ID);
+            menuDifficulty = extras.getString(DIFFICULTY);
+        }
+
+
+
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
 
+
+        matchlists();
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,12 +196,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         mTimeLeftInMillis = 8000;
         Random rand = new Random();
 
-        int picklist = rand.nextInt(pickrandSprceArray.size())+1;
+        int picklist = rand.nextInt(pickrandSparceArray.size())+1;
         SparseIntArray temp;
-        temp = (SparseIntArray) pickrandSprceArray.get(picklist);
+        temp = (SparseIntArray) pickrandSparceArray.get(picklist);
 
         int pickImage= rand.nextInt(temp.size());
         imagebuttoncolorfull.setImageResource(temp.keyAt(pickImage));
+        pickedimg = temp.keyAt(pickImage);
 
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
@@ -151,12 +237,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         mTimeLeftInMillis = 12000;
         Random rand  = new Random();
 
-        int picklist = rand.nextInt(pickrandSprceArray.size())+1;
+        int picklist = rand.nextInt(pickrandSparceArray.size())+1;
         SparseIntArray temp;
-        temp = (SparseIntArray) pickrandSprceArray.get(picklist);
+        temp = (SparseIntArray) pickrandSparceArray.get(picklist);
 
         int pickImage= rand.nextInt(temp.size());
         imagebuttoncolorfull.setImageResource(temp.keyAt(pickImage));
+        pickedimg = temp.keyAt(pickImage);
 
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
@@ -180,18 +267,18 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         //edw isws prepei na kanw kai remove thn eikona apo thn temp lista
 
-        int otherlist = rand.nextInt(pickrandSprceArray.size())+1;
+        int otherlist = rand.nextInt(pickrandSparceArray.size())+1;
 
         while (otherlist == picklist)
         {
-            otherlist = rand.nextInt(pickrandSprceArray.size())+1;
+            otherlist = rand.nextInt(pickrandSparceArray.size())+1;
         }
 
 
         for (int imgv :imageviews)
         {
             ImageView iv11 = findViewById(imgv);
-            temp = (SparseIntArray) pickrandSprceArray.get(otherlist);
+            temp = (SparseIntArray) pickrandSparceArray.get(otherlist);
 
             int otherlistobjects = rand.nextInt(temp.size());
             iv11.setImageResource(temp.valueAt(otherlistobjects));
@@ -212,12 +299,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private void displayGameEz(){
         Random rand  = new Random();
 
-        int picklist = rand.nextInt(pickrandSprceArray.size())+1;
+        int picklist = rand.nextInt(pickrandSparceArray.size())+1;
         SparseIntArray temp;
-        temp = (SparseIntArray) pickrandSprceArray.get(picklist);
+        temp = (SparseIntArray) pickrandSparceArray.get(picklist);
 
         int pickImage= rand.nextInt(temp.size());
         imagebuttoncolorfull.setImageResource(temp.keyAt(pickImage));
+        pickedimg = temp.keyAt(pickImage);
 
         int imageviewshadow  = rand.nextInt(imageviews.size());
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
@@ -246,6 +334,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         startspeed = new Timestamp(System.currentTimeMillis());
         variety.clear();
+        temp.clear();
         imageviews.clear();
         clickable();
 
@@ -363,12 +452,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
-    private void setTimer(long mTimeLeftInMillis){
+    private void setTimer(long mTimeLeftInMillisfun){
 
-        Timer = new CountDownTimer(mTimeLeftInMillis,1000) {
+        Timer = new CountDownTimer(mTimeLeftInMillisfun,1000) {
             @Override
             public void onTick(long l) {
 
+                mTimeLeftInMillis=l;
                 textTimer.setText("Remain "+ l/1000+" Seconds");
 
             }
@@ -380,10 +470,48 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         }.start();
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ANIMALS, new SparseIntArrayParcelable(animals));
+        outState.putParcelable(FRUITS, new SparseIntArrayParcelable(fruits));
+        outState.putParcelable(ELECTRONICS, new SparseIntArrayParcelable(electronics));
+        outState.putParcelable(VARIETY, new SparseIntArrayParcelable(variety));
+        outState.putParcelable(DISPLAYEDIMAGES, new SparseIntArrayParcelable(displayedimages));
+        //outState.putSparseParcelableArray(PICKRANDSPARSEARRAY,pickrandSparceArray);
+
+        outState.putSerializable(STARTTIME,startTime);
+        outState.putSerializable(ENDTIME,endTime);
+        outState.putSerializable(STARTSPEED,startspeed);
+        outState.putSerializable(ENDSPEED,endspeed);
+        outState.putLong(CLOCK,mTimeLeftInMillis);
+        outState.putDouble(TOTALSPEED,totalspeed);
+
+        outState.putIntegerArrayList(IMAGEVIEWS,imageviews);
+        outState.putIntegerArrayList(DISPLAYEDIMAGEVIEW,displayedImageview);
+
+        outState.putInt(GAME_ID,game_id);
+        outState.putInt(USER_ID,user_id);
+        outState.putInt(TOTALROUNDS,TotalRounds);
+        outState.putInt(CURRENTROUND,currentRound);
+        outState.putInt(HIT,hit);
+        outState.putInt(MISS,miss);
+        outState.putInt(TOTALPOINTS,totalPoints);
+        outState.putInt(TRUECOUNTER,trueCounter);
+        outState.putInt(CLICK,click);
+        outState.putInt(PICKEDIMAGE,pickedimg);
+
+
+        outState.putString(MENUDIFFICULTY,menuDifficulty);
+        outState.putString(CURRENTDIFFICULTY,currentDifficulty);
+
+        outState.putBoolean(MISSPOINTS,missPoints);
+    }
+
     private void matchlists(){
-        pickrandSprceArray.put(1,animals);
-        pickrandSprceArray.put(2,fruits);
-        pickrandSprceArray.put(3,electronics);
+        pickrandSparceArray.put(1,animals);
+        pickrandSparceArray.put(2,fruits);
+        pickrandSparceArray.put(3,electronics);
     }
 
     private void initaliseSparceArray(){
@@ -391,22 +519,48 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         animals.put(R.drawable.thing_2,R.drawable.thing_sh_2);
         animals.put(R.drawable.thing_3,R.drawable.thing_sh_3);
         animals.put(R.drawable.thing_4,R.drawable.thing_sh_4);
+        animals.put(R.drawable.thing_5,R.drawable.thing_sh_5);
+        animals.put(R.drawable.thing_6,R.drawable.thing_sh_6);
+        animals.put(R.drawable.thing_7,R.drawable.thing_sh_7);
+        animals.put(R.drawable.thing_8,R.drawable.thing_sh_8);
+        animals.put(R.drawable.thing_9,R.drawable.thing_sh_9);
+        animals.put(R.drawable.thing_10,R.drawable.thing_sh_10);
+        animals.put(R.drawable.thing_11,R.drawable.thing_sh_11);
+        animals.put(R.drawable.thing_12,R.drawable.thing_sh_12);
 
+        fruits.put(R.drawable.thing_13,R.drawable.thing_sh_13);
         fruits.put(R.drawable.thing_14,R.drawable.thing_sh_14);
         fruits.put(R.drawable.thing_15,R.drawable.thing_sh_15);
         fruits.put(R.drawable.thing_16,R.drawable.thing_sh_16);
         fruits.put(R.drawable.thing_17,R.drawable.thing_sh_17);
+        fruits.put(R.drawable.thing_18,R.drawable.thing_sh_18);
+        fruits.put(R.drawable.thing_19,R.drawable.thing_sh_19);
+        fruits.put(R.drawable.thing_20,R.drawable.thing_sh_20);
+        fruits.put(R.drawable.thing_23,R.drawable.thing_sh_23);
+        fruits.put(R.drawable.thing_24,R.drawable.thing_sh_24);
+        fruits.put(R.drawable.thing_25,R.drawable.thing_sh_25);
+        fruits.put(R.drawable.thing_26,R.drawable.thing_sh_26);
+        fruits.put(R.drawable.thing_27,R.drawable.thing_sh_27);
+        fruits.put(R.drawable.thing_28,R.drawable.thing_sh_28);
+        fruits.put(R.drawable.thing_29,R.drawable.thing_sh_29);
+        fruits.put(R.drawable.thing_30,R.drawable.thing_sh_30);
 
         electronics.put(R.drawable.thing_31,R.drawable.thing_sh_31);
         electronics.put(R.drawable.thing_32,R.drawable.thing_sh_32);
+        electronics.put(R.drawable.thing_33,R.drawable.thing_sh_33);
+        electronics.put(R.drawable.thing_35,R.drawable.thing_sh_35);
         electronics.put(R.drawable.thing_37,R.drawable.thing_sh_37);
+        electronics.put(R.drawable.thing_38,R.drawable.thing_sh_38);
         electronics.put(R.drawable.thing_39,R.drawable.thing_sh_39);
 
         variety.put(R.drawable.thing_41,R.drawable.thing_sh_41);
         variety.put(R.drawable.thing_43,R.drawable.thing_sh_43);
+        variety.put(R.drawable.thing_49,R.drawable.thing_sh_49);
         variety.put(R.drawable.thing_51,R.drawable.thing_sh_51);
         variety.put(R.drawable.thing_52,R.drawable.thing_sh_52);
+        variety.put(R.drawable.thing_55,R.drawable.thing_sh_55);
         variety.put(R.drawable.thing_56,R.drawable.thing_sh_56);
+        variety.put(R.drawable.thing_57,R.drawable.thing_sh_57);
         variety.put(R.drawable.thing_58,R.drawable.thing_sh_58);
 
 
@@ -471,6 +625,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         else
         {
             textTimer.setText("la8os");
+            int vibeduration = 1000;
             vibe.vibrate(vibeduration);
             miss++;
             missPoints = true;
@@ -494,5 +649,65 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         displayedimages.clear();
         startButton.setVisibility(View.VISIBLE);
 
+    }
+    //TODO rotate
+    //TODO anomations
+
+
+    public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
+        public  Creator<SparseIntArrayParcelable> CREATOR = new Creator<SparseIntArrayParcelable>() {
+            @Override
+            public SparseIntArrayParcelable createFromParcel(Parcel source) {
+                SparseIntArrayParcelable read = new SparseIntArrayParcelable();
+                int size = source.readInt();
+
+                int[] keys = new int[size];
+                int[] values = new int[size];
+
+                source.readIntArray(keys);
+                source.readIntArray(values);
+
+                for (int i = 0; i < size; i++) {
+                    read.put(keys[i], values[i]);
+                }
+
+                return read;
+            }
+
+            @Override
+            public SparseIntArrayParcelable[] newArray(int size) {
+                return new SparseIntArrayParcelable[size];
+            }
+        };
+
+        public SparseIntArrayParcelable() {
+
+        }
+
+        public SparseIntArrayParcelable(SparseIntArray sparseIntArray) {
+            for (int i = 0; i < sparseIntArray.size(); i++) {
+                this.put(sparseIntArray.keyAt(i), sparseIntArray.valueAt(i));
+            }
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            int[] keys = new int[size()];
+            int[] values = new int[size()];
+
+            for (int i = 0; i < size(); i++) {
+                keys[i] = keyAt(i);
+                values[i] = valueAt(i);
+            }
+
+            dest.writeInt(size());
+            dest.writeIntArray(keys);
+            dest.writeIntArray(values);
+        }
     }
 }
