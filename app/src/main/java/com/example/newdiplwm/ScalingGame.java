@@ -48,6 +48,11 @@ public class ScalingGame extends AppCompatActivity {
     private static final String DIFFICULTY = "DIFFICULTY";
 
 
+    private static final String WRONG = "Σωστα! ";
+    private static final String CORRECT = "Λάθος! ";
+
+    private String rightResult = "";
+
 
     private Timestamp startTime;
     private Timestamp endTime;
@@ -191,7 +196,7 @@ public class ScalingGame extends AppCompatActivity {
         leftButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                textQuestion.setText("Η αριστερή πλευρά είναι Μεγαλύτερη από την δεξία.");
+                //textQuestion.setText("Η αριστερή πλευρά είναι Μεγαλύτερη από την δεξία.");
 
                 endspeed = new Timestamp(System.currentTimeMillis());
                 long speedtime = endspeed.getTime() - startspeed.getTime();
@@ -223,7 +228,7 @@ public class ScalingGame extends AppCompatActivity {
         rightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                textQuestion.setText("Η αριστερή πλευρά είναι Μικρότερη από την δεξία.");
+                //textQuestion.setText("Η αριστερή πλευρά είναι Μικρότερη από την δεξία.");
 
                 endspeed = new Timestamp(System.currentTimeMillis());
                 long speedtime = endspeed.getTime() - startspeed.getTime();
@@ -256,7 +261,7 @@ public class ScalingGame extends AppCompatActivity {
         equalButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                textQuestion.setText("Οι δύο πλευρές είναι ίσες.");
+                //textQuestion.setText("Οι δύο πλευρές είναι ίσες.");
 
 
                 endspeed = new Timestamp(System.currentTimeMillis());
@@ -720,14 +725,20 @@ public class ScalingGame extends AppCompatActivity {
         if (leftNumber>rightNumber)
         {
             res = -1;
+
+            rightResult = "Η αριστερή πλευρά είναι ΜΕΓΑΛΥΤΕΡΗ από την δεξία.";
         }
         else if (rightNumber>leftNumber)
         {
             res = 1;
+
+            rightResult = "Η αριστερή πλευρά είναι ΜΙΚΡΟΤΕΡΗ από την δεξία.";
         }
         else
         {
             res = 0;
+
+            rightResult = "Οι δύο πλευρές είναι ίσες.";
         }
 
         return res;
@@ -741,6 +752,7 @@ public class ScalingGame extends AppCompatActivity {
             missPoints=false;
             trueCounter++;
 
+            textQuestion.setText(CORRECT+rightResult);
             textQuestion.setTextColor(Color.GREEN);
 
         }
@@ -749,6 +761,7 @@ public class ScalingGame extends AppCompatActivity {
             miss++;
             missPoints=true;
 
+            textQuestion.setText(WRONG+rightResult);
             textQuestion.setTextColor(Color.RED);
 
         }
