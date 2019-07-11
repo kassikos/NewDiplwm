@@ -53,6 +53,8 @@ public class ScalingGame extends AppCompatActivity {
 
     private String rightResult = "";
 
+    //δασδασδασδασ
+
 
     private Timestamp startTime;
     private Timestamp endTime;
