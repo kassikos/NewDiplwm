@@ -141,11 +141,11 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 currentRound = savedInstanceState.getInt(CURRENTROUND);
                 loseHelper = savedInstanceState.getBoolean(LOSEHELPER);
                 mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
-                rounds.setText((currentRound+1) + " / "+TotalRounds);
+                rounds.setText((currentRound ) + " / "+TotalRounds);
                 if ((helper == 3 && currentDifficulty.equals(getResources().getString(R.string.easyValue))) || (helper == 4 && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (helper == 5 &&currentDifficulty.equals(getResources().getString(R.string.advancedValue))) || loseHelper)
                 {
                     startButton.setVisibility(View.VISIBLE);
-                    startButton.setText("next Round");
+                    startButton.setText(getResources().getString(R.string.nextRound));
 
                 }
                 else{
@@ -250,7 +250,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 displayGameAdv();
             }
         }
-        rounds.setText((currentRound+1)+"/"+TotalRounds);
+        currentRound++;
+        rounds.setText((currentRound ) +" / "+TotalRounds);
 
     }
 
@@ -433,14 +434,13 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 for (int key : imageIDS.keySet()) {
                     ImageView v = findViewById(key);
                     v.setImageResource(0);
-                    startButton.setText("next Round");
+                    startButton.setText(getResources().getString(R.string.nextRound));
                     startButton.setVisibility(View.VISIBLE);
 
                 }
 
                 picked.clear();
                 unpicked.clear();
-                currentRound++;
                 imageIDS.clear();
 
                 if (currentRound == TotalRounds)

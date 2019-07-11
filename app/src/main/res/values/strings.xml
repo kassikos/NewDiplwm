@@ -89,6 +89,8 @@
 
 
     <string name="ok">sinexise</string>
+    <string name="nextRound">Επόμενος Γύρος</string>
+    <string name="timeFinish">Τέλος Χρόνου</string>
 
     <!--OG-->
     <string name="MissingObjects">Λείπουν Αντικείμενα</string>
