@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +19,8 @@ import android.os.Vibrator;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,17 +61,19 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String DISPLAYEDIMAGES = "DISPLAYEDIMAGES";
     private static final String IMAGEVIEWS = "IMAGEVIEWS";
     private static final String CLOCK = "CLOCK";
-    private static final String PICKRANDSPARSEARRAY = "PICKRANDSPARSEARRAY";
+    private static final String DISPLAYEDIMAGESSHADOWS = "DISPLAYEDIMAGESSHADOWS";
     private static final String CLICK = "CLICK";
     private static final String PICKEDIMAGE= "PICKEDIMAGE";
+    private static final String GAMEINIT= "GAMEINIT";
+    private static final String COUNTDOWN= "COUNTDOWN";
 
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull;
     private MaterialButton startButton;
-    private TextView textRounds,textTimer;
+    private TextView textRounds,textTimer, animationTextPoints;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private CountDownTimer Timer;
+    private CountDownTimer Timer , cleanTimer;
     private long mTimeLeftInMillis;
 
     private String menuDifficulty , currentDifficulty;
@@ -81,6 +87,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private SparseIntArray electronics = new SparseIntArray(7);
     private SparseIntArray variety = new SparseIntArray(9);
     private SparseIntArray displayedimages = new SparseIntArray(4);
+    private SparseIntArray displayedimagesShadows = new SparseIntArray(4);
 
     private HashMap<String , Integer> pointsHashMap = new HashMap<String, Integer>();
 
@@ -88,10 +95,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private int user_id, game_id, currentRound=0 , TotalRounds=0;
 
-    private int hit;
-    private int miss;
-    private int trueCounter;
-    private int totalPoints=0;
+    private int hit=0 ,miss=0 ,trueCounter=0 , totalPoints=0;
     private boolean missPoints = false;
 
 
@@ -100,7 +104,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private Timestamp startspeed;
     private Timestamp endspeed;
     private double totalspeed = 0;
-    private int click=0 , pickedimg;
+    private int click=0 , pickedimg=0;
+    private boolean gameInit = false;
 
 
 
@@ -116,6 +121,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         if (savedInstanceState != null)
         {
+
+            gameInit  =savedInstanceState.getBoolean(GAMEINIT);
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
             menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
@@ -127,6 +134,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             trueCounter = savedInstanceState.getInt(TRUECOUNTER);
             totalspeed = savedInstanceState.getDouble(TOTALSPEED);
             missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+
+            Timer = (CountDownTimer) savedInstanceState.getSerializable(COUNTDOWN);
             startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
             endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
             startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
@@ -142,21 +151,44 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             electronics = (SparseIntArray) savedInstanceState.getParcelable(ELECTRONICS);
             variety = (SparseIntArray) savedInstanceState.getParcelable(VARIETY);
             displayedimages = (SparseIntArray) savedInstanceState.getParcelable(DISPLAYEDIMAGES);
+            displayedimagesShadows = (SparseIntArray) savedInstanceState.getParcelable(DISPLAYEDIMAGESSHADOWS);
             pickedimg = savedInstanceState.getInt(PICKEDIMAGE);
-            imagebuttoncolorfull.setImageResource(pickedimg);
 
-            if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+            startButton.setVisibility(View.INVISIBLE);
+
+            if (gameInit)
             {
-                setTimer(mTimeLeftInMillis);
-            }
+                imagebuttoncolorfull.setImageResource(pickedimg);
 
-            for (int i=0;i<displayedimages.size();i++)
+                textRounds.setText(currentRound+ " / "+ TotalRounds);
+                if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+                {
+                    setTimer(mTimeLeftInMillis);
+                }
+
+                for (int i=0;i<displayedimagesShadows.size();i++)
+                {
+                    ImageView test = findViewById(displayedimagesShadows.keyAt(i));
+                    test.setImageResource(displayedimagesShadows.valueAt(i));
+
+                }
+            }
+            else
             {
-                ImageView test = findViewById(displayedimages.keyAt(i));
-                test.setImageResource(displayedimages.valueAt(i));
+                if (currentRound == 0)
+                {
+                    startButton.setVisibility(View.VISIBLE);
+                    clearScreen();
+
+                }
+                else
+                {
+                    startButton.setVisibility(View.VISIBLE);
+                    startButton.setText(getResources().getString(R.string.nextRound));
+                    textRounds.setText(currentRound+ " / "+ TotalRounds);
+                }
 
             }
-
 
         }
         else{
@@ -184,6 +216,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onClick(View view) {
                 fillListImageview();
                 initaliseSparceArray();
+                gameInit = true;
                 createRound();
             }
         });
@@ -210,6 +243,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         displayedImageview.add(imageviews.get(imageviewshadow));
 
         displayedimages.put(imageviews.get(imageviewshadow),temp.keyAt(pickImage));
+        displayedimagesShadows.put(imageviews.get(imageviewshadow),temp.valueAt(pickImage));
 
 
         imageviews.remove(imageviewshadow);
@@ -222,6 +256,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 int otherImages = rand.nextInt(temp.size());
                 ivv.setImageResource(temp.valueAt(otherImages));
                 displayedimages.put(imgv,temp.keyAt(otherImages));
+                displayedimagesShadows.put(imgv,temp.valueAt(otherImages));
                 temp.removeAt(otherImages);
         }
 
@@ -249,6 +284,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         ImageView iv = findViewById(imageviews.get(imageviewshadow));
         iv.setImageResource(temp.valueAt(pickImage));
         displayedimages.put(imageviews.get(imageviewshadow),temp.keyAt(pickImage));
+        displayedimagesShadows.put(imageviews.get(imageviewshadow),temp.valueAt(pickImage));
 
         displayedImageview.add(imageviews.get(imageviewshadow));
 
@@ -262,6 +298,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         iv1.setImageResource(temp.valueAt(samelistimage));
 
         displayedimages.put(imageviews.get(samelistonemore),temp.keyAt(samelistimage));
+        displayedimagesShadows.put(imageviews.get(samelistonemore),temp.valueAt(samelistimage));
         imageviews.remove(samelistonemore);
 
 
@@ -284,6 +321,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             iv11.setImageResource(temp.valueAt(otherlistobjects));
 
             displayedimages.put(imgv,temp.keyAt(otherlistobjects));
+            displayedimagesShadows.put(imgv,temp.valueAt(otherlistobjects));
             temp.removeAt(otherlistobjects);
 
         }
@@ -312,6 +350,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         iv.setImageResource(temp.valueAt(pickImage));
 
         displayedimages.put(imageviews.get(imageviewshadow),temp.keyAt(pickImage));
+        displayedimagesShadows.put(imageviews.get(imageviewshadow),temp.valueAt(pickImage));
 
         displayedImageview.add(imageviews.get(imageviewshadow));
 
@@ -327,6 +366,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             iv1.setImageResource(variety.valueAt(otherlistobjects));
 
             displayedimages.put(imgv,variety.keyAt(otherlistobjects));
+            displayedimagesShadows.put(imgv,variety.valueAt(otherlistobjects));
 
             variety.removeAt(otherlistobjects);
 
@@ -400,7 +440,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 displayGameAdv();
             }
         }
-        textRounds.setText((currentRound+1)+"/"+TotalRounds);
+        currentRound++;
+        textRounds.setText((currentRound)+"/"+TotalRounds);
 
     }
 
@@ -431,19 +472,32 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             missPoints = false;
         }
         totalPoints += currentPoints;
-//        animPointsText.setText("+ " +String.valueOf(currentPoints));
-//        if (currentPoints == 0)
-//        {
-//            animPointsText.setTextColor(Color.RED);
-//        }
-//        else
-//            animPointsText.setTextColor(Color.GREEN);
+        animationTextPoints.setText("+ " +currentPoints);
+        if (currentPoints == 0)
+        {
+            animationTextPoints.setTextColor(Color.RED);
+        }
+        else
+            animationTextPoints.setTextColor(Color.GREEN);
     }
 
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,ShadowGame.this,hit,totalPoints);
         newFragment.show(getSupportFragmentManager(), "ShadowGame");
     }
+
+    private void startAnimation(){
+        long duration = 2000;
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animationTextPoints,"y",500f,-500f);
+        objectAnimatorY.setDuration(duration);
+
+        ObjectAnimator alpha =  ObjectAnimator.ofFloat(animationTextPoints,View.ALPHA,1.0f,0.0f);
+        alpha.setDuration(duration);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.start();
+    }
+
     private  void fillListImageview(){
         imageviews.add(R.id.imageView1SHG);
         imageviews.add(R.id.imageView2SHG);
@@ -465,8 +519,32 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
             @Override
             public void onFinish() {
+                unclickable();
+                miss++;
+                missPoints =true;
+                startAnimation();
+                vibe.vibrate(1000);
+                textTimer.setText(getResources().getString(R.string.timeFinish));
+                countPoints();
+                setCleanTimer();
+                if (currentRound == TotalRounds)
+                {
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id,game_id);
+                    shopPopUp();
+                }
 
+                gameInit = false;
+                displayedImageview.clear();
+                displayedimages.clear();
+                startButton.setVisibility(View.VISIBLE);
             }
+
+
         }.start();
     }
 
@@ -478,12 +556,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         outState.putParcelable(ELECTRONICS, new SparseIntArrayParcelable(electronics));
         outState.putParcelable(VARIETY, new SparseIntArrayParcelable(variety));
         outState.putParcelable(DISPLAYEDIMAGES, new SparseIntArrayParcelable(displayedimages));
+        outState.putParcelable(DISPLAYEDIMAGESSHADOWS, new SparseIntArrayParcelable(displayedimagesShadows));
         //outState.putSparseParcelableArray(PICKRANDSPARSEARRAY,pickrandSparceArray);
 
         outState.putSerializable(STARTTIME,startTime);
         outState.putSerializable(ENDTIME,endTime);
         outState.putSerializable(STARTSPEED,startspeed);
         outState.putSerializable(ENDSPEED,endspeed);
+        //outState.putSerializable(COUNTDOWN,Timer);
         outState.putLong(CLOCK,mTimeLeftInMillis);
         outState.putDouble(TOTALSPEED,totalspeed);
 
@@ -506,12 +586,21 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         outState.putString(CURRENTDIFFICULTY,currentDifficulty);
 
         outState.putBoolean(MISSPOINTS,missPoints);
+        outState.putBoolean(GAMEINIT,gameInit);
     }
 
     private void matchlists(){
         pickrandSparceArray.put(1,animals);
         pickrandSparceArray.put(2,fruits);
         pickrandSparceArray.put(3,electronics);
+    }
+
+    private void clearScreen(){
+        imagebutton1.setImageResource(0);
+        imagebutton2.setImageResource(0);
+        imagebutton3.setImageResource(0);
+        imagebutton4.setImageResource(0);
+        imagebuttoncolorfull.setImageResource(0);
     }
 
     private void initaliseSparceArray(){
@@ -577,6 +666,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         startButton = findViewById(R.id.startButtonSH);
         textRounds = findViewById(R.id.textRoundsSG);
         textTimer = findViewById(R.id.textTimerSG);
+        animationTextPoints = findViewById(R.id.AnimTextPointsSHG);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);
@@ -600,10 +690,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        startButton.setText(getResources().getString(R.string.nextRound));
+
 
         if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
         {
+            textTimer.setText("");
             Timer.cancel();
+
         }
 
         click++;
@@ -614,24 +708,27 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         ImageView imgv = findViewById(view.getId());
         imgv.setImageResource(displayedimages.get(view.getId()));
+        startAnimation();
 
         if (displayedImageview.contains(view.getId()))
         {
-            textTimer.setText("SWSTA");
             hit++;
             trueCounter++;
 
         }
         else
         {
-            textTimer.setText("la8os");
+            Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animShake);
             int vibeduration = 1000;
             vibe.vibrate(vibeduration);
             miss++;
             missPoints = true;
         }
+
+
+        setCleanTimer();
         unclickable();
-        currentRound++;
         countPoints();
 
         if (currentRound == TotalRounds)
@@ -644,7 +741,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             userViewModel.updatestatsTest(user_id,game_id);
             shopPopUp();
         }
-
+        gameInit = false;
         displayedImageview.clear();
         displayedimages.clear();
         startButton.setVisibility(View.VISIBLE);
@@ -652,6 +749,21 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     }
     //TODO rotate
     //TODO anomations
+
+    private void setCleanTimer(){
+        cleanTimer = new CountDownTimer(1500,1000) {
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                clearScreen();
+            }
+        }.start();
+    }
 
 
     public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
