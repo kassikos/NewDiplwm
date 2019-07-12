@@ -95,6 +95,7 @@
 
     <!--OG-->
     <string name="MissingObjects">Λείπουν Αντικείμενα</string>
+    <string name="textQuestionOG">Ποια αντικείμενα ήταν στην αρχική παραγγελία;</string>
 
 
 </resources>
