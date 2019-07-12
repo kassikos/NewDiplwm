@@ -1,6 +1,9 @@
 package com.example.newdiplwm;
 
 import android.app.Application;
+import android.os.CountDownTimer;
+import android.util.SparseIntArray;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
@@ -10,6 +13,7 @@ import java.util.List;
 public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<User>> allusers;
+    private CountDownTimer timer;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
@@ -39,4 +43,12 @@ public class UserViewModel extends AndroidViewModel {
 
     public List<UserGameStats> getAllStatsModel(int userid){return userRepository.getAllStats(userid);}
 
+    public void saveTimer (CountDownTimer t)
+    {
+        this.timer = t;
+    }
+    public CountDownTimer getTimer()
+    {
+        return timer;
+    }
 }
