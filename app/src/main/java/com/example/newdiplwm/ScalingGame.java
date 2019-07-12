@@ -48,12 +48,10 @@ public class ScalingGame extends AppCompatActivity {
     private static final String DIFFICULTY = "DIFFICULTY";
 
 
-    private static final String WRONG = "Σωστα! ";
-    private static final String CORRECT = "Λάθος! ";
+    private static final String WRONG = "Λάθος! ";
+    private static final String CORRECT = "Σωστά ";
 
     private String rightResult = "";
-
-    //δασδασδασδασ
 
 
     private Timestamp startTime;
