@@ -380,18 +380,18 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             TotalRounds=3;
             displayGameAdv(randomPickedLis);
         }
-       /* else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
+        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
         {
             TotalRounds = 4;
 
             if (currentRound<=1){
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                displayGameEz(randlist);
+                displayGameEz(randomPickedLis);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                displayGameMedium(randlist);
+                displayGameMedium(randomPickedLis);
             }
         }
         else
@@ -400,19 +400,19 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             if (currentRound<1)
             {
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                displayGameEz(randlist);
+                displayGameEz(randomPickedLis);
             }
             else if (currentRound>=1 && currentRound<=2)
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                displayGameMedium(randlist);
+                displayGameMedium(randomPickedLis);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
-                displayGameAdv(randlist);
+                displayGameAdv(randomPickedLis);
             }
-        }*/
+        }
         currentRound++;
 
         textRounds.setText(currentRound+"/"+TotalRounds);
