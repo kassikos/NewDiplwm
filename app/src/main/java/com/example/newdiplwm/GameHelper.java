@@ -13,17 +13,15 @@ import java.io.IOException;
 
 public class GameHelper {
 
-    private static final String  rockDesc = "the screen displays 2 images (rock, paper, scissor) and the user has to pick " +
-            "the appropriate image. It depends on Lose or Win Mode";
+    private static final String  rockDesc = "Εμφανίζονται δύο επιλογές στο χρήστη (Πέτρα, Ψαλίδι, Χαρτί) και ο χρήστης πρέπει να επιλέξει ποία πλευρά νικάει ή χάνει, ανάλογα με την ερώτηση.";
+
     //private static final byte[] logoImageRock = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/stone.png");
 
-    private static final String  numericDesc = "the screen displays 2 images (rock, paper, scissor) and the user has to pick " +
-            "the appropriate image. It depends on Lose or Win Mode";
+    private static final String  numericDesc = "Ο χρήστης πρέπει να επιλέξει για το αν η αριστερή πλευρά είναι μεγαλύτερη/μικρότερη/ίση από την δεξιά.";
 
+    private static final String  MemoryDesc = "Στην οθόνη εμφανίζεται ένα μοτίβο αριθμών, το οποίο μετά εξαφανίζεται και ο χρήστης καλείται να επιλέξει με τη σειρά τους αριθμούς που εμφανίστηκαν.";
 
-    private static final String  MemoryDesc = "ειμαστε για τον πουτσο και δεν ξερουμε να γραφουμε games";
-
-    private static final String  OsDesc = "γαμω τα παντα μας";
+    private static final String  OsDesc = "περιγραφή παιχνιδιού";
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
 
@@ -80,6 +78,7 @@ public class GameHelper {
                 new Game("MemoryMatrix","memory",MemoryDesc),
                 new Game("ObjectSelector","memory",OsDesc),
                 new Game("OrderGame","memory",OsDesc),
+                new Game("Suitcase","attention",OsDesc),
                 new Game("ShadowGame","memory",OsDesc),
 
         };
@@ -124,6 +123,5 @@ public class GameHelper {
 
     //gia na thn kaneis set se ena  image view prepei na einai bitmap
     //Bitmap bitmap = BitmapFactory.decodeByteArray(logoImage , 0, logoImage .length);
-
 
 }
