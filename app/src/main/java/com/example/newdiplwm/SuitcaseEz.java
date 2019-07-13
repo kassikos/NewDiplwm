@@ -111,10 +111,10 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     }
 
     public void assignAllButtons() {
-        mb1 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView1);
-        mb2 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView2);
-        mb3 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView3);
-        mb4 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView4);
+//        mb1 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView1);
+//        mb2 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView2);
+//        mb3 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView3);
+//        mb4 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView4);
 
         mb1.setOnClickListener(this);
         mb2.setOnClickListener(this);
@@ -148,8 +148,6 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         outState.putInt(FAILED,FailViewId);
         outState.putInt(SEQUENCECOUNTER,sequence_counter);
         outState.putLong(CLOCK,mTimeLeftInMillis);
-
-
 
     }
 

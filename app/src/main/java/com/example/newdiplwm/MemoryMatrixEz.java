@@ -389,7 +389,6 @@ public class MemoryMatrixEz extends Fragment implements View.OnClickListener {
     }
 
 
-
     public interface OnDataPass {
         public void onDataPass(int round,int hit,int miss,double speedinSeconds,boolean misspoints,int truecounter);
     }

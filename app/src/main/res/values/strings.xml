@@ -1,4 +1,13 @@
 <resources>
+
+    <!--Game Names -->
+
+    <string name="Rock">Πέτρα Ψαλίδι Χαρτί</string>
+
+
+
+
+
     <!--Register-->
     <string name="app_name">NewDiplwm</string>
     <string name="nickname">Όνομα Χρήστη</string>
