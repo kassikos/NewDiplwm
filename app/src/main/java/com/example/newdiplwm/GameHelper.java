@@ -81,6 +81,7 @@ public class GameHelper {
                 new Game("ObjectSelector","memory",OsDesc),
                 new Game("OrderGame","memory",OsDesc),
                 new Game("ShadowGame","memory",OsDesc),
+                new Game("PersonPickGame","memory",OsDesc),
 
         };
 
