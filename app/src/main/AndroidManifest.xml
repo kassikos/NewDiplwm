@@ -3,6 +3,7 @@
     package="com.example.newdiplwm">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShadowGame"></activity>
+        <activity android:name=".AudioPersonPick"></activity>
+        <activity android:name=".ShadowGame" />
         <activity android:name=".OrderGame" />
         <activity android:name=".ObjectSelector" />
         <activity android:name=".MemoryMatrix" />
@@ -35,8 +37,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
         <meta-data
             android:name="preloaded_fonts"
