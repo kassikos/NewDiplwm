@@ -116,10 +116,10 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 //        mb3 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView3);
 //        mb4 = (MaterialButton) view.findViewById(R.id.Suitcase_Ez_imageView4);
 
-        mb1.setOnClickListener(this);
-        mb2.setOnClickListener(this);
-        mb3.setOnClickListener(this);
-        mb4.setOnClickListener(this);
+//        mb1.setOnClickListener(this);
+//        mb2.setOnClickListener(this);
+//        mb3.setOnClickListener(this);
+//        mb4.setOnClickListener(this);
 
     }
 
