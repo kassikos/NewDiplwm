@@ -88,6 +88,8 @@ public class GameHelper {
                 new Game("OrderGame","memory",OgDesc),
                 new Game("Suitcase","attention",SuitcaseDesc),
                 new Game("ShadowGame","memory",ShadowDesc),
+                new Game("PersonPickGame","memory",OsDesc),
+
 
         };
 

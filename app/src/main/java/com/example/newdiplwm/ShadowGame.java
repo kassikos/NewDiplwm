@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -28,7 +27,6 @@ import com.google.android.material.button.MaterialButton;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +63,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String CLICK = "CLICK";
     private static final String PICKEDIMAGE= "PICKEDIMAGE";
     private static final String GAMEINIT= "GAMEINIT";
-    private static final String COUNTDOWN= "COUNTDOWN";
 
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull;
     private MaterialButton startButton;
@@ -135,7 +132,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             totalspeed = savedInstanceState.getDouble(TOTALSPEED);
             missPoints = savedInstanceState.getBoolean(MISSPOINTS);
 
-            Timer = (CountDownTimer) savedInstanceState.getSerializable(COUNTDOWN);
+            Timer =  userViewModel.getTimer();
             startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
             endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
             startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
@@ -163,7 +160,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 textRounds.setText(currentRound+ " / "+ TotalRounds);
                 if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
                 {
+
+                    Timer.cancel();
                     setTimer(mTimeLeftInMillis);
+                    //Timer.onTick(mTimeLeftInMillis);
                 }
 
                 for (int i=0;i<displayedimagesShadows.size();i++)
@@ -546,6 +546,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
 
         }.start();
+        userViewModel.saveTimer(Timer);
     }
 
     @Override
@@ -563,7 +564,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         outState.putSerializable(ENDTIME,endTime);
         outState.putSerializable(STARTSPEED,startspeed);
         outState.putSerializable(ENDSPEED,endspeed);
-        //outState.putSerializable(COUNTDOWN,Timer);
         outState.putLong(CLOCK,mTimeLeftInMillis);
         outState.putDouble(TOTALSPEED,totalspeed);
 
@@ -748,7 +748,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
     //TODO rotate
-    //TODO anomations
+
 
     private void setCleanTimer(){
         cleanTimer = new CountDownTimer(1500,1000) {
@@ -764,7 +764,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             }
         }.start();
     }
-
 
     public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
         public  Creator<SparseIntArrayParcelable> CREATOR = new Creator<SparseIntArrayParcelable>() {
