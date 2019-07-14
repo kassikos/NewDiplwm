@@ -3,6 +3,8 @@ package com.example.newdiplwm;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +31,48 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         if (currentGame.getName().equals("Rock"))
         {
             gameHolder.imageView.setImageResource(R.drawable.stone);
+            gameHolder.textView.setText(R.string.Rock);
 
         }
-        else if(currentGame.getName().equals("Calcution")){
-            gameHolder.imageView.setImageResource(R.drawable.numeric);}
+        else if(currentGame.getName().equals("Calcution"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.numeric);
+            gameHolder.textView.setText(R.string.Calcution);
+        }
+        else if (currentGame.getName().equals("MemoryMatrix"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.MemoryMatrix);
+        }
+        else if (currentGame.getName().equals("ObjectSelector"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.ObjectSelector);
+        }
+        else if (currentGame.getName().equals("OrderGame"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.OrderGame);
+        }
+        else if (currentGame.getName().equals("Suitcase"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.Suitcase);
+        }
+        else if (currentGame.getName().equals("ShadowGame"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.ShadowGame);
+        }
         else
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.DefaultName);
         }
 
-        gameHolder.textView.setText(currentGame.getName());
+
+
+
         gameHolder.textView1.setText(currentGame.getDescription());
         // Bitmap bmp = BitmapFactory.decodeByteArray(currentGame.getImage(), 0, currentGame.getImage().length);
 

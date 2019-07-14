@@ -181,6 +181,18 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                     startActivity(intent);
 
                 }
+                else if (game.getName().equals("Suitcase"))
+                {
+                    currentGameId = game.getId();
+                    Intent intent = new Intent(GameList.this,Suitcase.class);
+                    Bundle extras = new Bundle();
+                    extras.putInt(USER_ID,useridfromIntennt);
+                    extras.putInt(GAME_ID,currentGameId);
+                    extras.putString(DIFFICULTY,preferenceDifficulty);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+
+                }
                 else if (game.getName().equals("ShadowGame"))
                 {
                     currentGameId = game.getId();

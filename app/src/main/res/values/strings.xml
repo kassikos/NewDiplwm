@@ -1,4 +1,22 @@
 <resources>
+
+    <!--Game Names -->
+
+    <!--Current String gia default otan exoume kainourio game-->
+    <string name="DefaultName">Νέο Παιχνίδι</string>
+
+    <string name="Rock">Πέτρα Ψαλίδι Χαρτί</string>
+    <string name="Calcution">Παιχνίδι Αριθμών</string>
+    <string name="MemoryMatrix">Πίνακας Μνήμης</string>
+    <string name="ObjectSelector">Επιλογή Αντικειμένων</string>
+    <string name="OrderGame">Παιχνίδι Παραγγελιών</string>
+    <string name="Suitcase">Κλείσιμο Βαλίτσας</string>
+    <string name="ShadowGame">Παιχνίδι Σκιών</string>
+
+
+
+
+
     <!--Register-->
     <string name="app_name">NewDiplwm</string>
     <string name="nickname">Όνομα Χρήστη</string>
@@ -96,6 +114,9 @@
     <!--OG-->
     <string name="MissingObjects">Λείπουν Αντικείμενα</string>
     <string name="textQuestionOG">Ποια αντικείμενα ήταν στην αρχική παραγγελία;</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

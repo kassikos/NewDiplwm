@@ -1,6 +1,7 @@
 package com.example.newdiplwm;
 
 
+import android.content.res.Resources;
 import android.graphics.Color;
 
 import java.io.ByteArrayOutputStream;
@@ -13,17 +14,22 @@ import java.io.IOException;
 
 public class GameHelper {
 
-    private static final String  rockDesc = "the screen displays 2 images (rock, paper, scissor) and the user has to pick " +
-            "the appropriate image. It depends on Lose or Win Mode";
     //private static final byte[] logoImageRock = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/stone.png");
 
-    private static final String  numericDesc = "the screen displays 2 images (rock, paper, scissor) and the user has to pick " +
-            "the appropriate image. It depends on Lose or Win Mode";
+    private static final String  rockDesc = "Παίξε Πέτρα, Ψαλίδι, Χαρτί και επέλεξε σωστά ποίος κερδίζει ή χάνει!";
 
+    private static final String  numericDesc = "Σύγκρινε την αριστερή πλευρά με την δεξία!";
 
-    private static final String  MemoryDesc = "ειμαστε για τον πουτσο και δεν ξερουμε να γραφουμε games";
+    private static final String  MemoryDesc = "Θυμήσου σωστά το μοτίβο αριθμών!";
 
-    private static final String  OsDesc = "γαμω τα παντα μας";
+    private static final String  OsDesc = "Επέλεξε κάθε φορα καινούριο αντικείμενο!";
+
+    private static final String  OgDesc = "Θυμήσου τα αντικείμενα της παραγγελίας!";
+
+    private static final String  SuitcaseDesc = "Κλείσε τη βαλίτσα χωρίς να συγκρουστούν τα αντικέιμενα που είναι μέσα!";
+    
+    private static final String  ShadowDesc = "Βρες το σκιασμένο αντικείμενο!";
+
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
 
@@ -75,13 +81,15 @@ public class GameHelper {
 
     public static Game[] createInstances(){
         return new Game[]{
-                new Game("Rock","skill",rockDesc),
+                new Game("Rock","skill", rockDesc),
                 new Game("Calcution","skill",numericDesc),
                 new Game("MemoryMatrix","memory",MemoryDesc),
                 new Game("ObjectSelector","memory",OsDesc),
-                new Game("OrderGame","memory",OsDesc),
-                new Game("ShadowGame","memory",OsDesc),
+                new Game("OrderGame","memory",OgDesc),
+                new Game("Suitcase","attention",SuitcaseDesc),
+                new Game("ShadowGame","memory",ShadowDesc),
                 new Game("PersonPickGame","memory",OsDesc),
+
 
         };
 
@@ -125,6 +133,5 @@ public class GameHelper {
 
     //gia na thn kaneis set se ena  image view prepei na einai bitmap
     //Bitmap bitmap = BitmapFactory.decodeByteArray(logoImage , 0, logoImage .length);
-
 
 }
