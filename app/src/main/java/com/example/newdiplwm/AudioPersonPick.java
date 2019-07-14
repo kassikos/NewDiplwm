@@ -29,7 +29,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private TextView textRounds , textTimer;
 
     private SparseIntArray personSound = new SparseIntArray(15);
+    private SparseIntArray imageviewImage = new SparseIntArray(4);
     private ArrayList<Integer> imageviews = new ArrayList<Integer>();
+    private ArrayList<Integer> pickedImage = new ArrayList<Integer>();
     private int user_id, game_id, currentRound=0 , TotalRounds=0;
     private int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false;
@@ -149,8 +151,12 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
         ImageView iv = findViewById(imageviews.get(randompickedimgv));
         iv.setImageResource(personSound.keyAt(randpickImgSound));
-        imageviews.remove(randompickedimgv);
 
+        pickedImage.add(personSound.keyAt(randpickImgSound));
+
+        imageviewImage.put(imageviews.get(randompickedimgv),personSound.keyAt(randpickImgSound));
+
+        imageviews.remove(randompickedimgv);
         personSound.removeAt(randpickImgSound);
 
 
@@ -159,6 +165,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             ImageView ivv = findViewById(imgv);
             int i = rand.nextInt(personSound.size());
             ivv.setImageResource(personSound.keyAt(i));
+            imageviewImage.put(imgv,personSound.keyAt(i));
             personSound.removeAt(i);
         }
 

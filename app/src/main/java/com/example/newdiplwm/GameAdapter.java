@@ -64,6 +64,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
             gameHolder.textView.setText(R.string.ShadowGame);
         }
+        else if (currentGame.getName().equals("PersonPickGame"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.PersonPickGame);
+        }
         else
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
