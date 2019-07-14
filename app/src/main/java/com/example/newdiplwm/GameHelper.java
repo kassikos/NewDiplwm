@@ -30,7 +30,7 @@ public class GameHelper {
 
     private static final String  ShadowDesc = "Βρες το σκιασμένο αντικείμενο!";
 
-    private static final String  PersonPickGameDesc = "Επέλεξε τον σωστό συνδιασμό ρούχων από το ηχητικό μήνυμα";
+    private static final String  PersonPickGameDesc = "Επέλεξε τον σωστό συνδυασμό ρούχων από το ηχητικό μήνυμα!";
 
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
