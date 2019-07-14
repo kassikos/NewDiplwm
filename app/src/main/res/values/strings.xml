@@ -2,7 +2,16 @@
 
     <!--Game Names -->
 
+    <!--Current String gia default otan exoume kainourio game-->
+    <string name="DefaultName">Νέο Παιχνίδι</string>
+
     <string name="Rock">Πέτρα Ψαλίδι Χαρτί</string>
+    <string name="Calcution">Παιχνίδι Αριθμών</string>
+    <string name="MemoryMatrix">Πίνακας Μνήμης</string>
+    <string name="ObjectSelector">Επιλογή Αντικειμένων</string>
+    <string name="OrderGame">Παιχνίδι Παραγγελιών</string>
+    <string name="Suitcase">Κλείσιμο Βαλίτσας</string>
+    <string name="ShadowGame">Παιχνίδι Σκιών</string>
 
 
 

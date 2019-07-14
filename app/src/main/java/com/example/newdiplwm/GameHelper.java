@@ -1,6 +1,7 @@
 package com.example.newdiplwm;
 
 
+import android.content.res.Resources;
 import android.graphics.Color;
 
 import java.io.ByteArrayOutputStream;
@@ -13,15 +14,22 @@ import java.io.IOException;
 
 public class GameHelper {
 
-    private static final String  rockDesc = "Εμφανίζονται δύο επιλογές στο χρήστη (Πέτρα, Ψαλίδι, Χαρτί) και ο χρήστης πρέπει να επιλέξει ποία πλευρά νικάει ή χάνει, ανάλογα με την ερώτηση.";
-
     //private static final byte[] logoImageRock = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/stone.png");
 
-    private static final String  numericDesc = "Ο χρήστης πρέπει να επιλέξει για το αν η αριστερή πλευρά είναι μεγαλύτερη/μικρότερη/ίση από την δεξιά.";
+    private static final String  rockDesc = "Παίξε Πέτρα, Ψαλίδι, Χαρτί και επέλεξε σωστά ποίος κερδίζει ή χάνει!";
 
-    private static final String  MemoryDesc = "Στην οθόνη εμφανίζεται ένα μοτίβο αριθμών, το οποίο μετά εξαφανίζεται και ο χρήστης καλείται να επιλέξει με τη σειρά τους αριθμούς που εμφανίστηκαν.";
+    private static final String  numericDesc = "Σύγκρινε την αριστερή πλευρά με την δεξία!";
 
-    private static final String  OsDesc = "περιγραφή παιχνιδιού";
+    private static final String  MemoryDesc = "Θυμήσου σωστά το μοτίβο αριθμών!";
+
+    private static final String  OsDesc = "Επέλεξε κάθε φορα καινούριο αντικείμενο!";
+
+    private static final String  OgDesc = "Θυμήσου τα αντικείμενα της παραγγελίας!";
+
+    private static final String  SuitcaseDesc = "Κλείσε τη βαλίτσα χωρίς να συγκρουστούν τα αντικέιμενα που είναι μέσα!";
+    
+    private static final String  ShadowDesc = "Βρες το σκιασμένο αντικείμενο!";
+
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
 
@@ -73,13 +81,13 @@ public class GameHelper {
 
     public static Game[] createInstances(){
         return new Game[]{
-                new Game("Rock","skill",rockDesc),
+                new Game("Rock","skill", rockDesc),
                 new Game("Calcution","skill",numericDesc),
                 new Game("MemoryMatrix","memory",MemoryDesc),
                 new Game("ObjectSelector","memory",OsDesc),
-                new Game("OrderGame","memory",OsDesc),
-                new Game("Suitcase","attention",OsDesc),
-                new Game("ShadowGame","memory",OsDesc),
+                new Game("OrderGame","memory",OgDesc),
+                new Game("Suitcase","attention",SuitcaseDesc),
+                new Game("ShadowGame","memory",ShadowDesc),
 
         };
 

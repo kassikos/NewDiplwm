@@ -34,12 +34,43 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             gameHolder.textView.setText(R.string.Rock);
 
         }
-        else if(currentGame.getName().equals("Calcution")){
-            gameHolder.imageView.setImageResource(R.drawable.numeric);}
+        else if(currentGame.getName().equals("Calcution"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.numeric);
+            gameHolder.textView.setText(R.string.Calcution);
+        }
+        else if (currentGame.getName().equals("MemoryMatrix"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.MemoryMatrix);
+        }
+        else if (currentGame.getName().equals("ObjectSelector"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.ObjectSelector);
+        }
+        else if (currentGame.getName().equals("OrderGame"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.OrderGame);
+        }
+        else if (currentGame.getName().equals("Suitcase"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.Suitcase);
+        }
+        else if (currentGame.getName().equals("ShadowGame"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.ShadowGame);
+        }
         else
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.DefaultName);
         }
+
+
 
 
         gameHolder.textView1.setText(currentGame.getDescription());
