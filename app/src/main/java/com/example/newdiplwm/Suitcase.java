@@ -204,7 +204,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 // replace the FrameLayout with new Fragment
-        fragmentTransaction.replace(R.id.Suitcase_FrameLayout, fragment);
+        fragmentTransaction.replace(R.id.Suitcase_FragmentLayout, fragment);
         fragmentTransaction.commit(); // save the changes
     }
 
