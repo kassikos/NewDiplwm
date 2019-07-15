@@ -47,7 +47,7 @@
 
             <ImageView
                 android:id="@+id/Suitcase_Base_imageView2"
-                android:src="@drawable/thing_1"
+                android:src="@drawable/suitcase_accesscard"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
