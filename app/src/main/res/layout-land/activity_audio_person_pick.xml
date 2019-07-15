@@ -118,10 +118,6 @@
 
     </LinearLayout>
 
-
-
-
-
     <ImageView
         android:id="@+id/imageViewPlayAudio"
         android:layout_width="wrap_content"
