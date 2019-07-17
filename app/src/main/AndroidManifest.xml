@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Suitcase"></activity>
-        <activity android:name=".AudioPersonPick"></activity>
+        <activity android:name=".SoundWord"></activity>
+        <activity android:name=".Suitcase" />
+        <activity android:name=".AudioPersonPick" />
         <activity android:name=".ShadowGame" />
         <activity android:name=".OrderGame" />
         <activity android:name=".ObjectSelector" />

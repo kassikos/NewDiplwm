@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Vibrator;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,7 +32,7 @@ import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class AudioPersonPick extends AppCompatActivity implements View.OnClickListener{
+public class AudioPersonPick extends AppCompatActivity implements View.OnClickListener {
 
     private static final String USER_ID = "USER_ID";
     private static final String GAME_ID = "GAME_ID";
@@ -66,9 +66,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private static final String ALLIMAGES = "ALLIMAGES";
     private static final String ALLIMAGESFOUR = "ALLIMAGESFOUR";
 
-    private ImageView imgv1 , imgv2 ,imgv3 ,imgv4 , playAudio;
+    private ImageView imgv1, imgv2, imgv3, imgv4, playAudio;
     private MaterialButton startButton;
-    private TextView textRounds , textTimer ,  animPointsText;
+    private TextView textRounds, textTimer, animPointsText;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -82,23 +82,23 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private ArrayList<Integer> allimages = new ArrayList<Integer>(10);
     private ArrayList<Integer> allimagesfour = new ArrayList<Integer>(10);
 
-    private HashMap<String,Integer> pointsHashMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
 
-    private int user_id, game_id, currentRound=0 , TotalRounds=0;
-    private int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
+    private int user_id, game_id, currentRound = 0, TotalRounds = 0;
+    private int hit = 0, miss = 0, totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false;
-    private String menuDifficulty,currentDifficulty="";
+    private String menuDifficulty, currentDifficulty = "";
 
 
-    private int click= 0 , audioposition=0 , pickedSound = 0 , limit=0 ,limitReplay=0;
-    boolean gameInit = false ,soundPlayed =false;
+    private int click = 0, audioposition = 0, pickedSound = 0, limit = 0, limitReplay = 0;
+    boolean gameInit = false, soundPlayed = false;
 
     private Timestamp startTime;
     private Timestamp endTime;
     private Timestamp startspeed;
     private Timestamp endspeed;
     private double totalspeed = 0;
-    static  MediaPlayer mediaPlayer =  new MediaPlayer();
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,11 +107,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        asignAllButtons();
 
-        if (savedInstanceState != null)
-        {
 
+        if (savedInstanceState != null) {
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
             soundPlayed = savedInstanceState.getBoolean(SOUNDPLAYED);
             user_id = savedInstanceState.getInt(USER_ID);
@@ -123,9 +121,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
             menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
             TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
-            click =savedInstanceState.getInt(CLICK);
-            hit =savedInstanceState.getInt(HIT);
-            miss =savedInstanceState.getInt(MISS);
+            click = savedInstanceState.getInt(CLICK);
+            hit = savedInstanceState.getInt(HIT);
+            miss = savedInstanceState.getInt(MISS);
             totalPoints = savedInstanceState.getInt(TOTALPOINTS);
             trueCounter = savedInstanceState.getInt(TRUECOUNTER);
             audioposition = savedInstanceState.getInt(AUDIOPOS);
@@ -143,56 +141,69 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             personSound = (SparseIntArray) savedInstanceState.getParcelable(MATCH);
             imageviewImage = (SparseIntArray) savedInstanceState.getParcelable(IMAGEVIEWIMAGE);
             personSoundfourColors = (SparseIntArray) savedInstanceState.getParcelable(PERSONSOUNDFOURCOLOURS);
+            asignAllButtons();
             startButton.setVisibility(View.INVISIBLE);
 
-            if (gameInit)
-            {
-                unclickable();
-                playAudio.setVisibility(View.VISIBLE);
-                for (int i=0;i<imageviewImage.size();i++)
+            if (gameInit) {
+                if (limit == 0)
                 {
-                    ImageView iv  = findViewById(imageviewImage.keyAt(i));
+                    playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
+                    playAudio.setVisibility(View.VISIBLE);
+                    unclickable();
+                }
+                for (int i = 0; i < imageviewImage.size(); i++) {
+                    ImageView iv = findViewById(imageviewImage.keyAt(i));
                     iv.setImageResource(imageviewImage.valueAt(i));
                 }
-
-                textRounds.setText(currentRound+ " / "+ TotalRounds);
-                if (soundPlayed)
-                {
+                textRounds.setText(currentRound + " / " + TotalRounds);
+                if (soundPlayed) {
                     playAudio.setVisibility(View.INVISIBLE);
-                    playAudio.setClickable(false);
-//                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                        public void onPrepared(MediaPlayer mp) {
-//                            mediaPlayer = mp;
-                            mediaPlayer = MediaPlayer.create(AudioPersonPick.this,pickedSound);
-                            mediaPlayer.seekTo(audioposition);
-                            mediaPlayer.start();
 
-//                        }
-//                    });
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer.create(AudioPersonPick.this, pickedSound);
+                        mediaPlayer.seekTo(audioposition);
+                        mediaPlayer.start();
+                        unclickable();
 
-                  //  mediaPlayer.prepareAsync();
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                soundPlayed = false;
+                                playAudio.setImageResource(R.drawable.replay_black_48dp);
+                                playAudio.setVisibility(View.VISIBLE);
+                                clickable();
 
+                                if (limit == 1) {
+                                    startspeed = new Timestamp(System.currentTimeMillis());
+                                }
+
+                                if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+                                    playAudio.setImageResource(R.drawable.limit_black_48dp);
+                                    playAudio.setClickable(false);
+
+                                }
+                                mediaPlayer.release();
+                                mediaPlayer = null;
+                            }
+                        });
+                    }
                 }
+            } else {
 
-            }
-            else {
-
-                if (currentRound == 0)
-                {
+                if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
 
-                }
-                else
-                {
+                } else {
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
-                    textRounds.setText(currentRound+ " / "+ TotalRounds);
+                    textRounds.setText(currentRound + " / " + TotalRounds);
                 }
             }
 
-        }
-        else{
+        } else {
 
+
+            asignAllButtons();
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             user_id = extras.getInt(USER_ID);
@@ -202,6 +213,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             matchFourColours();
         }
 
+
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
@@ -210,7 +222,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 gameInit = true;
-
+                unclickable();
                 fillListImageview();
                 createRound();
             }
@@ -221,144 +233,117 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
+
+        if (mediaPlayer != null){
+            audioposition = mediaPlayer.getCurrentPosition();
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mediaPlayer.isPlaying())
-        {
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-
-                    playAudio.setVisibility(View.VISIBLE);
-                    clickable();
-
-                    playAudio.setImageResource(R.drawable.replay_black_48dp);
-                    if (limit == 1)
-                    {
-                        startspeed = new Timestamp(System.currentTimeMillis());
-                    }
-                    if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue))) )
-                    {
-                        playAudio.setImageResource(R.drawable.limit_black_48dp);
-                        playAudio.setClickable(false);
-
-                    }
-                }
-            });
-        }
 
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 limit++;
                 soundPlayed = true;
-                playAudio.setClickable(false);
                 playAudio.setVisibility(View.INVISIBLE);
-                unclickable();
-                mediaPlayer = MediaPlayer.create(AudioPersonPick.this,  pickedSound);
-                mediaPlayer.start();
+                if (mediaPlayer == null) {
+                    mediaPlayer = MediaPlayer.create(AudioPersonPick.this, pickedSound);
+                    mediaPlayer.start();
+                    unclickable();
 
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        playAudio.setClickable(true);
-                        playAudio.setVisibility(View.VISIBLE);
-                        clickable();
-                        playAudio.setImageResource(R.drawable.replay_black_48dp);
-                        if (limit == 1)
-                        {
-                            startspeed = new Timestamp(System.currentTimeMillis());
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            soundPlayed = false;
+                            vibe.vibrate(1000);
+                            playAudio.setVisibility(View.VISIBLE);
+                            playAudio.setImageResource(R.drawable.replay_black_48dp);
+                            clickable();
+                            if (limit == 1) {
+                                startspeed = new Timestamp(System.currentTimeMillis());
+                            }
+
+                            if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+                                playAudio.setImageResource(R.drawable.limit_black_48dp);
+                                playAudio.setClickable(false);
+
+                            }
+                            mediaPlayer.release();
+                            mediaPlayer = null;
                         }
-
-                        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue))) )
-                        {
-                            playAudio.setImageResource(R.drawable.limit_black_48dp);
-                            playAudio.setClickable(false);
-
-                        }
-                    }
-                });
+                    });
+                }
 
             }
 
         });
+        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+
+            playAudio.setClickable(false);
+
+        }
 
     }
 
-    private void createRound(){
+    private void createRound() {
         startButton.setVisibility(View.INVISIBLE);
         playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
-
-        unclickable();
-
-        if (currentRound == 0)
-        {
+        playAudio.setVisibility(View.VISIBLE);
+        if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
         }
 
-        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))){
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameEz();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameMedium();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue))) {
             currentDifficulty = menuDifficulty;
-            TotalRounds=3;
+            TotalRounds = 3;
             displayGameAdv();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue))) {
             TotalRounds = 4;
 
-            if (currentRound<=1){
+            if (currentRound <= 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMedium();
             }
-        }
-        else
-        {
-            TotalRounds =5;
-            if (currentRound<1)
-            {
+        } else {
+            TotalRounds = 5;
+            if (currentRound < 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else if (currentRound>=1 && currentRound<=2)
-            {
+            } else if (currentRound >= 1 && currentRound <= 2) {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMedium();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
                 displayGameAdv();
             }
         }
         currentRound++;
 
-        textRounds.setText(currentRound+"/"+TotalRounds);
+        textRounds.setText(currentRound + "/" + TotalRounds);
 
     }
-    private void displayGameEz(){
+
+    private void displayGameEz() {
         loadImages();
-        Random rand  = new Random();
+        Random rand = new Random();
 
         final int randpickImgSound = rand.nextInt(personSound.size());
         int randompickedimgv = rand.nextInt(imageviews.size());
@@ -368,44 +353,39 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
         pickedImage.add(personSound.valueAt(randpickImgSound));
 
-        for (int i:pickedImage)
-        {
+        for (int i : pickedImage) {
             ListIterator itr = allimages.listIterator();
-            while (itr.hasNext())
-            {
+            while (itr.hasNext()) {
                 int temp = (int) itr.next();
-                if (temp == i)
-                {
+                if (temp == i) {
                     itr.remove();
                     break;
                 }
             }
         }
 
-        imageviewImage.put(imageviews.get(randompickedimgv),personSound.valueAt(randpickImgSound));
+        imageviewImage.put(imageviews.get(randompickedimgv), personSound.valueAt(randpickImgSound));
         pickedSound = personSound.keyAt(randpickImgSound);
 
         imageviews.remove(randompickedimgv);
 
-        for (int imgv : imageviews)
-        {
+        for (int imgv : imageviews) {
             ImageView ivv = findViewById(imgv);
 
             int i = rand.nextInt(allimages.size());
 
             ivv.setImageResource(allimages.get(i));
-            imageviewImage.put(imgv,allimages.get(i));
+            imageviewImage.put(imgv, allimages.get(i));
             allimages.remove(i);
         }
 
-        playAudio.setVisibility(View.VISIBLE);
     }
 
-    private void displayGameMedium(){
+    private void displayGameMedium() {
         loadImagesfour();
         limitReplay = 3;
 
-        Random rand  = new Random();
+        Random rand = new Random();
 
         final int randpickImgSound = rand.nextInt(personSoundfourColors.size());
         int randompickedimgv = rand.nextInt(imageviews.size());
@@ -415,47 +395,40 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
         pickedImage.add(personSoundfourColors.valueAt(randpickImgSound));
 
-        for (int i:pickedImage)
-        {
+        for (int i : pickedImage) {
             ListIterator itr = allimagesfour.listIterator();
-            while (itr.hasNext())
-            {
+            while (itr.hasNext()) {
                 int temp = (int) itr.next();
-                if (temp == i)
-                {
+                if (temp == i) {
                     itr.remove();
                     break;
                 }
             }
         }
 
-        imageviewImage.put(imageviews.get(randompickedimgv),personSoundfourColors.valueAt(randpickImgSound));
+        imageviewImage.put(imageviews.get(randompickedimgv), personSoundfourColors.valueAt(randpickImgSound));
         pickedSound = personSoundfourColors.keyAt(randpickImgSound);
 
         imageviews.remove(randompickedimgv);
 
 
-
-        for (int imgv : imageviews)
-        {
+        for (int imgv : imageviews) {
             ImageView ivv = findViewById(imgv);
 
             int i = rand.nextInt(allimagesfour.size());
 
             ivv.setImageResource(allimagesfour.get(i));
-            imageviewImage.put(imgv,allimagesfour.get(i));
+            imageviewImage.put(imgv, allimagesfour.get(i));
             allimagesfour.remove(i);
         }
 
-        playAudio.setVisibility(View.VISIBLE);
-        playAudio.setClickable(true);
 
     }
 
-    private void displayGameAdv(){
+    private void displayGameAdv() {
         loadImagesfour();
         limitReplay = 1;
-        Random rand  = new Random();
+        Random rand = new Random();
 
         final int randpickImgSound = rand.nextInt(personSoundfourColors.size());
         int randompickedimgv = rand.nextInt(imageviews.size());
@@ -465,38 +438,32 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
         pickedImage.add(personSoundfourColors.valueAt(randpickImgSound));
 
-        for (int i:pickedImage)
-        {
+        for (int i : pickedImage) {
             ListIterator itr = allimagesfour.listIterator();
-            while (itr.hasNext())
-            {
+            while (itr.hasNext()) {
                 int temp = (int) itr.next();
-                if (temp == i)
-                {
+                if (temp == i) {
                     itr.remove();
                     break;
                 }
             }
         }
 
-        imageviewImage.put(imageviews.get(randompickedimgv),personSoundfourColors.valueAt(randpickImgSound));
+        imageviewImage.put(imageviews.get(randompickedimgv), personSoundfourColors.valueAt(randpickImgSound));
         pickedSound = personSoundfourColors.keyAt(randpickImgSound);
 
         imageviews.remove(randompickedimgv);
 
-        for (int imgv : imageviews)
-        {
+        for (int imgv : imageviews) {
             ImageView ivv = findViewById(imgv);
 
             int i = rand.nextInt(allimagesfour.size());
 
             ivv.setImageResource(allimagesfour.get(i));
-            imageviewImage.put(imgv,allimagesfour.get(i));
+            imageviewImage.put(imgv, allimagesfour.get(i));
             allimagesfour.remove(i);
         }
 
-        playAudio.setVisibility(View.VISIBLE);
-        playAudio.setClickable(true);
 
     }
 
@@ -504,11 +471,12 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         Timer = new CountDownTimer(1500, 1000) {
             @Override
-            public void onTick(long l) { }
+            public void onTick(long l) {
+            }
 
             @Override
             public void onFinish() {
-                for (int imageviewId=0; imageviewId<imageviewImage.size();imageviewId++) {
+                for (int imageviewId = 0; imageviewId < imageviewImage.size(); imageviewId++) {
                     ImageView v = findViewById(imageviewImage.keyAt(imageviewId));
                     v.setImageResource(0);
                 }
@@ -525,24 +493,20 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         allimagesfour.clear();
         imageviews.clear();
         gameInit = false;
-        soundPlayed = false;
         click++;
         endspeed = new Timestamp(System.currentTimeMillis());
         long diffspeed = endspeed.getTime() - startspeed.getTime();
         double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
         totalspeed += speedseconds;
 
-        if (!(imageviewImage.indexOfKey(view.getId())<0))
-        {
+        if (!(imageviewImage.indexOfKey(view.getId()) < 0)) {
 
             startAnimation();
-            if (pickedImage.contains(imageviewImage.get(view.getId())))
-            {
+            if (pickedImage.contains(imageviewImage.get(view.getId()))) {
                 hit++;
                 trueCounter++;
 
-            }
-            else{
+            } else {
 
                 Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 view.startAnimation(animShake);
@@ -554,14 +518,13 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             countPoints();
         }
 
-        if (currentRound == TotalRounds)
-        {
+        if (currentRound == TotalRounds) {
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, -1, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
-            userViewModel.updatestatsTest(user_id,game_id);
+            userViewModel.updatestatsTest(user_id, game_id);
             shopPopUp();
         }
         Timer.start();
@@ -570,61 +533,51 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
     private void shopPopUp() {
-        DialogFragment newFragment = new DialogMsg(user_id,AudioPersonPick.this,hit,totalPoints);
+        DialogFragment newFragment = new DialogMsg(user_id, AudioPersonPick.this, hit, totalPoints);
         newFragment.show(getSupportFragmentManager(), "AudioPersonPick");
     }
 
-    private void countPoints()
-    {
+    private void countPoints() {
 
-        int currentPoints=0;
+        int currentPoints = 0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
         }
         totalPoints += currentPoints;
-        animPointsText.setText("+ " +currentPoints);
-        if (currentPoints == 0)
-        {
+        animPointsText.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
             animPointsText.setTextColor(Color.RED);
-        }
-        else
+        } else
             animPointsText.setTextColor(Color.GREEN);
     }
 
 
-    private void startAnimation(){
+    private void startAnimation() {
         long duration = 2000;
-        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText,"y",500f,-500f);
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText, "y", 500f, -500f);
         objectAnimatorY.setDuration(duration);
 
-        ObjectAnimator alpha =  ObjectAnimator.ofFloat(animPointsText,View.ALPHA,1.0f,0.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(animPointsText, View.ALPHA, 1.0f, 0.0f);
         alpha.setDuration(duration);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.playTogether(objectAnimatorY, alpha);
         animatorSet.start();
     }
 
-    private void loadImages(){
+    private void loadImages() {
         allimages.add(R.drawable.person1);
         allimages.add(R.drawable.person2);
         allimages.add(R.drawable.person3);
@@ -637,7 +590,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         allimages.add(R.drawable.person10);
     }
 
-    private void loadImagesfour(){
+    private void loadImagesfour() {
         allimagesfour.add(R.drawable.person1four);
         allimagesfour.add(R.drawable.person2four);
         allimagesfour.add(R.drawable.person3four);
@@ -655,36 +608,37 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         allimagesfour.add(R.drawable.person15four);
     }
 
-    private void matching(){
+    private void matching() {
 
 
-        personSound.put(R.raw.d5ez,R.drawable.person5);
-        personSound.put(R.raw.d4ez,R.drawable.person4);
-        personSound.put(R.raw.d3ez,R.drawable.person3);
-        personSound.put(R.raw.d2ez,R.drawable.person2);
-        personSound.put(R.raw.d1ez,R.drawable.person1);
+        personSound.put(R.raw.d5ez, R.drawable.person5);
+        personSound.put(R.raw.d4ez, R.drawable.person4);
+        personSound.put(R.raw.d3ez, R.drawable.person3);
+        personSound.put(R.raw.d2ez, R.drawable.person2);
+        personSound.put(R.raw.d1ez, R.drawable.person1);
 
     }
 
-    private void matchFourColours(){
-        personSoundfourColors.put(R.raw.person1four,R.drawable.person1four);
-        personSoundfourColors.put(R.raw.person2four,R.drawable.person2four);
-        personSoundfourColors.put(R.raw.person3four,R.drawable.person3four);
-        personSoundfourColors.put(R.raw.person4four,R.drawable.person4four);
-        personSoundfourColors.put(R.raw.person5four,R.drawable.person5four);
-        personSoundfourColors.put(R.raw.person6four,R.drawable.person6four);
-        personSoundfourColors.put(R.raw.person7four,R.drawable.person7four);
-        personSoundfourColors.put(R.raw.person8four,R.drawable.person8four);
-        personSoundfourColors.put(R.raw.person9four,R.drawable.person9four);
-        personSoundfourColors.put(R.raw.person10four,R.drawable.person10four);
+    private void matchFourColours() {
+        personSoundfourColors.put(R.raw.person1four, R.drawable.person1four);
+        personSoundfourColors.put(R.raw.person2four, R.drawable.person2four);
+        personSoundfourColors.put(R.raw.person3four, R.drawable.person3four);
+        personSoundfourColors.put(R.raw.person4four, R.drawable.person4four);
+        personSoundfourColors.put(R.raw.person5four, R.drawable.person5four);
+        personSoundfourColors.put(R.raw.person6four, R.drawable.person6four);
+        personSoundfourColors.put(R.raw.person7four, R.drawable.person7four);
+        personSoundfourColors.put(R.raw.person8four, R.drawable.person8four);
+        personSoundfourColors.put(R.raw.person9four, R.drawable.person9four);
+        personSoundfourColors.put(R.raw.person10four, R.drawable.person10four);
     }
-    private void asignAllButtons(){
+
+    private void asignAllButtons() {
         startButton = findViewById(R.id.startButtonAPPG);
         imgv1 = findViewById(R.id.imageView1APPG);
         imgv2 = findViewById(R.id.imageView2APPG);
         imgv3 = findViewById(R.id.imageView3APPG);
         imgv4 = findViewById(R.id.imageView4APPG);
-
+        unclickable();
         playAudio = findViewById(R.id.imageViewPlayAudio);
         playAudio.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsAPPG);
@@ -696,10 +650,26 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         imgv3.setOnClickListener(this);
         imgv4.setOnClickListener(this);
 
+        if ((limitReplay>limit && gameInit) || (gameInit && limit >=1 && currentDifficulty.equals(getResources().getString(R.string.easyValue))))
+        {
+            playAudio.setVisibility(View.VISIBLE);
+            playAudio.setImageResource(R.drawable.replay_black_48dp);
+            clickable();
+
+        }
+
+        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && gameInit) || (gameInit && limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+            playAudio.setImageResource(R.drawable.limit_black_48dp);
+            playAudio.setVisibility(View.VISIBLE);
+            playAudio.setClickable(false);
+            clickable();
+
+        }
+
     }
 
 
-    private  void fillListImageview(){
+    private void fillListImageview() {
         imageviews.add(R.id.imageView1APPG);
         imageviews.add(R.id.imageView2APPG);
         imageviews.add(R.id.imageView3APPG);
@@ -707,16 +677,14 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
-
-    private void unclickable(){
+    private void unclickable() {
         imgv1.setClickable(false);
         imgv2.setClickable(false);
         imgv3.setClickable(false);
         imgv4.setClickable(false);
     }
 
-    private void clickable(){
+    private void clickable() {
         imgv1.setClickable(true);
         imgv2.setClickable(true);
         imgv3.setClickable(true);
@@ -728,45 +696,41 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString(MENUDIFFICULTY,menuDifficulty);
-        outState.putString(CURRENTDIFFICULTY,currentDifficulty);
-        outState.putInt(GAME_ID,game_id);
-        outState.putInt(USER_ID,user_id);
-        outState.putInt(TOTALROUNDS,TotalRounds);
-        outState.putInt(CURRENTROUND,currentRound);
-        outState.putInt(HIT,hit);
-        outState.putInt(MISS,miss);
-        outState.putInt(TOTALPOINTS,totalPoints);
-        outState.putInt(TRUECOUNTER,trueCounter);
-        outState.putInt(CLICK,click);
-        outState.putInt(PICKEDSOUND,pickedSound);
-        outState.putInt(LIMIT,limit);
-        outState.putInt(LIMITREPLAY,limitReplay);
-        outState.putDouble(TOTALSPEED,totalspeed);
-        outState.putSerializable(STARTTIME,startTime);
-        outState.putSerializable(ENDTIME,endTime);
-        outState.putSerializable(STARTSPEED,startspeed);
-        outState.putSerializable(ENDSPEED,endspeed);
-        outState.putBoolean(MISSPOINTS,missPoints);
-        outState.putBoolean(GAMEINIT,gameInit);
-        outState.putBoolean(SOUNDPLAYED,soundPlayed);
-
-        audioposition = mediaPlayer.getCurrentPosition();
-        mediaPlayer.pause();
+        outState.putString(MENUDIFFICULTY, menuDifficulty);
+        outState.putString(CURRENTDIFFICULTY, currentDifficulty);
+        outState.putInt(GAME_ID, game_id);
+        outState.putInt(USER_ID, user_id);
+        outState.putInt(TOTALROUNDS, TotalRounds);
+        outState.putInt(CURRENTROUND, currentRound);
+        outState.putInt(HIT, hit);
+        outState.putInt(MISS, miss);
+        outState.putInt(TOTALPOINTS, totalPoints);
+        outState.putInt(TRUECOUNTER, trueCounter);
+        outState.putInt(CLICK, click);
+        outState.putInt(PICKEDSOUND, pickedSound);
+        outState.putInt(LIMIT, limit);
+        outState.putInt(LIMITREPLAY, limitReplay);
+        outState.putDouble(TOTALSPEED, totalspeed);
+        outState.putSerializable(STARTTIME, startTime);
+        outState.putSerializable(ENDTIME, endTime);
+        outState.putSerializable(STARTSPEED, startspeed);
+        outState.putSerializable(ENDSPEED, endspeed);
+        outState.putBoolean(MISSPOINTS, missPoints);
+        outState.putBoolean(GAMEINIT, gameInit);
+        outState.putBoolean(SOUNDPLAYED, soundPlayed);
         outState.putInt(AUDIOPOS,audioposition);
-        outState.putParcelable(MATCH,new SparseIntArrayParcelable(personSound));
-        outState.putParcelable(PERSONSOUNDFOURCOLOURS,new SparseIntArrayParcelable(personSoundfourColors));
-        outState.putParcelable(IMAGEVIEWIMAGE,new SparseIntArrayParcelable(imageviewImage));
-        outState.putIntegerArrayList(IMAGEVIEWS,imageviews);
-        outState.putIntegerArrayList(PICKEDIMAGES,pickedImage);
-        outState.putIntegerArrayList(ALLIMAGES,allimages);
-        outState.putIntegerArrayList(ALLIMAGESFOUR,allimagesfour);
+        outState.putParcelable(MATCH, new SparseIntArrayParcelable(personSound));
+        outState.putParcelable(PERSONSOUNDFOURCOLOURS, new SparseIntArrayParcelable(personSoundfourColors));
+        outState.putParcelable(IMAGEVIEWIMAGE, new SparseIntArrayParcelable(imageviewImage));
+        outState.putIntegerArrayList(IMAGEVIEWS, imageviews);
+        outState.putIntegerArrayList(PICKEDIMAGES, pickedImage);
+        outState.putIntegerArrayList(ALLIMAGES, allimages);
+        outState.putIntegerArrayList(ALLIMAGESFOUR, allimagesfour);
     }
 
 
-
     public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
-        public  Creator<AudioPersonPick.SparseIntArrayParcelable> CREATOR = new Creator<AudioPersonPick.SparseIntArrayParcelable>() {
+        public Creator<AudioPersonPick.SparseIntArrayParcelable> CREATOR = new Creator<AudioPersonPick.SparseIntArrayParcelable>() {
             @Override
             public AudioPersonPick.SparseIntArrayParcelable createFromParcel(Parcel source) {
                 AudioPersonPick.SparseIntArrayParcelable read = new AudioPersonPick.SparseIntArrayParcelable();
@@ -821,6 +785,5 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             dest.writeIntArray(values);
         }
     }
-    //TODO kaliteri diaxeirisi toy MP
     //TODO liga perissotera res sto ez
 }
