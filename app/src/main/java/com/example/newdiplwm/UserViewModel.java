@@ -53,5 +53,4 @@ public class UserViewModel extends AndroidViewModel {
     {
         return timer;
     }
-
 }
