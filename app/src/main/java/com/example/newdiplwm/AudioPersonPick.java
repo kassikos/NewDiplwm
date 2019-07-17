@@ -15,16 +15,13 @@ import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Vibrator;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.material.button.MaterialButton;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
