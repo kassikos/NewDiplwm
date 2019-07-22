@@ -38,6 +38,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
     private LinearLayout Base,Lid;
 
+    private LinearLayout SideToOpen;
+
     private ArrayList<Integer> baggage = new ArrayList<Integer>();
     private ArrayList<Integer> items = new ArrayList<Integer>();
 
@@ -50,7 +52,12 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
     private HashMap<Integer, Integer> sideToCheck = new HashMap<Integer, Integer>();
 
+
     private HashMap<Integer, Integer> side = new HashMap<Integer, Integer>();
+
+    private CountDownTimer openBaseTimer;
+    private CountDownTimer openLidTimer;
+
 
     private View view;
 
@@ -64,6 +71,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     private double speedseconds;
     private Timestamp startspeed,endspeed;
     private SuitcaseEz.OnDataPass dataPasser;
+
 
 
     public SuitcaseEz() { }
@@ -84,6 +92,37 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         initializeLidIdsHashMap();
 
         initializeItemsList();
+
+
+        openBaseTimer = new CountDownTimer(4000, 1000) {
+
+
+            @Override
+            public void onTick(long l) { }
+
+            public void onFinish() {
+
+                openBase();
+
+            }
+
+        };
+
+        openLidTimer = new CountDownTimer(4000, 1000) {
+
+
+            @Override
+            public void onTick(long l) { }
+
+            public void onFinish() {
+
+                openLid();
+
+            }
+
+        };
+
+
 
 
         //edw na swzw ta dika mou
@@ -117,7 +156,6 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
     public void createRound() {
 
-
         clickAll();
 
         initializeTempItemList();
@@ -134,12 +172,16 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             side = baseIDS;
             unClickBase();
 
+            SideToOpen = Base;
+
             sideToCheck = lidIDS;
         }
         else
         {
             side = lidIDS;
             unClickLid();
+
+            SideToOpen = Lid;
 
             sideToCheck = baseIDS;
         }
@@ -296,10 +338,12 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         if (getResources().getResourceEntryName(view1.getId()).contains("Base"))
         {
             closeLid();
+            openLidTimer.start();
         }
         else
         {
             closeBase();
+            openBaseTimer.start();
         }
 
         if (baggage.contains(getSlotFromID(view1.getId())))
@@ -334,15 +378,50 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         close.start();
     }
 
+    public void openLid()
+    {
+        //Base.bringToFront();
+
+        ObjectAnimator flip = ObjectAnimator.ofFloat(Lid, "rotationY", 180, 360);
+        flip.setDuration(2000);
+        flip.start();
+
+        ObjectAnimator slide = ObjectAnimator.ofFloat(Lid, "x", 385f);
+        slide.setDuration(2000);
+        slide.start();
+
+        AnimatorSet close = new AnimatorSet();
+        close.playTogether(flip, slide);
+        close.start();
+    }
+
     private void closeBase() {
 
         Base.bringToFront();
 
-        ObjectAnimator flip = ObjectAnimator.ofFloat(Base, "rotationY", 0, 180f);
+        ObjectAnimator flip = ObjectAnimator.ofFloat(Base, "rotationY", 0, 180);
         flip.setDuration(2000);
         flip.start();
 
         ObjectAnimator slide = ObjectAnimator.ofFloat(Base, "x", 385f);
+        slide.setDuration(2000);
+        slide.start();
+
+        AnimatorSet close = new AnimatorSet();
+        close.playTogether(flip, slide);
+        close.start();
+    }
+
+
+    public void openBase()
+    {
+        //Base.bringToFront();
+
+        ObjectAnimator flip = ObjectAnimator.ofFloat(Base, "rotationY", -180, -360);
+        flip.setDuration(2000);
+        flip.start();
+
+        ObjectAnimator slide = ObjectAnimator.ofFloat(Base, "x", 25f);
         slide.setDuration(2000);
         slide.start();
 
