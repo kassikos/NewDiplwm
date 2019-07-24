@@ -22,6 +22,7 @@ public class DialogMsg extends DialogFragment {
     private int totalPoints;
 
     private TextView textView;
+    private TextView textViewPoints;
     private ImageView imageView;
 
 
@@ -57,6 +58,7 @@ public class DialogMsg extends DialogFragment {
         final View content = factory.inflate(R.layout.custom_popup, null);
         textView = (TextView) content.findViewById(R.id.textCustomPopUp);
         imageView = (ImageView) content.findViewById(R.id.imageViewCustomPopUp);
+        textViewPoints = (TextView) content.findViewById(R.id.pointsPopUp);
         fillViews();
         builder.setView(content)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -86,23 +88,24 @@ public class DialogMsg extends DialogFragment {
     }
 
     private void fillViews() {
-        if (hit == 1)
+        if (hit <=1)
         {
-            textView.setText(R.string.gimnasio);
+            textView.setText(R.string.bronze);
             imageView.setImageResource(R.drawable.calendar);
 
         }
         else if (hit == 2 )
         {
-            textView.setText(R.string.likio);
+            textView.setText(R.string.silver);
             imageView.setImageResource(R.drawable.arrowdown24);
         }
         else
         {
-            textView.setText(R.string.panep);
+            textView.setText(R.string.gold);
             imageView.setImageResource(R.drawable.baseline_settings_black_18dp);
 
         }
+        textViewPoints.setText("Συγκέντρωσες " +totalPoints+ " πόντους!" );
     }
 }
 

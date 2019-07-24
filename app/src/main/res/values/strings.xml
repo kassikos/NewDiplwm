@@ -104,7 +104,7 @@
     <string name="imageDesc">imageDesc</string>
 
 
-    <string name="ok">sinexise</string>
+    <string name="ok">Συνέχισε</string>
 
     <string name="nextRound">Επόμενος Γύρος</string>
     <string name="timeFinish">Τέλος Χρόνου</string>
@@ -113,8 +113,10 @@
     <string name="MissingObjects">Λείπουν Αντικείμενα</string>
     <string name="textQuestionOG">Ποια αντικείμενα ήταν στην αρχική παραγγελία;</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--congrats msg-->
+    <string name="bronze">Καλή προσπάθεια, μπορείς και καλύτερα! </string>
+    <string name="silver">Μπράβο!! Συνέχισε έτσι! </string>
+    <string name="gold">Συγχαρητήρια!!! Είσαι από τους καλύτερους! </string>
 
 
 </resources>

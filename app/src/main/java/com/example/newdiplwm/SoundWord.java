@@ -178,6 +178,13 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mediaPlayer != null)
+                {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+
                 if (currentRound == 0 || click ==0 )
                 {
                     startTime = new Timestamp(System.currentTimeMillis());
@@ -205,6 +212,17 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
                 }
             }
         });
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
 
     }
 
