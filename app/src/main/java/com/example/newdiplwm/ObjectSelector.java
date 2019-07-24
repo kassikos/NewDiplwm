@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ObjectSelector extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6;
+    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit;
     private MaterialButton startButton;
     private TextView rounds , animPointsText;
 
@@ -190,6 +190,72 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentRound == 0 || click ==0 )
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+                    if (startspeed == null || endspeed==null)
+                    {
+                        totalspeed +=0;
+                    }
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (currentRound == 0 || click ==0 )
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+            if (startspeed == null || endspeed==null)
+            {
+                totalspeed +=0;
+            }
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+
     }
 
 
@@ -448,7 +514,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
@@ -648,6 +714,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         startButton = findViewById(R.id.startButtonOS);
         rounds = findViewById(R.id.textRoundsOS);
         animPointsText = findViewById(R.id.AnimTextPoints);
+        exit = findViewById(R.id.ExitSG);
 
 
 

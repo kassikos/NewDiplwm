@@ -1,6 +1,7 @@
 package com.example.newdiplwm;
 
 import android.app.Application;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.util.SparseIntArray;
 
@@ -14,6 +15,7 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<User>> allusers;
     private CountDownTimer timer;
+    private MediaPlayer mediaPlayer;
 
     public UserViewModel(@NonNull Application application) {
         super(application);

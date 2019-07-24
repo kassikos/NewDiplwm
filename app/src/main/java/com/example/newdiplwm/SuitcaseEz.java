@@ -261,7 +261,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         items.add(R.drawable.suitcase_charger);
         items.add(R.drawable.suitcase_diabetes);
         items.add(R.drawable.suitcase_flashlight);
-        items.add(R.drawable.suitcase_mosquitospray);
+        items.add(R.drawable.suitcase_mosquito_spray);
         items.add(R.drawable.suitcase_notepad);
         items.add(R.drawable.suitcase_safekit);
         items.add(R.drawable.suitcase_shoes);
