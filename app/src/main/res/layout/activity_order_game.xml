@@ -18,6 +18,21 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@id/textTimerOG"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ExitOG"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/ExitOG"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:scaleType="fitEnd"
+        android:contentDescription="@string/imageDesc"
+        android:src="@drawable/exit_button"
+        app:layout_constraintBottom_toTopOf="@id/textTimerOG"
+        app:layout_constraintLeft_toRightOf="@+id/textRoundsOG"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

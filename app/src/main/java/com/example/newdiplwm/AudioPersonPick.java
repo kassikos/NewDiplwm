@@ -63,9 +63,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private static final String ALLIMAGES = "ALLIMAGES";
     private static final String ALLIMAGESFOUR = "ALLIMAGESFOUR";
 
-    private ImageView imgv1, imgv2, imgv3, imgv4, playAudio;
+    private ImageView imgv1, imgv2, imgv3, imgv4, playAudio ,exit;
     private MaterialButton startButton;
-    private TextView textRounds, textTimer, animPointsText;
+    private TextView textRounds, animPointsText;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -259,7 +259,6 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             soundPlayed = false;
-                            vibe.vibrate(1000);
                             playAudio.setVisibility(View.VISIBLE);
                             playAudio.setImageResource(R.drawable.replay_black_48dp);
                             clickable();
@@ -284,6 +283,68 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
 
             playAudio.setClickable(false);
+        }
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentRound == 0 || click ==0 )
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+                    if (startspeed == null || endspeed==null)
+                    {
+                        totalspeed +=0;
+                    }
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+            }
+        });
+
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        if (currentRound == 0 || click ==0 )
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+            if (startspeed == null || endspeed==null)
+            {
+                totalspeed +=0;
+            }
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
 
         }
 
@@ -293,6 +354,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         startButton.setVisibility(View.INVISIBLE);
         playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
         playAudio.setVisibility(View.VISIBLE);
+        playAudio.setClickable(true);
         if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
         }
@@ -477,7 +539,6 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                     ImageView v = findViewById(imageviewImage.keyAt(imageviewId));
                     v.setImageResource(0);
                 }
-                textTimer.setText("");
                 imageviewImage.clear();
                 pickedImage.clear();
                 startButton.setText(getResources().getString(R.string.nextRound));
@@ -519,7 +580,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, -1, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             shopPopUp();
@@ -630,6 +691,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     }
 
     private void asignAllButtons() {
+        exit = findViewById(R.id.ExitAPPG);
         startButton = findViewById(R.id.startButtonAPPG);
         imgv1 = findViewById(R.id.imageView1APPG);
         imgv2 = findViewById(R.id.imageView2APPG);
@@ -639,7 +701,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         playAudio = findViewById(R.id.imageViewPlayAudio);
         playAudio.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsAPPG);
-        textTimer = findViewById(R.id.textTimerAPPG);
+
         animPointsText = findViewById(R.id.AnimTextPointsAPPG);
 
         imgv1.setOnClickListener(this);

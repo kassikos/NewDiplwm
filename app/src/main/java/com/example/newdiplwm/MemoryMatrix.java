@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
@@ -24,6 +25,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     int RoundsCounter = 0;
     String menuDifficulty;
     String currentDifficulty;
+    ImageView exit;
 
     int totalhit = 0;
     int totalmiss = 0;
@@ -52,12 +54,14 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
+    private MemoryMatrixViewModel memoryMatrixViewModel;
 
     private Timestamp startTime;
     private Timestamp endTime;
 
     private TextView textView;
-//
+    private MemoryMatrixEz memoryMatrixEz;
+    private MemoryMatrixAdv memoryMatrixAdv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         pointsHashMap.put("ADVANCED",10);
         startbutton = findViewById(R.id.startButtonMatrix);
         textView = findViewById(R.id.textRoundsMatrix);
+        exit = findViewById(R.id.ExitMMG);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -99,6 +104,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         menuDifficulty = extras.getString(DIFFICULTY);
 
 
+        memoryMatrixViewModel = ViewModelProviders.of(this).get(MemoryMatrixViewModel.class);
 
 
 
@@ -113,6 +119,76 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (memoryMatrixViewModel.getTimer()!=null)
+                {
+                    memoryMatrixViewModel.getTimer().cancel();
+                }
+
+                if (RoundsCounter == 0)
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / RoundsCounter, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+
+        if (memoryMatrixViewModel.getTimer()!=null)
+        {
+            memoryMatrixViewModel.getTimer().cancel();
+        }
+        if (RoundsCounter == 0)
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / RoundsCounter, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+
+    }
+
     public void checkMode()
     {
         if (RoundsCounter == 0)
@@ -124,20 +200,22 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            MemoryMatrixEz a =new MemoryMatrixEz();
-            loadFragment(a);
+            memoryMatrixEz =new MemoryMatrixEz();
+            loadFragment(memoryMatrixEz);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            loadFragment(new MemoryMatrixAdv(currentDifficulty));
+            memoryMatrixAdv = new MemoryMatrixAdv(currentDifficulty);
+            loadFragment(memoryMatrixAdv);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            loadFragment(new MemoryMatrixAdv(currentDifficulty));
+            memoryMatrixAdv = new MemoryMatrixAdv(currentDifficulty);
+            loadFragment(memoryMatrixAdv);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
         {
@@ -145,13 +223,14 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             if (RoundsCounter <2 )
             {
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                MemoryMatrixEz a =new MemoryMatrixEz();
-                loadFragment(a);
+                memoryMatrixEz =new MemoryMatrixEz();
+                loadFragment(memoryMatrixEz);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                loadFragment(new MemoryMatrixAdv(currentDifficulty));
+                memoryMatrixAdv = new MemoryMatrixAdv(currentDifficulty);
+                loadFragment(memoryMatrixAdv);
             }
         }
         else
@@ -160,18 +239,20 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             if (RoundsCounter < 1)
             {
                 currentDifficulty = getResources().getString(R.string.easyValue);
-                MemoryMatrixEz a =new MemoryMatrixEz();
-                loadFragment(a);
+                memoryMatrixEz =new MemoryMatrixEz();
+                loadFragment(memoryMatrixEz);
             }
             else if (RoundsCounter >=1 && RoundsCounter <= 2 )
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                loadFragment(new MemoryMatrixAdv(currentDifficulty));
+                memoryMatrixAdv = new MemoryMatrixAdv(currentDifficulty);
+                loadFragment(memoryMatrixAdv);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
-                loadFragment(new MemoryMatrixAdv(currentDifficulty));
+                memoryMatrixAdv = new MemoryMatrixAdv(currentDifficulty);
+                loadFragment(memoryMatrixAdv);
             }
 
         }
@@ -243,7 +324,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,-1,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+            GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,0,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
             shopPopUp();
