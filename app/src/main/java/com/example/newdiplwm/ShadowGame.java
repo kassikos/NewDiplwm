@@ -64,7 +64,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String PICKEDIMAGE= "PICKEDIMAGE";
     private static final String GAMEINIT= "GAMEINIT";
 
-    private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull;
+    private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull ,exit;
     private MaterialButton startButton;
     private TextView textRounds,textTimer, animationTextPoints;
     private Vibrator vibe;
@@ -380,6 +380,82 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Timer != null)
+                {
+                    Timer.cancel();
+                }
+                if (currentRound == 0 || click ==0 )
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+                    if (startspeed == null || endspeed==null)
+                    {
+                        totalspeed +=0;
+                    }
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (Timer != null)
+        {
+            Timer.cancel();
+        }
+        if (currentRound == 0 || click ==0 )
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+            if (startspeed == null || endspeed==null)
+            {
+                totalspeed +=0;
+            }
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+
+    }
+
 
     private void createRound(){
         startButton.setVisibility(View.INVISIBLE);
@@ -532,7 +608,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
@@ -663,6 +739,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imagebutton4 = findViewById(R.id.imageView4SHG);
         imagebuttoncolorfull = findViewById(R.id.picked);
 
+        exit = findViewById(R.id.ExitSG);
         startButton = findViewById(R.id.startButtonSH);
         textRounds = findViewById(R.id.textRoundsSG);
         textTimer = findViewById(R.id.textTimerSG);
@@ -736,7 +813,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
             shopPopUp();

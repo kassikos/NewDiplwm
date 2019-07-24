@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class MemoryMatrixAdv extends Fragment implements View.OnClickListener {
     private MaterialButton mb1, mb2, mb3, mb4, mb5, mb6, mb7, mb8, mb9, mb10, mb11, mb12, mb13, mb14, mb15, mb16;
     private View view;
+    private MemoryMatrixViewModel memoryMatrixViewModel;
 
 
     private ArrayList<Integer> mediumList = new ArrayList<Integer>();
@@ -82,6 +84,7 @@ public class MemoryMatrixAdv extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.memory_matrix_adv_layout, container, false);
         assignAllButtons();
 
+        memoryMatrixViewModel = ViewModelProviders.of(getActivity()).get(MemoryMatrixViewModel.class);
         return view;
 
     }
@@ -308,6 +311,7 @@ public class MemoryMatrixAdv extends Fragment implements View.OnClickListener {
         for (int i = 0; i < 4; i++) {
             arraySequenceMed[i] = mediumList.get(i);
         }
+        memoryMatrixViewModel.setTimer(MediumFadingTimer);
         MediumFadingTimer.start();
     }
 
@@ -318,6 +322,7 @@ public class MemoryMatrixAdv extends Fragment implements View.OnClickListener {
         for (int i = 0; i < 5; i++) {
             arraySequenceAdv[i] = mediumList.get(i);
         }
+        memoryMatrixViewModel.setTimer(AdvancedFadingTimer);
         AdvancedFadingTimer.start();
     }
 

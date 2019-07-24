@@ -15,23 +15,24 @@
         android:fontFamily="@font/alfa_slab_one"
         android:gravity="center"
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@id/Exit"
+        app:layout_constraintBottom_toTopOf="@id/frameLayoutSoundWord"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/Exit"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
         android:id="@+id/Exit"
-        android:layout_width="400dp"
-        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         android:layout_margin="20dp"
+        android:scaleType="fitEnd"
         android:src="@drawable/exit_button"
         android:contentDescription="@string/imageDesc"
         app:layout_constraintBottom_toTopOf="@id/frameLayoutSoundWord"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/textRoundsSWG"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRoundsSWG" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

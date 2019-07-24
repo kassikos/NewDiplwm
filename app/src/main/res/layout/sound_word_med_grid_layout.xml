@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/gridLayoutSoundWordGameMed"
+    android:columnCount="4"
+    android:layout_gravity="center"
+    android:padding="24dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+    android:rowCount="1">
+
+    <ImageView
+        android:id="@+id/imageView1SWGMed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView2SWGMed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView3SWGMed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+    <ImageView
+        android:id="@+id/imageView4SWGMed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        android:contentDescription="@string/imageDesc"
+        android:layout_margin="4dp" />
+
+</GridLayout>

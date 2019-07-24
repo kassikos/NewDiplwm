@@ -12,14 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SoundWord"></activity>
-        <activity android:name=".Suitcase" />
+        <activity android:name=".SoundWord"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".Suitcase"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".AudioPersonPick" />
         <activity android:name=".ShadowGame" />
         <activity android:name=".OrderGame" />
         <activity android:name=".ObjectSelector" />
-        <activity android:name=".MemoryMatrix" />
-        <activity android:name=".ScalingGame" />
+        <activity android:name=".MemoryMatrix"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ScalingGame"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".Charts" />
         <activity android:name=".RockPaperScissors" />
         <activity

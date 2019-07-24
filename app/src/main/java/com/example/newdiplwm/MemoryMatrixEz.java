@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class MemoryMatrixEz extends Fragment implements View.OnClickListener {
     private MaterialButton mb1, mb2, mb3, mb4, mb5, mb6, mb7, mb8, mb9;
     private View view;
+    private MemoryMatrixViewModel memoryMatrixViewModel;
 
     private static final long START_TIME_IN_MILLIS = 6000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
@@ -88,95 +91,107 @@ public class MemoryMatrixEz extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.memory_matrix_ez_layout, container, false);
         assignAllButtons();
-
+        memoryMatrixViewModel = ViewModelProviders.of(getActivity()).get(MemoryMatrixViewModel.class);
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        EasyFadingTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isAdded())
+        {
+            EasyFadingTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
 
 
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
+                public void onTick(long millisUntilFinished) {
+                    mTimeLeftInMillis = millisUntilFinished;
 
-                unClickMatrix();
+                    unClickMatrix();
 
-                if (millisUntilFinished >= 4000) {
-                    fading_counter = 0;
-                    MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
-                    v.setTextColor(getResources().getColor(R.color.red));
+                    if (millisUntilFinished >= 4000) {
+                        fading_counter = 0;
+                        MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
+                        v.setTextColor(getResources().getColor(R.color.red));
                         v.setText(" 1 ");
-                } else if (millisUntilFinished > 2000 && millisUntilFinished < 4000) {
-                    fading_counter = 1;
-                    MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
-                    v.setTextColor(getResources().getColor(R.color.red));
-                    v.setText(" 2 ");
-                } else if (millisUntilFinished <= 2000) {
-                    fading_counter = 2;//axreiasto gt exei dhlwthei apo 0
-                    MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
-                    v.setTextColor(getResources().getColor(R.color.red));
-                    v.setText(" 3 ");
+                    } else if (millisUntilFinished > 2000 && millisUntilFinished < 4000) {
+                        fading_counter = 1;
+                        MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
+                        v.setTextColor(getResources().getColor(R.color.red));
+                        v.setText(" 2 ");
+                    } else if (millisUntilFinished <= 2000) {
+                        fading_counter = 2;//axreiasto gt exei dhlwthei apo 0
+                        MaterialButton v = view.findViewById(ids.get(arraySequence[fading_counter]));
+                        v.setTextColor(getResources().getColor(R.color.red));
+                        v.setText(" 3 ");
+                    }
                 }
-            }
 
-            public void onFinish() {
+                public void onFinish() {
 
-                MaterialButton b1 = view.findViewById(ids.get(arraySequence[2]));
-                MaterialButton b2 = view.findViewById(ids.get(arraySequence[1]));
-                MaterialButton b3 = view.findViewById(ids.get(arraySequence[0]));
+                    MaterialButton b1 = view.findViewById(ids.get(arraySequence[2]));
+                    MaterialButton b2 = view.findViewById(ids.get(arraySequence[1]));
+                    MaterialButton b3 = view.findViewById(ids.get(arraySequence[0]));
 
-                b1.setText("");
-                b2.setText("");
-                b3.setText("");
+                    b1.setText("");
+                    b2.setText("");
+                    b3.setText("");
 
-                ClickMatrix();
-                startspeed = new Timestamp(System.currentTimeMillis());
-            }
+                    ClickMatrix();
+                    startspeed = new Timestamp(System.currentTimeMillis());
+                }
 
-        };
+            };
 
-        createRound();
+            createRound();
 
-        ClearCorrectsTimer = new CountDownTimer(2000, 1000) {
-
-
-            @Override
-            public void onTick(long l) { }
-
-            public void onFinish() {
-
-                MaterialButton b1 = view.findViewById(ids.get(arraySequence[2]));
-                MaterialButton b2 = view.findViewById(ids.get(arraySequence[1]));
-                MaterialButton b3 = view.findViewById(ids.get(arraySequence[0]));
-
-                b1.setBackgroundColor(0);
-                b2.setBackgroundColor(0);
-                b3.setBackgroundColor(0);
-
-                b1.setText("");
-                b2.setText("");
-                b3.setText("");
-
-            }
-
-        };
-
-        ClearFailTimer = new CountDownTimer(2000, 1000) {
+            ClearCorrectsTimer = new CountDownTimer(2000, 1000) {
 
 
-            @Override
-            public void onTick(long l) { }
+                @Override
+                public void onTick(long l) { }
 
-            public void onFinish() {
+                public void onFinish() {
 
-                MaterialButton fb = view.findViewById(FailViewId);
-                fb.setBackgroundColor(0);
-            }
+                    MaterialButton b1 = view.findViewById(ids.get(arraySequence[2]));
+                    MaterialButton b2 = view.findViewById(ids.get(arraySequence[1]));
+                    MaterialButton b3 = view.findViewById(ids.get(arraySequence[0]));
 
-        };
+                    b1.setBackgroundColor(0);
+                    b2.setBackgroundColor(0);
+                    b3.setBackgroundColor(0);
+
+                    b1.setText("");
+                    b2.setText("");
+                    b3.setText("");
+
+                }
+
+            };
+
+            ClearFailTimer = new CountDownTimer(2000, 1000) {
+
+
+                @Override
+                public void onTick(long l) { }
+
+                public void onFinish() {
+
+                    MaterialButton fb = view.findViewById(FailViewId);
+                    fb.setBackgroundColor(0);
+                }
+
+            };
+
+        }
+
     }
 
     public void createRound() {
@@ -188,7 +203,9 @@ public class MemoryMatrixEz extends Fragment implements View.OnClickListener {
         }
 
 
+        memoryMatrixViewModel.setTimer(EasyFadingTimer);
         EasyFadingTimer.start();
+
     }
 
 
