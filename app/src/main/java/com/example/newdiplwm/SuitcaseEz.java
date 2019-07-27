@@ -70,7 +70,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     private int hit=0, miss=0 , round=0 , trueCounter=0;
     private double speedseconds;
     private Timestamp startspeed,endspeed;
-    private SuitcaseEz.OnDataPass dataPasser;
+    private onDataPassEz dataPasser;
 
 
 
@@ -80,7 +80,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dataPasser = (SuitcaseEz.OnDataPass) context;
+        dataPasser = (onDataPassEz) context;
         setRetainInstance(true);
     }
 
@@ -333,6 +333,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view1) {
 
+        endspeed = new Timestamp(System.currentTimeMillis());
+
         Log.d("PATHSES TO",String.valueOf(getSlotFromID(view1.getId())));
 
         if (getResources().getResourceEntryName(view1.getId()).contains("Base"))
@@ -350,12 +352,20 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         {
             //lathos
             Log.d("LATHOS","LATHOS");
+            missPoints = true;
+            miss++;
         }
         else
         {
             //swstos
             Log.d("SWSTA","SWSTA");
+            trueCounter++;
+            hit++;
         }
+
+
+
+        passData(hit,miss,endspeed.getTime(),missPoints,trueCounter);
 
 
 
@@ -433,12 +443,12 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
 
 
-    public interface OnDataPass {
-        public void onDataPass(int round,int hit,int miss,double speedinSeconds,boolean misspoints,int truecounter);
+    public interface onDataPassEz {
+        public void onDataPass(int hit,int miss,long speedinSeconds,boolean misspoints,int truecounter);
     }
 
-    private void passData(int a,int b,int c,double d,boolean e,int f) {
-        dataPasser.onDataPass(a,b,c,d,e,f);
+    private void passData(int b,int c,long d,boolean e,int f) {
+        dataPasser.onDataPass(b,c,d,e,f);
     }
 
     @Override
