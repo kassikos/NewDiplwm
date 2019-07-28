@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 
-public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass, SuitcaseAdv.OnDataPassAdv{
+public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPassEz, SuitcaseAdv.onDataPassAdv{
 
 
     MaterialButton startbutton;
@@ -60,6 +60,10 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass
     private Timestamp endTime;
 
     private TextView textView;
+
+    SuitcaseEz suitcaseEz;
+    SuitcaseAdv suitcaseMed;
+    SuitcaseAdv suitcaseAdv;
 
 
 
@@ -109,58 +113,66 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            SuitcaseEz a =new SuitcaseEz();
-            loadFragment(a);
+            suitcaseEz =new SuitcaseEz();
+            loadFragment(suitcaseEz);
         }
-//        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
-//        {
-//            currentDifficulty = menuDifficulty;
-//            TotalRounds = 3;
-//            loadFragment(new MemoryMatrixAdv(currentDifficulty));
-//        }
-//        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
-//        {
-//            currentDifficulty = menuDifficulty;
-//            TotalRounds = 3;
-//            loadFragment(new MemoryMatrixAdv(currentDifficulty));
-//        }
-//        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
-//        {
-//            TotalRounds = 4;
-//            if (RoundsCounter <2 )
-//            {
-//                currentDifficulty = getResources().getString(R.string.easyValue);
-//                MemoryMatrixEz a =new MemoryMatrixEz();
-//                loadFragment(a);
-//            }
-//            else
-//            {
-//                currentDifficulty = getResources().getString(R.string.mediumValue);
-//                loadFragment(new MemoryMatrixAdv(currentDifficulty));
-//            }
-//        }
-//        else
-//        {
-//            TotalRounds = 5;
-//            if (RoundsCounter < 1)
-//            {
-//                currentDifficulty = getResources().getString(R.string.easyValue);
-//                MemoryMatrixEz a =new MemoryMatrixEz();
-//                loadFragment(a);
-//            }
-//            else if (RoundsCounter >=1 && RoundsCounter <= 2 )
-//            {
-//                currentDifficulty = getResources().getString(R.string.mediumValue);
-//                loadFragment(new MemoryMatrixAdv(currentDifficulty));
-//            }
-//            else
-//            {
-//                currentDifficulty = getResources().getString(R.string.advancedValue);
-//                loadFragment(new MemoryMatrixAdv(currentDifficulty));
-//            }
-//
-//        }
-        textView.setText((RoundsCounter+1)+ "/" + TotalRounds);
+        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
+        {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            suitcaseAdv =new SuitcaseAdv();
+            loadFragment(suitcaseAdv);
+        }
+        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
+        {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            suitcaseAdv =new SuitcaseAdv();
+            loadFragment(suitcaseAdv);
+        }
+        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
+        {
+            TotalRounds = 4;
+            if (RoundsCounter <2 )
+            {
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                suitcaseEz =new SuitcaseEz();
+                loadFragment(suitcaseEz);
+            }
+            else
+            {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                suitcaseMed =new SuitcaseAdv();
+                loadFragment(suitcaseMed);
+            }
+        }
+        else
+        {
+            TotalRounds = 5;
+            if (RoundsCounter < 1)
+            {
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                suitcaseEz =new SuitcaseEz();
+                loadFragment(suitcaseEz);
+            }
+            else if (RoundsCounter >=1 && RoundsCounter <= 2 )
+            {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                suitcaseMed =new SuitcaseAdv();
+                loadFragment(suitcaseMed);
+            }
+            else
+            {
+                currentDifficulty = getResources().getString(R.string.advancedValue);
+                suitcaseAdv =new SuitcaseAdv();
+                loadFragment(suitcaseAdv);
+            }
+
+        }
+
+        RoundsCounter++;
+
+        textView.setText((RoundsCounter)+ "/" + TotalRounds);
 
     }
 
@@ -208,19 +220,6 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass
         fragmentTransaction.commit(); // save the changes
     }
 
-    @Override
-    public void onDataPass(int rounds,int hit,int miss,double speedInSeconds,boolean missp,int truec) {
-        RoundsCounter +=rounds;
-        totalhit +=hit;
-        totalmiss +=miss;
-        totalspeed += speedInSeconds;
-        missPoints = missp;
-        trueCounter +=truec;
-        countPoints();
-        checkIfEnds();
-
-    }
-
     private void checkIfEnds()
     {
         startbutton.setVisibility(View.VISIBLE);
@@ -237,20 +236,18 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.OnDataPass
         }
     }
 
+
     @Override
-    public void onDataPassAdv(int round, int hit, int miss, double speedinSeconds, boolean misspoints, int truecounter) {
-        RoundsCounter +=round;
+    public void onDataPass(int hit, int miss, long speedInSeconds, boolean misspoints, int truecounter) {
+
+        //RoundsCounter +=rounds;
         totalhit +=hit;
         totalmiss +=miss;
-        totalspeed += speedinSeconds;
+        totalspeed += speedInSeconds;
         missPoints = misspoints;
         trueCounter +=truecounter;
         countPoints();
         checkIfEnds();
 
     }
-
-
-
-
 }
