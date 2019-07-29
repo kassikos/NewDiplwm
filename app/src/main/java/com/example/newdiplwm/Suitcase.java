@@ -3,6 +3,7 @@ package com.example.newdiplwm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,6 +66,8 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     SuitcaseAdv suitcaseMed;
     SuitcaseAdv suitcaseAdv;
 
+    private CountDownTimer shopPopUpTimer;
+
 
 
     @Override
@@ -95,6 +98,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
                 checkMode();
                 startbutton.setVisibility(View.INVISIBLE);
+                startbutton.setText(R.string.nextRound);
 
             }
         });
@@ -120,14 +124,14 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            suitcaseAdv =new SuitcaseAdv();
+            suitcaseAdv =new SuitcaseAdv(currentDifficulty);
             loadFragment(suitcaseAdv);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
         {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
-            suitcaseAdv =new SuitcaseAdv();
+            suitcaseAdv =new SuitcaseAdv(currentDifficulty);
             loadFragment(suitcaseAdv);
         }
         else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
@@ -142,7 +146,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             else
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                suitcaseMed =new SuitcaseAdv();
+                suitcaseMed =new SuitcaseAdv(currentDifficulty);
                 loadFragment(suitcaseMed);
             }
         }
@@ -158,13 +162,13 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             else if (RoundsCounter >=1 && RoundsCounter <= 2 )
             {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
-                suitcaseMed =new SuitcaseAdv();
+                suitcaseMed =new SuitcaseAdv(currentDifficulty);
                 loadFragment(suitcaseMed);
             }
             else
             {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
-                suitcaseAdv =new SuitcaseAdv();
+                suitcaseAdv =new SuitcaseAdv(currentDifficulty);
                 loadFragment(suitcaseAdv);
             }
 
@@ -222,17 +226,34 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     private void checkIfEnds()
     {
-        startbutton.setVisibility(View.VISIBLE);
+        //startbutton.setVisibility(View.VISIBLE);
 
         if (RoundsCounter >= TotalRounds)
         {
+
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
             GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,-1,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
-            shopPopUp();
+
+            //timer gia na emfanizetai to PopUp META to anoigma ths valitsas
+            //genikotera oi timers trexoun parallhla auto an einai thema na to doume mhpws ginei alliws
+            shopPopUpTimer = new CountDownTimer(6000, 1000) {
+                @Override
+                public void onTick(long l) {
+
+                }
+
+                @Override
+                public void onFinish() {
+
+                    startbutton.setVisibility(View.INVISIBLE);
+                    shopPopUp();
+
+                }
+            }.start();
         }
     }
 

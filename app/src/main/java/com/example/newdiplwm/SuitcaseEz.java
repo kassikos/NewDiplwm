@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,10 +14,13 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +33,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import static android.content.Context.VIBRATOR_SERVICE;
 
 
 public class SuitcaseEz extends Fragment implements View.OnClickListener{
@@ -60,6 +66,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
 
     private View view;
+
+    private Vibrator vibe;
 
     private static final long START_TIME_IN_MILLIS = 6000;
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
@@ -93,6 +101,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
         initializeItemsList();
 
+        vibe = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
+
 
         openBaseTimer = new CountDownTimer(4000, 1000) {
 
@@ -103,6 +113,9 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             public void onFinish() {
 
                 openBase();
+
+                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+                view.setVisibility(View.VISIBLE);
 
             }
 
@@ -117,6 +130,9 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             public void onFinish() {
 
                 openLid();
+
+                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+                view.setVisibility(View.VISIBLE);
 
             }
 
@@ -198,7 +214,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
              slotList.remove(0);
 
-             iv.setBackgroundResource(items.get(tempNumberList.get(0)));
+             iv.setImageResource(items.get(tempNumberList.get(0)));
 
              tempNumberList.remove(0);
 
@@ -333,17 +349,27 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view1) {
 
+        int vibeduration = 1000;
+
+        ImageView ivOpposite;
+
         endspeed = new Timestamp(System.currentTimeMillis());
 
         Log.d("PATHSES TO",String.valueOf(getSlotFromID(view1.getId())));
 
         if (getResources().getResourceEntryName(view1.getId()).contains("Base"))
         {
+            ivOpposite = view.findViewById(lidIDS.get(getSlotFromID(view1.getId())));
+
+            unClickBase();
             closeLid();
             openLidTimer.start();
         }
         else
         {
+            ivOpposite = view.findViewById(baseIDS.get(getSlotFromID(view1.getId())));
+
+            unClickLid();
             closeBase();
             openBaseTimer.start();
         }
@@ -354,6 +380,19 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             Log.d("LATHOS","LATHOS");
             missPoints = true;
             miss++;
+
+            ImageView iv = view.findViewById(view1.getId());
+            iv.setImageResource(items.get(tempNumberList.get(0)));
+            iv.setColorFilter(Color.RED, PorterDuff.Mode.LIGHTEN);
+            Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+            view1.startAnimation(animShake);
+            vibe.vibrate(vibeduration);
+
+            ivOpposite.setColorFilter(Color.RED, PorterDuff.Mode.LIGHTEN);
+            Animation animShakeOpposite = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+            ivOpposite.startAnimation(animShakeOpposite);
+            vibe.vibrate(vibeduration);
+
         }
         else
         {
@@ -361,6 +400,15 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             Log.d("SWSTA","SWSTA");
             trueCounter++;
             hit++;
+
+            ImageView iv = (ImageView) view.findViewById(view1.getId());
+            iv.setImageResource(items.get(tempNumberList.get(0)));
+            iv.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+
+
+            ivOpposite.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+            ivOpposite.setImageResource(items.get(tempNumberList.get(0)));
+
         }
 
 
