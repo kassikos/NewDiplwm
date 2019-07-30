@@ -115,6 +115,8 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
                 checkMode();
                 startbutton.setVisibility(View.INVISIBLE);
 
+                startbutton.setText(R.string.nextRound);
+
             }
         });
     }

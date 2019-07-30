@@ -102,6 +102,8 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             public void onClick(View view) {
                 gameInit = true;
                 createRound();
+
+                startButton.setText(R.string.nextRound);
             }
         });
 
