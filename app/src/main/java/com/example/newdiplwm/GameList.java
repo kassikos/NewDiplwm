@@ -62,13 +62,13 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 //
 //
 //
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        String username = extras.getString(USERNAME);
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        String username = extras.getString(USERNAME);
 
 
         Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(username);
+        toolbar.setTitle("username");
         setSupportActionBar(toolbar);
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){

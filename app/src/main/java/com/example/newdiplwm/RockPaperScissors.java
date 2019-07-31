@@ -1,6 +1,7 @@
 package com.example.newdiplwm;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -11,72 +12,85 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.Vibrator;
+import android.util.SparseIntArray;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
-public class RockPaperScissors extends AppCompatActivity {
+public class RockPaperScissors extends AppCompatActivity implements View.OnClickListener{
 
 
+    private static final String MISSPOINTS = "MISSPOINTS";
+    private static final String HIT = "HIT";
+    private static final String MISS = "MISS";
+    private static final String TOTALPOINTS = "TOTALPOINTS";
+    private static final String TRUECOUNTER = "TRUECOUNTER";
+    private static final String TOTALSPEED = "TOTALSPEED";
+    private static final String STARTTIME = "STARTTIME";
+    private static final String ENDTIME = "ENDTIME";
+    private static final String STARTSPEED = "STARTSPEED";
+    private static final String ENDSPEED = "ENDSPEED";
+    private static final String ROUNDSCOUNTER = "ROUNDSCOUNTER";
+    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
+    private static final String TOTALROUNDS = "TOTALROUNDS";
     private static final String GAME_ID = "GAME_ID";
     private static final String USER_ID = "USER_ID";
     private static final String DIFFICULTY = "DIFFICULTY";
+    private static final String MENUDIFFICULTY = "MENUDIFFICULTY";
+    private static final String CLOCK = "CLOCK";
+    private static final String CLICK = "CLICK";
+    private static final String GAMEINIT = "GAMEINIT";
+    private static final String IMAGES = "IMAGES";
+    private static final String SPARSEARRAY = "SPARSEARRAY";
+    private static final String MODE = "MODE";
+    private static final String CURRENTROUND = "CURRENTROUND";
 
 
-    ImageView imageButton1;
-    ImageView imageButton2;
 
-    MaterialButton startButton;
+    private long mTimeLeftInMillis = 0;
+    private ImageView imageView1 , imageView2 , exit;
 
-    TextView textRounds, textQuestion, advancedTextTimer,test;// exw vgalei to textResults ara varaei la8os null pointer
+    private MaterialButton startButton;
 
-    int id1, id2;
+    private TextView textRounds, textQuestion, advancedTextTimer, animPointsText;
+    private ArrayList<Integer> images = new ArrayList<>();
+    private int currentRound=0 , mode = -1,TotalRounds = 0;
 
-    boolean boolean1, boolean2, expired, roundTimerIsOn = false;
-
-    String currentDifficulty, menuDifficulty;
-
-    HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+    private SparseIntArray imageViewImage = new SparseIntArray(2);
+    private String currentDifficulty, menuDifficulty;
 
     HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
+    private CountDownTimer Timer, Advancedtimer;
 
-    int RoundsCounter = 1, TotalRounds = 0;
+    int vibeduration = 1000, click = 0;
 
-    int easyFirstMode;
 
-    ArrayList<Integer> mediumList = new ArrayList<>();
-    ArrayList<Integer> advancedList = new ArrayList<>();
-
-    int mediumListCounter = 0, advancedListCounter = 0 , vibeduration = 1000;
-
-    CountDownTimer RoundTimer;
-
-    CountDownTimer advancedTimer;
-
+    private boolean gameinit = false;
     boolean missPoints = false;
-    int totalPoints=0;
-    int trueCounter=0;
+    int totalPoints = 0, trueCounter = 0;
 
-    int hit = 0;
-    int miss = 0;
+    int hit = 0 , miss = 0;
 
-    int game_id = -1;
-    int user_id = -1;
+    int game_id = -1, user_id = -1;
 
     private Timestamp startTime;
     private Timestamp endTime;
     private Timestamp startspeed;
     private Timestamp endspeed;
-    private double totalspeed=0;
-
+    private double totalspeed = 0;
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -91,627 +105,643 @@ public class RockPaperScissors extends AppCompatActivity {
 
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        game_id = extras.getInt(GAME_ID);
-        user_id = extras.getInt(USER_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
+        pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
+        pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
+        pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
-        hashMap.put("EASY", 3);
-        hashMap.put("MEDIUM", 4);
-        hashMap.put("ADVANCED", 5);
-
-        pointsHashMap.put("EASY",0);
-        pointsHashMap.put("MEDIUM",5);
-        pointsHashMap.put("ADVANCED",10);
-
-
-        if (menuDifficulty.equals("ALL")) {
-            TotalRounds = 5;
-
-            //ksekinaei apo easy
-            currentDifficulty = "EASY";
-
-            initializeMediumList();
-
-            initializeAdvancedList();
-
-        } else if (menuDifficulty.equals("EASY")) {
-            TotalRounds = 3;
-
-            currentDifficulty = "EASY";
-        } else if (menuDifficulty.equals("MEDIUM")) {
-            TotalRounds = 3;
-
-            initializeMediumList();
-
-            currentDifficulty = "MEDIUM";
-        } else if (menuDifficulty.equals("ADVANCED")) {
-            TotalRounds = 3;
-
-            initializeAdvancedList();
-
-            currentDifficulty = "ADVANCED";
-        } else if (menuDifficulty.equals("EASYtoMEDIUM")) {
-
-            //TotalRounds = hashMap.get("EASY") + hashMap.get("MEDIUM");
-
-            TotalRounds = 4;
-
-            initializeMediumList();
-
-            currentDifficulty = "EASY";
-        }
-
-
-        //syndesh me to XML
-        imageButton1 = findViewById(R.id.imageButton1);
-
-        imageButton2 = findViewById(R.id.imageButton2);
-
-        textRounds = findViewById(R.id.textRounds);
-
-        textQuestion = findViewById(R.id.textQuestion);
-
-        advancedTextTimer = findViewById(R.id.textTimer);
-
-        advancedTextTimer.setText("");
-
-        startButton = findViewById(R.id.startButton);
-
-        test = (TextView) findViewById(R.id.myImageViewTextAnim);
-        
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
 
-        RoundTimer = new CountDownTimer(2000, vibeduration) {
+        if (savedInstanceState != null)
+        {
 
-            public void onTick(long millisUntilFinished) {
-           //     mTextField.setText("Επόμενος Γύρος σε: " + millisUntilFinished / vibeduration);
-                roundTimerIsOn = true;
-            }
 
-            public void onFinish() {
+            user_id = savedInstanceState.getInt(USER_ID);
+            game_id = savedInstanceState.getInt(GAME_ID);
+            currentRound = savedInstanceState.getInt(CURRENTROUND);
+            mode = savedInstanceState.getInt(MODE);
+            gameinit = savedInstanceState.getBoolean(GAMEINIT);
+            currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
+            menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
+            TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
+            hit = savedInstanceState.getInt(HIT);
+            miss = savedInstanceState.getInt(MISS);
+            totalPoints = savedInstanceState.getInt(TOTALPOINTS);
+            trueCounter = savedInstanceState.getInt(TRUECOUNTER);
+            missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+            startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
+            endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
+            startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
+            endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
+            totalspeed = savedInstanceState.getDouble(TOTALSPEED);
+            mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
+            imageViewImage = (SparseIntArray) savedInstanceState.getParcelable(SPARSEARRAY);
+            images = savedInstanceState.getIntegerArrayList(IMAGES);
+            click = savedInstanceState.getInt(CLICK);
+            assignAllbuttons();
+            unclickable();
+            startButton.setVisibility(View.INVISIBLE);
 
-                roundTimerIsOn = false;
+            if (gameinit)
+            {
+                clickable();
+                textRounds.setText(currentRound + "/" + TotalRounds);
+                if (mode == 0)
+                {
+                    textQuestion.setText("Ποιος Κερδίζει");
+                }
+                else
+                {
+                    textQuestion.setText("Ποιος Χάνει");
+                }
+                for (int i=0;i<imageViewImage.size();i++)
+                {
+                    ImageView imageView = findViewById(imageViewImage.keyAt(i));
+                    imageView.setImageResource(imageViewImage.valueAt(i));
+                }
+                if (mTimeLeftInMillis > 1000)
+                {
+                    Advancedtimer = userViewModel.getTimer();
+                    Advancedtimer.cancel();
 
-            //   mTextField.setText("-");
+                    Advancedtimer = new CountDownTimer(mTimeLeftInMillis,1000) {
+                        @Override
+                        public void onTick(long l) {
+                            mTimeLeftInMillis = l;
+                            advancedTextTimer.setText("Έχεις ακόμα: " + l / 1000);
 
-                createRound();
+                        }
 
-                enableButtons();
+                        @Override
+                        public void onFinish() {
 
-                if (currentDifficulty.equals("MEDIUM")) {
-                    if (mediumList.get(mediumListCounter) == 1) {
-                        textQuestion.setText("Ποιός κερδίζει;M");
-                    } else if (mediumList.get(mediumListCounter) == 2) {
-                        textQuestion.setText("Ποιός χάνει;M");
-                    }
-                } else if (currentDifficulty.equals("ADVANCED")) {
-                    if (advancedList.get(advancedListCounter) == 1) {
-                        textQuestion.setText("Ποιός κερδίζει;A");
-                    } else if (advancedList.get(advancedListCounter) == 2) {
-                        textQuestion.setText("Ποιός χάνει;A");
-                    }
+                            advancedTextTimer.setText("Ο χρόνος του γύρου τελείωσε!");
+                            missPoints = true;
+                            startAnimation();
+                            countPoints();
+                            miss++;
+                            vibe.vibrate(vibeduration);
+                            clearScreen();
+
+                            if (currentRound == TotalRounds) {
+                                endTime = new Timestamp(System.currentTimeMillis());
+                                long longTime = endTime.getTime() - startTime.getTime();
+                                float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                                if (click == 0)
+                                {
+                                    totalspeed =10;
+                                    click=1;
+                                }
+                                GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                                gameEventViewModel.insertGameEvent(gameEvent);
+                                userViewModel.updatestatsTest(user_id, game_id);
+                                shopPopUp();
+                            }
+
+                        }
+                    }.start();
+                    userViewModel.saveTimer(Advancedtimer);
                 }
 
+            }else {
+
+                if (currentRound == 0) {
+                    startButton.setVisibility(View.VISIBLE);
+
+                } else {
+                    startButton.setVisibility(View.VISIBLE);
+                    startButton.setText(getResources().getString(R.string.nextRound));
+                    textRounds.setText(currentRound + " / " + TotalRounds);
+                }
             }
 
-        };
+        }
+        else
+        {
+            Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            game_id = extras.getInt(GAME_ID);
+            user_id = extras.getInt(USER_ID);
+            menuDifficulty = extras.getString(DIFFICULTY);
+            assignAllbuttons();
+            unclickable();
+            loadImages();
+        }
 
-        //mia fora tha treksei auto 1111111111111111111
         startButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startTime = new Timestamp(System.currentTimeMillis());
-
-
-                //arxikos gyros symfwna me tis dyskolies
+            @Override
+            public void onClick(View view) {
+                gameinit = true;
                 createRound();
 
-                if (currentDifficulty.equals("EASY")) {
-                    Random r1 = new Random();
-                    easyFirstMode = r1.nextInt((2 - 1) + 1) + 1;
-                    if (easyFirstMode == 1) {
-                        textQuestion.setText("Ποιός κερδίζει;E");
-                        checkWinMode();
-                    } else if (easyFirstMode == 2) {
-                        textQuestion.setText("Ποιός χάνει;E");
-                        checkLoseMode();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentRound == 0 || click ==0 )
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+                    if (startspeed == null || endspeed==null)
+                    {
+                        totalspeed +=0;
                     }
-                } else if (currentDifficulty.equals("MEDIUM")) {
-                    //prwth erwthsh
-//                    if (mediumList.get(0)==1)//edw 8a exei sigoura  1 pote 2
-//                    {
-                    textQuestion.setText("Ποιός κερδίζει1;");
-//
-//                    }
-//                    else if (mediumList.get(0)==2)
-//                    {
-//                        textQuestion.setText("Ποιός χάνει1;");
-//                    }
-
-                } else if (currentDifficulty.equals("ADVANCED") || currentDifficulty.equals("ALL")) {
-                    //prwth erwthsh
-//                    if (advancedList.get(0)==1)// to idio me panw
-//                    {
-                    textQuestion.setText("Ποιός κερδίζει1;");
-//                    }
-//                    else if (advancedList.get(0)==2)
-//                    {
-//                        textQuestion.setText("Ποιός χάνει1;");
-//                    }
-                }
-
-                //kalutera na mhn feugei to button ekkinisis ΚΑΛΥΤΕΡΑ View.INVISIBLE
-                startButton.setVisibility(View.GONE);
-            }
-        });
-
-        imageButton1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //pare telos gitou timestamp
-
-                boolean1 = true;
-                boolean2 = false;
-
-                endspeed = new Timestamp(System.currentTimeMillis());
-                long diffspeed = endspeed.getTime() - startspeed.getTime();
-                double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
-                totalspeed += speedseconds;
-
-
-                checkRound();
-
-                disableButtons();
-
-                if (RoundsCounter > TotalRounds) {
-                    textRounds.setText("ξεκολλα τελος");
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
-                    double seconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,seconds,menuDifficulty,startTime,endTime);
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id,game_id);
-                    shopPopUp();
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
 
-                } else {
-                    RoundTimer.start();
-                }
-
-            }
-
-        });
-
-        imageButton2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                boolean1 = false;
-                boolean2 = true;
-
-                endspeed = new Timestamp(System.currentTimeMillis());
-                long diffspeed = endspeed.getTime()-startspeed.getTime();
-                double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
-                totalspeed += speedseconds;
-
-                checkRound();
-
-                disableButtons();
-
-                if (RoundsCounter > TotalRounds) {
-                    textRounds.setText("ξεκολλα τελος");
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float seconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-//                    double elapsedTimeInSecond = (double) longTime / 1_000_000_000;
-//                    long convert = TimeUnit.SECONDS.convert(longTime, TimeUnit.NANOSECONDS);
-//                    Timestamp playtime = new Timestamp(longTime);
-//                    float minutes = playtime.getMinutes();
-//                    int sec = playtime.getSeconds();
-//                    float seconds = sec/60;
-//                    minutes += seconds;
-//                    System.out.println(playtime);
-//                    System.out.println(minutes);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,seconds,menuDifficulty,startTime,endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id,game_id);
-
-                    shopPopUp();
-                } else {
-                    RoundTimer.start();
                 }
             }
-
         });
-
     }
 
-    public void initializeMediumList() {
-        for (int i = 0; i < hashMap.get("MEDIUM"); i++)//gemisma listas gia ta modes
+
+    @Override
+    public void onBackPressed()
+    {
+        if (currentRound == 0 || click ==0 )
         {
-            if ((i % 2) == 0) {
-                mediumList.add(1);
-            } else {
-                mediumList.add(2);
-            }
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
 
         }
-    }
-
-
-    public void initializeAdvancedList() {
-        for (int i = 0; i < hashMap.get("ADVANCED"); i++)//gemisma listas gia ta modes
+        else
         {
-            if ((i % 2) == 0) {
-                advancedList.add(1);
-            } else {
-                advancedList.add(2);
+            if (startspeed == null || endspeed==null)
+            {
+                totalspeed +=0;
             }
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
 
         }
 
     }
 
+    private void createRound() {
 
-    public void disableButtons() {
-        imageButton2.setEnabled(false);
-        imageButton2.setAlpha(0.5f);
+        startButton.setVisibility(View.INVISIBLE);
+        Random rand = new Random();
+        Collections.shuffle(images);
+        if (currentRound == 0) {
+            startTime = new Timestamp(System.currentTimeMillis());
+            mode = rand.nextInt(2);
+        }
 
-        imageButton1.setEnabled(false);
-        imageButton1.setAlpha(0.5f);
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))) {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            displayGameEz();
+        } else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue))) {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            displayGameMedium();
+        } else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue))) {
+            currentDifficulty = menuDifficulty;
+            TotalRounds = 3;
+            displayGameAdv();
+        } else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue))) {
+            TotalRounds = 4;
 
-    }
-
-    public void enableButtons() {
-
-        imageButton1.setEnabled(true);
-        imageButton1.setAlpha(1f);
-
-        imageButton2.setEnabled(true);
-        imageButton2.setAlpha(1f);
-
-    }
-
-
-    public void createRound() {
-        //pare timestamp arxis girou
-
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        expired = false;
-
-        if (RoundsCounter > TotalRounds) {
-            textRounds.setText("Τέλος");
-            //fyge alliws krasarei
+            if (currentRound <= 1) {
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                displayGameEz();
+            } else {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                displayGameMedium();
+            }
         } else {
-            textRounds.setText( "Round :" + String.valueOf(RoundsCounter) + " / "+ String.valueOf(TotalRounds));
+            TotalRounds = 5;
+            if (currentRound < 1) {
+                currentDifficulty = getResources().getString(R.string.easyValue);
+                displayGameEz();
+            } else if (currentRound >= 1 && currentRound <= 2) {
+                currentDifficulty = getResources().getString(R.string.mediumValue);
+                displayGameMedium();
+            } else {
+                currentDifficulty = getResources().getString(R.string.advancedValue);
+                displayGameAdv();
+            }
+        }
+        startspeed = new Timestamp(System.currentTimeMillis());
+
+        currentRound++;
+
+        textRounds.setText(currentRound + "/" + TotalRounds);
+        clickable();
+
+    }
+
+
+    //0->win mode
+    //1->lose mode
+    private void displayGameEz(){
+        imageView1.setImageResource(images.get(0));
+        imageView2.setImageResource(images.get(1));
+
+        imageViewImage.put(imageView1.getId(),images.get(0));
+        imageViewImage.put(imageView2.getId(),images.get(1));
+
+
+        if (mode == 0)
+        {
+            textQuestion.setText("Ποιος Κερδίζει");
+        }
+        else
+        {
+            textQuestion.setText("Ποιος Χάνει");
+        }
+    }
+
+    private void displayGameMedium(){
+        Random rand = new Random();
+        mode = rand.nextInt(2);
+        imageView1.setImageResource(images.get(0));
+        imageView2.setImageResource(images.get(1));
+
+        imageViewImage.put(imageView1.getId(),images.get(0));
+        imageViewImage.put(imageView2.getId(),images.get(1));
+
+
+        if (mode == 0)
+        {
+            textQuestion.setText("Ποιος Κερδίζει");
+        }
+        else
+        {
+            textQuestion.setText("Ποιος Χάνει");
+        }
+    }
+    private void displayGameAdv(){
+        Random rand = new Random();
+        mode = rand.nextInt(2);
+        imageView1.setImageResource(images.get(0));
+        imageView2.setImageResource(images.get(1));
+
+        imageViewImage.put(imageView1.getId(),images.get(0));
+        imageViewImage.put(imageView2.getId(),images.get(1));
+
+
+        if (mode == 0)
+        {
+            textQuestion.setText("Ποιος Κερδίζει");
+        }
+        else
+        {
+            textQuestion.setText("Ποιος Χάνει");
+        }
+        Advancedtimer = new CountDownTimer(10000,1000) {
+            @Override
+            public void onTick(long l) {
+                mTimeLeftInMillis = l;
+                advancedTextTimer.setText("Έχεις ακόμα: " + l / 1000);
+
+            }
+
+            @Override
+            public void onFinish() {
+                advancedTextTimer.setText("Ο χρόνος του γύρου τελείωσε!");
+                missPoints = true;
+                startAnimation();
+                countPoints();
+                miss++;
+                vibe.vibrate(vibeduration);
+
+                if (currentRound == TotalRounds) {
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    if (click == 0)
+                    {
+                        totalspeed =10;
+                        click=1;
+                    }
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    shopPopUp();
+                }
+                clearScreen();
+
+            }
+        }.start();
+        userViewModel.saveTimer(Advancedtimer);
+
+    }
+
+
+
+    private void loadImages(){
+        images.add(R.drawable.xarti);
+        images.add(R.drawable.petra);
+        images.add(R.drawable.psalidi);
+    }
+
+    private void assignAllbuttons(){
+        imageView1 = findViewById(R.id.imageButton1);
+        imageView2 = findViewById(R.id.imageButton2);
+        exit = findViewById(R.id.ExitRPSG);
+        textRounds = findViewById(R.id.textRounds);
+        textQuestion = findViewById(R.id.textQuestion);
+        advancedTextTimer = findViewById(R.id.textTimer);
+        startButton = findViewById(R.id.startButton);
+        animPointsText = (TextView) findViewById(R.id.myImageViewTextAnim);
+
+        imageView1.setOnClickListener(this);
+        imageView2.setOnClickListener(this);
+    }
+
+
+    private void clearScreen(){
+
+        Timer = new CountDownTimer(1500, 1000) {
+            @Override
+            public void onTick(long l) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+                {
+                    advancedTextTimer.setText("");
+
+                }
+                textQuestion.setText("");
+                imageView1.setImageResource(0);
+                imageView2.setImageResource(0);
+                startButton.setText(getResources().getString(R.string.nextRound));
+                startButton.setVisibility(View.VISIBLE);
+                unclickable();
+            }
+        }.start();
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+        {
+            Advancedtimer.cancel();
+            advancedTextTimer.setText("");
 
         }
+        textQuestion.setText("");
 
-        //gia na proxwrhsoun oi dyskolies
-        if (menuDifficulty.equals("EASYtoMEDIUM")) {
+        click++;
+        gameinit = false;
+        endspeed = new Timestamp(System.currentTimeMillis());
+        long diffspeed = endspeed.getTime() - startspeed.getTime();
+        double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
+        totalspeed += speedseconds;
 
-            if (RoundsCounter <= 2) {
-                currentDifficulty = "EASY";
+        if (!(imageViewImage.indexOfKey(view.getId()) < 0))
+        {
+            int picked = imageViewImage.get(view.getId());
+            imageViewImage.delete(view.getId());
+
+            int temp = result(picked,imageViewImage.valueAt(0));
+            if (temp == 1)
+            {
+                hit++;
+                trueCounter++;
             }
             else
             {
-                currentDifficulty = "MEDIUM";
+                Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                view.startAnimation(animShake);
+                int vibeduration = 1000;
+                vibe.vibrate(vibeduration);
+                miss++;
+                missPoints = true;
+
             }
         }
 
-        if (menuDifficulty.equals("ALL"))
+        startAnimation();
+        countPoints();
+
+        if (currentRound == TotalRounds) {
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (click == 0)
+            {
+                totalspeed =10;
+                click=1;
+            }
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            shopPopUp();
+        }
+        clearScreen();
+
+    }
+
+    private void clickable(){
+        imageView1.setClickable(true);
+        imageView2.setClickable(true);
+    }
+    private void unclickable(){
+        imageView1.setClickable(false);
+        imageView2.setClickable(false);
+    }
+    private int result(int picked , int nonpicked){
+        if (mode == 0)
         {
-            if (RoundsCounter == 1)
+            if (picked == R.drawable.xarti && nonpicked == R.drawable.petra)
             {
-                currentDifficulty = "EASY";
+                return  1;
             }
-            else if (RoundsCounter>1 && RoundsCounter <=3)
+            else if (picked == R.drawable.petra && nonpicked == R.drawable.psalidi)
             {
-                currentDifficulty = "MEDIUM";
+                return 1;
             }
-            else if (RoundsCounter>3)
+            else if (picked == R.drawable.psalidi && nonpicked == R.drawable.xarti)
             {
-                currentDifficulty = "ADVANCED";
+                return 1;
             }
+            else
+                return 0;
         }
-
-        Random r = new Random();
-        id1 = r.nextInt((3 - 1) + 1) + 1;
-        do {
-            id2 = r.nextInt((3 - 1) + 1) + 1;
-        } while (id1 == id2);
-
-        if (id1 == 1) {
-            imageButton1.setImageResource(R.drawable.xarti);
-        } else if (id1 == 2) {
-            imageButton1.setImageResource(R.drawable.petra);
-        } else if (id1 == 3) {
-            imageButton1.setImageResource(R.drawable.psalidi);
-        }
-
-        if (id2 == 1) {
-            imageButton2.setImageResource(R.drawable.xarti);
-        } else if (id2 == 2) {
-            imageButton2.setImageResource(R.drawable.petra);
-        } else if (id2 == 3) {
-            imageButton2.setImageResource(R.drawable.psalidi);
-        }
-
-
-        startspeed = new Timestamp(System.currentTimeMillis());
-        
-
-        if (currentDifficulty.equals("ADVANCED")) {
-
-            //opws eipe o goumo to phgame sta 10 deuterolepta
-            advancedTimer = new CountDownTimer(10000, vibeduration) {
-
-
-                public void onTick(long millisUntilFinished) {
-                    advancedTextTimer.setText("Έχεις ακόμα: " + millisUntilFinished / vibeduration);
-                }
-
-                public void onFinish() {
-
-                    //to timestamp 8a einai oso einai o timer
-
-                    advancedTextTimer.setText("Ο χρόνος του γύρου τελείωσε!");
-                    expired = true;
-                    missPoints = true;
-                    countPoints();
-                    startAnimation();
-                    miss++;
-                    vibe.vibrate(vibeduration);
-
-                    disableButtons();
-
-
-                    if (RoundsCounter > TotalRounds) {
-                        textRounds.setText("Finish");
-                        endTime = new Timestamp(System.currentTimeMillis());
-                        long longTime = endTime.getTime() - startTime.getTime();
-                        float seconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                        GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),5,seconds,menuDifficulty,startTime,endTime);
-                        gameEventViewModel.insertGameEvent(gameEvent);
-                        userViewModel.updatestatsTest(user_id,game_id);
-                        shopPopUp();
-
-                    } else {
-                        RoundTimer.start();
-                    }
-                }
-
-
-            }.start();
-        }
-
-        if (expired) {
-            //h edw paizeis me to miss h mesa sthn onfinish
-   //         textResults.setText("Ο χρόνος τελείωσε!");
-        }
-
-
-        RoundsCounter++;
-
-    }
-
-
-    public void checkRound() {
-
-        if (currentDifficulty.equals("EASY")) {
-            if (easyFirstMode == 1) {
-                checkWinMode();
-            } else if (easyFirstMode == 2) {
-                checkLoseMode();
-            }
-        } else if (currentDifficulty.equals("MEDIUM")) {
-            if (mediumList.get(mediumListCounter) == 1) {
-                checkWinMode();
-            } else if (mediumList.get(mediumListCounter) == 2) {
-                checkLoseMode();
-            }
-            mediumListCounter++;
-        } else if (currentDifficulty.equals("ADVANCED")) {
-            //stamatei o timer tou gyrou
-            advancedTimer.cancel();
-
-            if (roundTimerIsOn) {
-                RoundTimer.cancel();
-            }
-
-            advancedTextTimer.setText("");
-
-            if (advancedList.get(advancedListCounter) == 1) {
-                checkWinMode();
-            } else if (advancedList.get(advancedListCounter) == 2) {
-                checkLoseMode();
-            }
-            advancedListCounter++;
-        }
-
-    }
-
-    public void checkWinMode() {
-
-        if (boolean1) {
-            if (id1 == 1 && id2 == 2) {
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else if (id1 == 2 && id2 == 3) {
-
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else if (id1 == 3 && id2 == 1) {
-
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else {
-
-                missPoints = true;
-
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            }
-            countPoints();
-            startAnimation();
-        } else if (boolean2) {
-            if (id2 == 1 && id1 == 2) {
-
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else if (id2 == 2 && id1 == 3) {
-
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else if (id2 == 3 && id1 == 1) {
-
-                missPoints = false;
-
-                trueCounter++;
-                hit++;
-
-            } else {
-
-                missPoints = true;
-
-                miss++;
-                vibe.vibrate(vibeduration);
-
-
-            }
-            countPoints();
-            startAnimation();
-        }
-    }
-
-    public void checkLoseMode() {
-
-        if (boolean1) {
-            if (id1 == 1 && id2 == 2) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else if (id1 == 2 && id2 == 3) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else if (id1 == 3 && id2 == 1) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else {
-
-                missPoints = false;
-                trueCounter++;
-                hit++;
-
-            }
-            countPoints();
-            startAnimation();
-        } else if (boolean2) {
-            if (id2 == 1 && id1 == 2) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else if (id2 == 2 && id1 == 3) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else if (id2 == 3 && id1 == 1) {
-
-                missPoints = true;
-                miss++;
-                vibe.vibrate(vibeduration);
-
-            } else {
-
-                missPoints = false;
-                trueCounter++;
-                hit++;
-            }
-
-            countPoints();
-            startAnimation();
-        }
-    }
-
-    public void countPoints()
-    {
-
-        int currentPoints=0;
-
-        if (!missPoints && trueCounter == 1)
+        else if (mode == 1)
         {
+            if (picked == R.drawable.xarti && nonpicked == R.drawable.petra)
+            {
+                return  0;
+            }
+            else if (picked == R.drawable.petra && nonpicked == R.drawable.psalidi)
+            {
+                return 0;
+            }
+            else if (picked == R.drawable.psalidi && nonpicked == R.drawable.xarti)
+            {
+                return 0;
+            }
+            else
+                return 1;
+        }
+
+        return -1;
+    }
+
+    private void shopPopUp() {
+        DialogFragment newFragment = new DialogMsg(user_id, RockPaperScissors.this, hit, totalPoints);
+        newFragment.show(getSupportFragmentManager(), "RockPaperScissors");
+    }
+
+    private void countPoints() {
+
+        int currentPoints = 0;
+
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
+            missPoints = false;
         }
         totalPoints += currentPoints;
-        test.setText("+ " +String.valueOf(currentPoints));
-        if (currentPoints == 0)
-        {
-            test.setTextColor(Color.RED);
-        }
-        else
-            test.setTextColor(Color.GREEN);
+        animPointsText.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
+            animPointsText.setTextColor(Color.RED);
+        } else
+            animPointsText.setTextColor(Color.GREEN);
     }
-    
 
-    public void startAnimation(){
+
+    private void startAnimation() {
         long duration = 2000;
-        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(test,"y",500f,-500f);
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText, "y", 500f, -500f);
         objectAnimatorY.setDuration(duration);
 
-        ObjectAnimator alpha =  ObjectAnimator.ofFloat(test,View.ALPHA,1.0f,0.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(animPointsText, View.ALPHA, 1.0f, 0.0f);
         alpha.setDuration(duration);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.playTogether(objectAnimatorY, alpha);
         animatorSet.start();
     }
 
-    public void shopPopUp() {
-        DialogFragment newFragment = new DialogMsg(user_id,RockPaperScissors.this,hit,totalPoints);
-        newFragment.show(getSupportFragmentManager(), "rockpaperScissor");
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(CURRENTDIFFICULTY , currentDifficulty);
+        outState.putString(MENUDIFFICULTY , menuDifficulty);
+        outState.putInt(TOTALROUNDS , TotalRounds);
+        outState.putInt(HIT, hit);
+        outState.putInt(MISS, miss);
+        outState.putInt(TOTALPOINTS, totalPoints);
+        outState.putInt(TRUECOUNTER, trueCounter);
+        outState.putInt(CLICK, click);
+        outState.putBoolean(MISSPOINTS,missPoints);
+        outState.putBoolean(GAMEINIT,gameinit);
+        outState.putSerializable(STARTTIME, startTime);
+        outState.putSerializable(ENDTIME, endTime);
+        outState.putSerializable(STARTSPEED, startspeed);
+        outState.putSerializable(ENDSPEED, endspeed);
+        outState.putDouble(TOTALSPEED,totalspeed);
+        outState.putLong(CLOCK, mTimeLeftInMillis);
+        outState.putIntegerArrayList(IMAGES , images);
+        outState.putParcelable(SPARSEARRAY, new SparseIntArrayParcelable(imageViewImage));
+        outState.putInt(MODE,mode);
+        outState.putInt(CURRENTROUND,currentRound);
+        outState.putInt(USER_ID,user_id);
+        outState.putInt(GAME_ID,game_id);
     }
 
 
+    public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
+        public Creator<SparseIntArrayParcelable> CREATOR = new Creator<SparseIntArrayParcelable>() {
+            @Override
+            public SparseIntArrayParcelable createFromParcel(Parcel source) {
+                SparseIntArrayParcelable read = new SparseIntArrayParcelable();
+                int size = source.readInt();
+
+                int[] keys = new int[size];
+                int[] values = new int[size];
+
+                source.readIntArray(keys);
+                source.readIntArray(values);
+
+                for (int i = 0; i < size; i++) {
+                    read.put(keys[i], values[i]);
+                }
+
+                return read;
+            }
+
+            @Override
+            public SparseIntArrayParcelable[] newArray(int size) {
+                return new SparseIntArrayParcelable[size];
+            }
+        };
+
+        public SparseIntArrayParcelable() {
+
+        }
+
+        public SparseIntArrayParcelable(SparseIntArray sparseIntArray) {
+            for (int i = 0; i < sparseIntArray.size(); i++) {
+                this.put(sparseIntArray.keyAt(i), sparseIntArray.valueAt(i));
+            }
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            int[] keys = new int[size()];
+            int[] values = new int[size()];
+
+            for (int i = 0; i < size(); i++) {
+                keys[i] = keyAt(i);
+                values[i] = valueAt(i);
+            }
+
+            dest.writeInt(size());
+            dest.writeIntArray(keys);
+            dest.writeIntArray(values);
+        }
+    }
 }

@@ -12,15 +12,27 @@
     android:background="@drawable/suitcase_background"
     >
 
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/sizetextEZ"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Suitcase_Base_LinearLayout"
+        />
+
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:id="@+id/Suitcase_Base_LinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nextitemEZ"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/Suitcase_Lid_LinearLayout"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sizetextEZ"
         android:background="@drawable/suitcase_base">
 
         <GridLayout
@@ -85,8 +97,8 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:id="@+id/Suitcase_Lid_LinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nextitemEZ"
+        app:layout_constraintTop_toBottomOf="@+id/sizetextEZ"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/Suitcase_Base_LinearLayout"
         android:background="@drawable/suitcase_lid">
@@ -148,6 +160,16 @@
         </GridLayout>
 
     </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/nextitemEZ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SuitcaseAdv_Lid_LinearLayout"/>
 
 
 

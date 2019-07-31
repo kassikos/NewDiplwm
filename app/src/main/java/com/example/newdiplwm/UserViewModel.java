@@ -15,7 +15,6 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<User>> allusers;
     private CountDownTimer timer;
-    private MediaPlayer mediaPlayer;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
