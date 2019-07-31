@@ -76,6 +76,9 @@
     <string name="Question">Ερώτηση</string>
     <string name="Start">Έναρξη Παιχνιδιού</string>
     <string name="AdvancedTimer">Advanced Timer</string>
+    <string name="WinMode">Ποιος Κερδίζει;</string>
+    <string name="LoseMode">Ποιος Χάνει;</string>
+    <string name="TimeOut">Ο χρόνος του γύρου τελείωσε!</string>
 
 
     <!--SCALING GAME STRINGS-->
