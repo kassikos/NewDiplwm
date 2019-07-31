@@ -646,6 +646,11 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         allimages.add(R.drawable.person8);
         allimages.add(R.drawable.person9);
         allimages.add(R.drawable.person10);
+        allimages.add(R.drawable.person11);
+        allimages.add(R.drawable.person12);
+        allimages.add(R.drawable.person13);
+        allimages.add(R.drawable.person14);
+        allimages.add(R.drawable.person15);
     }
 
     private void loadImagesfour() {

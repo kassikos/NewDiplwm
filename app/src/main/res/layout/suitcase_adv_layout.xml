@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Suitcase_FrameLayoutAdv"
@@ -9,18 +10,28 @@
     android:layout_gravity="center"
     android:padding="24dp"
     app:layout_constraintDimensionRatio="w,1:1"
-    android:background="@drawable/suitcase_background"
-    >
+    android:background="@drawable/suitcase_background">
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/sizetext"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Suitcase_Base_LinearLayout"
+        />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:id="@+id/SuitcaseAdv_Base_LinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nextitem"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/SuitcaseAdv_Lid_LinearLayout"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sizetext"
         android:background="@drawable/suitcase_base_adv">
 
         <GridLayout
@@ -105,11 +116,12 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:id="@+id/SuitcaseAdv_Lid_LinearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nextitem"
+        app:layout_constraintTop_toBottomOf="@+id/sizetext"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/SuitcaseAdv_Base_LinearLayout"
         android:background="@drawable/suitcase_lid_adv">
+
 
 
         <GridLayout
@@ -189,6 +201,16 @@
 
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/nextitem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SuitcaseAdv_Lid_LinearLayout"/>
+
 
 
 
