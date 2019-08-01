@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
 
                 if (user != null)
                 {
-                    Toast.makeText(Login.this,"welcome "+ user.getNickName(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this,"Καλώς ήρθες "+ user.getNickName(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login.this,GameList.class);
                     Bundle extras = new Bundle();
                     extras.putInt(USERID,user.getUserId());
@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(Login.this,"wrong credits",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Login.this,"Λάθος όνομα χρήστη!",Toast.LENGTH_LONG).show();
                     Lnickname.setText("");
                 }
             }

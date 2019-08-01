@@ -375,11 +375,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος Κερδίζει");
+            textQuestion.setText("Ποιος κερδίζει;");
         }
         else
         {
-            textQuestion.setText("Ποιος Χάνει");
+            textQuestion.setText("Ποιος χάνει;");
         }
     }
 
@@ -395,11 +395,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος Κερδίζει");
+            textQuestion.setText("Ποιος κερδίζει;");
         }
         else
         {
-            textQuestion.setText("Ποιος Χάνει");
+            textQuestion.setText("Ποιος χάνει;");
         }
     }
     private void displayGameAdv(){
@@ -414,11 +414,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος Κερδίζει");
+            textQuestion.setText("Ποιος κερδίζει;");
         }
         else
         {
-            textQuestion.setText("Ποιος Χάνει");
+            textQuestion.setText("Ποιος χάνει;");
         }
         Advancedtimer = new CountDownTimer(10000,1000) {
             @Override
