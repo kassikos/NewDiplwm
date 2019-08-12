@@ -69,10 +69,10 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
             gameHolder.textView.setText(R.string.PersonPickGame);
         }
-        else
+        else if (currentGame.getName().equals("SoundWord"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.DefaultName);
+            gameHolder.textView.setText(R.string.SoundWord);
         }
 
 
