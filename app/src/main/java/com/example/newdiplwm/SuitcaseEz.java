@@ -65,6 +65,10 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     private CountDownTimer openLidTimer;
 
 
+    private TextView hintText;
+    private ImageView hintImage;
+    private String hintSide ="";
+
     private View view;
 
     private Vibrator vibe;
@@ -188,6 +192,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             side = baseIDS;
             unClickBase();
 
+            hintSide = " δεξιά ";
+
             SideToOpen = Base;
 
             sideToCheck = lidIDS;
@@ -197,10 +203,14 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
             side = lidIDS;
             unClickLid();
 
+            hintSide = " αριστερή ";
+
             SideToOpen = Lid;
 
             sideToCheck = baseIDS;
         }
+
+        hintText.setText("Βάλε το αντικείμενο στην"+hintSide+"πλευρά της βαλίτσας.");
 
         for (int i = 0; i <= 1; i++)
         {
@@ -222,6 +232,9 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
         Log.d("BAGGAGE",baggage.toString());
 
+        //to epomeno antikeimeno pou einai na valei mesa sth valitsa
+        hintImage.setImageResource(items.get(tempNumberList.get(0)));
+
     }
 
     public void assignAllImageViews() {
@@ -233,6 +246,11 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         base2 = view.findViewById(R.id.Suitcase_Base_imageView2);
         base3 = view.findViewById(R.id.Suitcase_Base_imageView3);
         base4 = view.findViewById(R.id.Suitcase_Base_imageView4);
+
+        hintText = view.findViewById(R.id.sizetextEZ);
+        hintText.setTextColor(Color.BLACK);
+
+        hintImage = view.findViewById(R.id.nextitemEZ);
 
         base1.setOnClickListener(this);
         base2.setOnClickListener(this);

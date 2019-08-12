@@ -65,6 +65,10 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
     private CountDownTimer openBaseTimer;
     private CountDownTimer openLidTimer;
 
+    private TextView hintText;
+    private ImageView hintImage;
+    private String hintSide ="";
+
 
     private View view;
 
@@ -193,6 +197,8 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
             side = baseIDS;
             unClickBase();
 
+            hintSide = " δεξιά ";
+
             SideToOpen = Base;
 
             sideToCheck = lidIDS;
@@ -202,10 +208,14 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
             side = lidIDS;
             unClickLid();
 
+            hintSide = " αριστερή ";
+
             SideToOpen = Lid;
 
             sideToCheck = baseIDS;
         }
+
+        hintText.setText("Βάλε το αντικείμενο στην"+hintSide+"πλευρά της βαλίτσας.");
 
         for (int i = 0; i <= 2; i++)
         {
@@ -242,10 +252,10 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
             //na mpei kai auto to View sto kapaki pou kleinei!!!!
         }
 
-
-
-
         Log.d("BAGGAGE",baggage.toString());
+
+        //to epomeno antikeimeno pou einai na valei mesa sth valitsa
+        hintImage.setImageResource(items.get(tempNumberList.get(0)));
 
     }
 
@@ -260,6 +270,11 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
         base4 = view.findViewById(R.id.SuitcaseAdv_Base_imageView4);
         base5 = view.findViewById(R.id.SuitcaseAdv_Base_imageView5);
         base6 = view.findViewById(R.id.SuitcaseAdv_Base_imageView6);
+
+        hintText = view.findViewById(R.id.sizetext);
+        hintText.setTextColor(Color.BLACK);
+
+        hintImage = view.findViewById(R.id.nextitem);
 
         base1.setOnClickListener(this);
         base2.setOnClickListener(this);

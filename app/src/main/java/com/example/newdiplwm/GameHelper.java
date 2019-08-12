@@ -32,6 +32,8 @@ public class GameHelper {
 
     private static final String  PersonPickGameDesc = "Επέλεξε τον σωστό συνδυασμό ρούχων από το ηχητικό μήνυμα!";
 
+    private static final String  SoundWordDesc = "Βρες τον σωστό φθόγγο που υπάρχει μέσα στις λέξεις!";
+
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
 
@@ -91,8 +93,7 @@ public class GameHelper {
                 new Game("Suitcase","attention",SuitcaseDesc),
                 new Game("ShadowGame","memory",ShadowDesc),
                 new Game("PersonPickGame","memory",PersonPickGameDesc),
-                new Game("SoundWord","memory",PersonPickGameDesc),
-                new Game("SoundImage","memory",PersonPickGameDesc),
+                new Game("SoundWord","memory",SoundWordDesc),
         };
 
     }

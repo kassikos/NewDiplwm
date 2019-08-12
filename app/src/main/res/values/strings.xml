@@ -13,10 +13,11 @@
     <string name="Suitcase">Κλείσιμο Βαλίτσας</string>
     <string name="ShadowGame">Παιχνίδι Σκιών</string>
     <string name="PersonPickGame">Συνδυασμοί Ρούχων</string>
+    <string name="SoundWord">Παιχνίδι Φθόγγων</string>
 
 
     <!--Register-->
-    <string name="app_name">NewDiplwm</string>
+    <string name="app_name">Serious Games</string>
     <string name="nickname">Όνομα Χρήστη</string>
     <string name="birthdate">Ημερομηνία Γέννησης</string>
     <string name="gender">Φύλο</string>
