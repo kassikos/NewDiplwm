@@ -150,11 +150,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 textRounds.setText(currentRound + "/" + TotalRounds);
                 if (mode == 0)
                 {
-                    textQuestion.setText("Ποιος Κερδίζει");
+                    textQuestion.setText(R.string.WinMode);
                 }
                 else
                 {
-                    textQuestion.setText("Ποιος Χάνει");
+                    textQuestion.setText(R.string.LoseMode);
                 }
                 for (int i=0;i<imageViewImage.size();i++)
                 {
@@ -177,7 +177,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onFinish() {
 
-                            advancedTextTimer.setText("Ο χρόνος του γύρου τελείωσε!");
+                            advancedTextTimer.setText(R.string.TimeOut);
                             missPoints = true;
                             startAnimation();
                             countPoints();
@@ -375,11 +375,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος κερδίζει;");
+            textQuestion.setText(R.string.WinMode);
         }
         else
         {
-            textQuestion.setText("Ποιος χάνει;");
+            textQuestion.setText(R.string.LoseMode);
         }
     }
 
@@ -395,11 +395,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος κερδίζει;");
+            textQuestion.setText(R.string.WinMode);
         }
         else
         {
-            textQuestion.setText("Ποιος χάνει;");
+            textQuestion.setText(R.string.LoseMode);
         }
     }
     private void displayGameAdv(){
@@ -414,11 +414,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (mode == 0)
         {
-            textQuestion.setText("Ποιος κερδίζει;");
+            textQuestion.setText(R.string.WinMode);
         }
         else
         {
-            textQuestion.setText("Ποιος χάνει;");
+            textQuestion.setText(R.string.LoseMode);
         }
         Advancedtimer = new CountDownTimer(10000,1000) {
             @Override
@@ -430,7 +430,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onFinish() {
-                advancedTextTimer.setText("Ο χρόνος του γύρου τελείωσε!");
+                advancedTextTimer.setText(R.string.TimeOut);
                 missPoints = true;
                 startAnimation();
                 countPoints();

@@ -9,10 +9,10 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:id="@+id/imageViewCustomPopUp"
         android:contentDescription="@string/imageDesc"
-        app:srcCompat="@drawable/person24"
+        app:srcCompat="@drawable/goldcup"
         android:layout_margin="16dp"/>
 
     <TextView
