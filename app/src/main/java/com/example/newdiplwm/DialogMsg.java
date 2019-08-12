@@ -91,18 +91,18 @@ public class DialogMsg extends DialogFragment {
         if (hit <=1)
         {
             textView.setText(R.string.bronze);
-            imageView.setImageResource(R.drawable.calendar);
+            imageView.setImageResource(R.drawable.bronzecup);
 
         }
         else if (hit == 2 )
         {
             textView.setText(R.string.silver);
-            imageView.setImageResource(R.drawable.arrowdown24);
+            imageView.setImageResource(R.drawable.silvercup);
         }
         else
         {
             textView.setText(R.string.gold);
-            imageView.setImageResource(R.drawable.baseline_settings_black_18dp);
+            imageView.setImageResource(R.drawable.goldcup);
 
         }
         textViewPoints.setText("Συγκέντρωσες " +totalPoints+ " πόντους!" );

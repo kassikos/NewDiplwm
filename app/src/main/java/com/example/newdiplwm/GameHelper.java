@@ -92,6 +92,7 @@ public class GameHelper {
                 new Game("ShadowGame","memory",ShadowDesc),
                 new Game("PersonPickGame","memory",PersonPickGameDesc),
                 new Game("SoundWord","memory",PersonPickGameDesc),
+                new Game("SoundImage","memory",PersonPickGameDesc),
         };
 
     }

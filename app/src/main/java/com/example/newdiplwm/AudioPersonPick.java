@@ -849,5 +849,4 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             dest.writeIntArray(values);
         }
     }
-    //TODO liga perissotera res sto ez
 }
