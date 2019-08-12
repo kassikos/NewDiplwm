@@ -74,6 +74,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
             gameHolder.textView.setText(R.string.SoundWord);
         }
+        else if (currentGame.getName().equals("SoundImage"))
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.textView.setText(R.string.SoundImage);
+        }
 
 
 
