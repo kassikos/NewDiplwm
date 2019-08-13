@@ -1,11 +1,13 @@
 package com.example.newdiplwm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ public class Charts extends AppCompatActivity {
     private ImageView imageView;
 
     private UserViewModel userViewModel;
+    PieChart pieChart;
 
     private static final String GAMENAME = "GAMENAME";
     private static final String HIT = "HIT";
@@ -35,14 +38,20 @@ public class Charts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charts);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.charttoolbar);
+        toolbar.setTitle("Charts");
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         textView = (TextView) findViewById(R.id.tbl_TitleCharts);
         imageView = (ImageView) findViewById(R.id.imageViewCharts);
         String transitionName = getIntent().getStringExtra("image");
         int pic = getIntent().getIntExtra("lel",-12);
-//        int hit = getIntent().getIntExtra(HIT,-1);
-//        int miss = getIntent().getIntExtra(MISS,-1);
-//        int score = getIntent().getIntExtra(SCORE,-1);
-//        double playtotalTime = getIntent().getDoubleExtra(PLAYTOTALTIME,-1);
+        int gameID = getIntent().getIntExtra("gameId",-1);
 
 
         textView.setText(transitionName);
@@ -50,24 +59,32 @@ public class Charts extends AppCompatActivity {
 
 
 
-          userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        List<UserGameStats> allstats = userViewModel.getAllStatsModel(1);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        UserGameStats allstats = userViewModel.getAllStatsByUserIdandGameId(1,gameID);
         setUpChart(allstats);
     }
 
-    public void setUpChart(List<UserGameStats> allstats) {
+    public void setUpChart(UserGameStats allstats) {
         List<PieEntry> pieEntries = new ArrayList<>();
-        for (int i = 0; i < allstats.size(); i++) {
-            pieEntries.add(new PieEntry(allstats.get(i).statistic.getHit(), allstats.get(i).name));
-        }
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "skata");
+      //  for (int i = 0; i < allstats.size(); i++) {
+            pieEntries.add(new PieEntry(allstats.statistic.getHit(), "HIT"));
+            pieEntries.add(new PieEntry(allstats.statistic.getMiss(),"MISS"));
+      //  }
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, allstats.name);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(pieDataSet);
 
-        PieChart pieChart = (PieChart) findViewById(R.id.chart);
+        pieChart = (PieChart) findViewById(R.id.chart);
 
         pieChart.setData(data);
+        pieChart.animateY(1000);
         pieChart.invalidate();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        pieChart.setVisibility(View.GONE);
     }
 }
 

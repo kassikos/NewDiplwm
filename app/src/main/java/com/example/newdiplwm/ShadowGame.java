@@ -104,6 +104,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private int click=0 , pickedimg=0;
     private boolean gameInit = false;
 
+    private Session session;
+
 
 
     @Override
@@ -111,6 +113,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shadow_game);
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        session = new Session(getApplicationContext());
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         assignAllButtons();
@@ -193,14 +196,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         }
         else{
 
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            user_id = extras.getInt(USER_ID);
-            game_id = extras.getInt(GAME_ID);
-            menuDifficulty = extras.getString(DIFFICULTY);
+            user_id = session.getUserIdSession();
+            game_id = session.getGameIdSession();
+            menuDifficulty = session.getModeSession();
         }
-
-
 
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);

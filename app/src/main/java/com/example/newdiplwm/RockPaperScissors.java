@@ -96,6 +96,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private UserViewModel userViewModel;
 
     private Vibrator vibe;
+    private Session session;
 
 
     @Override
@@ -103,6 +104,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rock_paper_scissors);
 
+        session = new Session(getApplicationContext());
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
@@ -220,11 +222,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         }
         else
         {
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            game_id = extras.getInt(GAME_ID);
-            user_id = extras.getInt(USER_ID);
-            menuDifficulty = extras.getString(DIFFICULTY);
+
+            game_id = session.getGameIdSession();
+            user_id = session.getUserIdSession();
+            menuDifficulty = session.getModeSession();
             assignAllbuttons();
             unclickable();
             loadImages();

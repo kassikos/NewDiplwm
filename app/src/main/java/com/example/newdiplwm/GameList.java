@@ -33,13 +33,15 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     private static final String GAME_ID = "GAME_ID";
     private static final String USER_ID = "USER_ID";
     private static final String DIFFICULTY = "DIFFICULTY";
+    private Session session;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     List<Game> allgamesList = new ArrayList<Game>();
     List<Integer> allgamesIDList = new ArrayList<Integer>();
 
-    int useridfromIntennt = -1;
+    private int userid;
+
 
     private boolean mToolBarNavigationListenerIsRegistered = false;
     private String preferenceDifficulty;
@@ -54,21 +56,19 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         setContentView(R.layout.activity_game_list);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         setupPreferences();
+        session = new Session(getApplicationContext());
+        userid = session.getUserIdSession();
 
 //        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 //
 //        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingtoolbarLayout);
 //        collapsingToolbarLayout.setTitle("username");
 //
-//
-//
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        String username = extras.getString(USERNAME);
+
 
 
         Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("username");
+        toolbar.setTitle(session.getUsernameSession());
         setSupportActionBar(toolbar);
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
@@ -94,7 +94,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 
         gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
-        useridfromIntennt = getIntent().getExtras().getInt("USERID");
         mDrawerLayout = (DrawerLayout) findViewById(R.id.gameList);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.open,R.string.close);
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -104,20 +103,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 
 
 
-
-//        gameViewModel.getGetallgames().observe(this, new Observer<List<Game>>() {
-//            @Override
-//            public void onChanged(@Nullable List<Game> games) {
-//                gameAdapter.setGames(games);
-//            }
-//        });
-
         allgamesList = gameViewModel.loadAllGames();
-//        Iterator<Game>  gameslistIterator =     allgamesList.iterator();
-//        while (gameslistIterator.hasNext())
-//        {
-//            allgamesIDList.add(gameslistIterator.next().getId());
-//        }
 
         gameAdapter.setGames(allgamesList);
 
@@ -127,124 +113,77 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
             @Override
             public void onItemClick(Game game) {
                 Toast.makeText(GameList.this, "to patisa "+game.getName(), Toast.LENGTH_SHORT).show();
-                //edw ton stelnw sto paixnidi
-                //edw na tsekarw to name toy paixnidioy gia na tons telnvw sto swsto paixnidi
+
+
+                session.setModeSession(preferenceDifficulty);
                 if (game.getName().equals("Rock"))
                 {
-                    currentGameId = game.getId();
+
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,RockPaperScissors.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
                 }
                 else if (game.getName().equals("Calcution"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,ScalingGame.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("MemoryMatrix"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,MemoryMatrix.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("ObjectSelector"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,ObjectSelector.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("OrderGame"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,OrderGame.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("Suitcase"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,Suitcase.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("ShadowGame"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,ShadowGame.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("PersonPickGame"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,AudioPersonPick.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("SoundWord"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,SoundWord.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
+
                     startActivity(intent);
 
                 }
                 else if (game.getName().equals("SoundImage"))
                 {
-                    currentGameId = game.getId();
+                    session.setGameIdSession(game.getId());
                     Intent intent = new Intent(GameList.this,SoundImage.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USER_ID,useridfromIntennt);
-                    extras.putInt(GAME_ID,currentGameId);
-                    extras.putString(DIFFICULTY,preferenceDifficulty);
-                    intent.putExtras(extras);
                     startActivity(intent);
 
                 }
@@ -353,11 +292,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                 break;
             case R.id.nav_statistics:
                 Intent intentStats = new Intent(this,StatisticsTable.class);
-                Bundle extras = new Bundle();
-                extras.putInt(USER_ID,useridfromIntennt);
-                // extras.putIntegerArrayList("allgamesIDList",(ArrayList<Integer>) allgamesIDList);
-                intentStats.putExtras(extras);
-                //intentStats.putIntegerArrayListExtra("allgamesIDList",(ArrayList<Integer>) allgamesIDList);
                 startActivity(intentStats);
                 Animatoo.animateDiagonal(GameList.this);
                 break;

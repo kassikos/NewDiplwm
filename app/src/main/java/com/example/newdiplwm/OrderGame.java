@@ -117,12 +117,15 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private int randlist;
     private boolean gameInit =false;
 
+    private Session  session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_game);
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        session = new Session(getApplicationContext());
         assignAllButtons();
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
@@ -320,11 +323,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             }
         }
         else{
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            user_id = extras.getInt(USER_ID);
-            game_id = extras.getInt(GAME_ID);
-            menuDifficulty = extras.getString(DIFFICULTY);
+
+            user_id = session.getUserIdSession();
+            game_id = session.getGameIdSession();
+            menuDifficulty = session.getModeSession();
             matchlists();
             initialiseLists();
             fillListImageview();
@@ -1026,4 +1028,6 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             dest.writeIntArray(values);
         }
     }
+
+    //TODO kapoy paizei lathos me ta clickable kai ta unclickable
 }

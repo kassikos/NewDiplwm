@@ -246,6 +246,34 @@ public class UserRepository {
     }
 
 
+    public UserGameStats getStatsByUserIdANDGameId(int userid,int gameid)
+    {
+        Test test = new Test(userid,gameid);
+        try {
+            return  new getStatsByUserIdANDGameIdAsync(userGameStatsDao).execute(test).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static  class getStatsByUserIdANDGameIdAsync extends AsyncTask<Test,Void,UserGameStats>
+    {
+        private UserGameStatsDao userGameStatsDao;
+        private getStatsByUserIdANDGameIdAsync(UserGameStatsDao userGameStatsDao)
+        {
+            this.userGameStatsDao = userGameStatsDao;
+        }
+
+        @Override
+        protected UserGameStats doInBackground(Test... tests) {
+            return userGameStatsDao.getlAllStatsByUserIdANDGameId(tests[0].userid,tests[0].gameid);
+        }
+    }
+
+
 
     public List<UserGameStats> getAllStats(int userid)
     {

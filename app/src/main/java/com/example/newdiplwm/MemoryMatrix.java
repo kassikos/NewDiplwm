@@ -22,30 +22,17 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
 
     MaterialButton startbutton;
-    int RoundsCounter = 0;
-    String menuDifficulty;
-    String currentDifficulty;
+
+    String menuDifficulty, currentDifficulty;
+
     ImageView exit;
 
-    int totalhit = 0;
-    int totalmiss = 0;
-    int TotalRounds =0 ;
-    boolean missPoints = false;
-    int trueCounter=0;
-    HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
-    int totalPoints=0;
+    private int totalhit = 0, totalmiss = 0, TotalRounds =0, RoundsCounter = 0, trueCounter=0, totalPoints=0;
 
-    private static final String GAME_ID = "GAME_ID";
-    private static final String USER_ID = "USER_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
-    private static final String HIT = "HIT";
-    private static final String MISS = "MISS";
-    private static final String ROUNDS = "ROUNDS";
-    private static final String SPEED = "SPEED";
-    private static final String TRUECOUNTER = "TRUECOUNTER";
-    private static final String TOTALPOINTS = "TOTALPOINTS";
-    private static final String MISSPOINTS = "MISSPOINTS";
+    private boolean missPoints = false;
+
+    private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
+
     int user_id = -1;
     int game_id = -1;
 
@@ -62,11 +49,13 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     private TextView textView;
     private MemoryMatrixEz memoryMatrixEz;
     private MemoryMatrixAdv memoryMatrixAdv;
+    private Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_matrix);
 
+        session = new Session(getApplicationContext());
 
        // Fragment existingFragment = getSupportFragmentManager().findFragmentById(R.id.gridLayoutMatrix);
 
@@ -97,11 +86,9 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
+        user_id = session.getUserIdSession();
+        game_id = session.getGameIdSession();
+        menuDifficulty = session.getModeSession();
 
 
         memoryMatrixViewModel = ViewModelProviders.of(this).get(MemoryMatrixViewModel.class);

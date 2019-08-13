@@ -25,17 +25,16 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
     MaterialButton startbutton;
-    int RoundsCounter = 0;
-    String menuDifficulty;
-    String currentDifficulty;
 
-    int totalhit = 0;
-    int totalmiss = 0;
-    int TotalRounds =0 ;
+    private String menuDifficulty, currentDifficulty;
+
+
+    private int totalhit = 0, totalmiss = 0, TotalRounds =0, trueCounter=0, totalPoints=0,RoundsCounter = 0;
+
     boolean missPoints = false;
-    int trueCounter=0;
+
     HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
-    int totalPoints=0;
+
 
     private static final String GAME_ID = "GAME_ID";
     private static final String USER_ID = "USER_ID";
@@ -67,6 +66,8 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     SuitcaseAdv suitcaseAdv;
 
     private CountDownTimer shopPopUpTimer;
+    private Session session;
+
 
 
 
@@ -74,6 +75,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suitcase);
+        session = new Session(getApplicationContext());
 
 
 
@@ -86,11 +88,10 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
+
+        user_id = session.getUserIdSession();
+        game_id = session.getGameIdSession();
+        menuDifficulty = session.getModeSession();
 
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override

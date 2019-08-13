@@ -21,6 +21,7 @@ public class StatisticsTable extends AppCompatActivity {
     private int user_id;
     private int game_id;
 
+    private Session session;
     private static final String GAMENAME = "GAMENAME";
     private static final String HIT = "HIT";
     private static final String MISS = "MISS";
@@ -32,11 +33,9 @@ public class StatisticsTable extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics_table);
+        session = new Session(getApplicationContext());
+        user_id = session.getUserIdSession();
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt("USER_ID");
-        //  ArrayList<Integer> gamesID = extras.getIntegerArrayList("allgamesIDList");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.stattoolbar);
         toolbar.setTitle("Statistics");

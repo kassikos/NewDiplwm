@@ -50,6 +50,13 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
             gameHolder.imageView.setImageResource(R.drawable.numeric);
             images.add(R.drawable.numeric);
             images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
 
         }
         else
@@ -79,6 +86,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
                 ActivityOptionsCompat activityOptionsCompat = (ActivityOptionsCompat) ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,p1,p2);
                 Intent intent = new Intent(context, Charts.class);
                 intent.putExtra("image", statistics.get(position).name);
+                intent.putExtra("gameId", statistics.get(position).statistic.getGameIdForeign());
                 intent.putExtra("lel",images.get(position));
 //                intent.putExtra(HIT,statistics.get(position).statistic.getHit());
 //                intent.putExtra(MISS,statistics.get(position).statistic.getMiss());

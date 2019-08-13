@@ -1,5 +1,6 @@
 package com.example.newdiplwm;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,6 +13,8 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -36,6 +39,37 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private static final String GAME_ID = "GAME_ID";
     private static final String DIFFICULTY = "DIFFICULTY";
 
+
+    private static final String MISSPOINTS = "MISSPOINTS";
+    private static final String HIT = "HIT";
+    private static final String MISS = "MISS";
+    private static final String TOTALPOINTS = "TOTALPOINTS";
+    private static final String TRUECOUNTER = "TRUECOUNTER";
+    private static final String TOTALSPEED = "TOTALSPEED";
+    private static final String STARTTIME = "STARTTIME";
+    private static final String ENDTIME = "ENDTIME";
+    private static final String STARTSPEED = "STARTSPEED";
+    private static final String ENDSPEED = "ENDSPEED";
+    private static final String CURRENTROUND = "CURRENTROUND";
+    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
+    private static final String TOTALROUNDS = "TOTALROUNDS";
+    private static final String DEVICES = "DEVICES";
+    private static final String ANIMALS = "ANIMALS";
+    private static final String INSTRUMENTS = "INSTRUMENTS";
+    private static final String RANDOM = "RANDOM";
+    private static final String IMAGEVIEWS = "IMAGEVIEWS";
+    private static final String CLICK = "CLICK";
+    private static final String MENUDIFFICULTY = "MENUDIFFICULTY";
+    private static final String PICKEDIMAGES = "PICKEDIMAGES";
+    private static final String IMAGEVIEWIMAGE = "IMAGEVIEWIMAGE";
+    private static final String AUDIOPOS = "AUDIOPOS";
+    private static final String PICKEDSOUND = "PICKEDSOUND";
+    private static final String GAMEINIT = "GAMEINIT";
+    private static final String SOUNDPLAYED = "SOUNDPLAYED";
+    private static final String LIMITREPLAY = "LIMITREPLAY";
+    private static final String LIMIT = "LIMIT";
+    private static final String ALLIMAGES = "ALLIMAGES";
+
     private ImageView imgv1, imgv2, imgv3,imgv4,playAudio,exit;
     private MaterialButton startButton;
     private TextView textRounds, animPointsText;
@@ -55,17 +89,17 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private SparseArray pickRandList = new SparseArray();
     
     private ArrayList<Integer> imageviews = new ArrayList<>(4);
-    private ArrayList<Integer> allimages = new ArrayList<>(4);
+    private ArrayList<Integer> allimages = new ArrayList<>(24);
     private ArrayList<Integer> pickedImage = new ArrayList<Integer>(1);
 
     private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
 
-    private int limitReplay = 0 , limit = 0 , click = 0;
+    private int limitReplay = 0 , limit = 0 , click = 0,audioposition = 0;
     private boolean gameInit = false;
 
     private int user_id, game_id, currentRound = 0, TotalRounds = 0;
     private int hit = 0, miss = 0, totalPoints = 0, trueCounter = 0;
-    private boolean missPoints = false;
+    private boolean missPoints = false , soundPlayed = false;
     private String menuDifficulty, currentDifficulty = "";
     private int pickedSound;
 
@@ -75,28 +109,129 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private Timestamp endspeed;
     private double totalspeed = 0;
     MediaPlayer mediaPlayer;
+    private  Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_image);
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        session = new Session(getApplicationContext());
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
 
+        if (savedInstanceState != null) {
+            gameInit = savedInstanceState.getBoolean(GAMEINIT);
+            soundPlayed = savedInstanceState.getBoolean(SOUNDPLAYED);
+            user_id = savedInstanceState.getInt(USER_ID);
+            game_id = savedInstanceState.getInt(GAME_ID);
+            imageviews = savedInstanceState.getIntegerArrayList(IMAGEVIEWS);
+            pickedImage = savedInstanceState.getIntegerArrayList(PICKEDIMAGES);
+            allimages = savedInstanceState.getIntegerArrayList(ALLIMAGES);
+            currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
+            menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
+            TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
+            click = savedInstanceState.getInt(CLICK);
+            hit = savedInstanceState.getInt(HIT);
+            miss = savedInstanceState.getInt(MISS);
+            totalPoints = savedInstanceState.getInt(TOTALPOINTS);
+            trueCounter = savedInstanceState.getInt(TRUECOUNTER);
+            audioposition = savedInstanceState.getInt(AUDIOPOS);
+            pickedSound = savedInstanceState.getInt(PICKEDSOUND);
+            limitReplay = savedInstanceState.getInt(LIMITREPLAY);
+            limit = savedInstanceState.getInt(LIMIT);
+            pickedSound = savedInstanceState.getInt(PICKEDSOUND);
+            totalspeed = savedInstanceState.getDouble(TOTALSPEED);
+            missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+            startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
+            endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
+            startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
+            endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
+            currentRound = savedInstanceState.getInt(CURRENTROUND);
+
+            imageviewImage = (SparseIntArray) savedInstanceState.getParcelable(IMAGEVIEWIMAGE);
+            imageSoundRandom = (SparseIntArray) savedInstanceState.getParcelable(RANDOM);
+            imageSoundAnimals = (SparseIntArray) savedInstanceState.getParcelable(ANIMALS);
+            imageSoundDevices = (SparseIntArray) savedInstanceState.getParcelable(DEVICES);
+            imageSoundInstruments = (SparseIntArray) savedInstanceState.getParcelable(INSTRUMENTS);
+
+            asignAllButtons();
+            startButton.setVisibility(View.INVISIBLE);
+
+            if (gameInit) {
+                if (limit == 0)
+                {
+                    playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
+                    playAudio.setVisibility(View.VISIBLE);
+                    unclickable();
+                }
+                for (int i = 0; i < imageviewImage.size(); i++) {
+                    ImageView iv = findViewById(imageviewImage.keyAt(i));
+                    iv.setImageResource(imageviewImage.valueAt(i));
+                }
+                textRounds.setText(currentRound + " / " + TotalRounds);
+                if (soundPlayed) {
+                    playAudio.setVisibility(View.INVISIBLE);
+
+                    if (mediaPlayer == null) {
+                        mediaPlayer = MediaPlayer.create(SoundImage.this, pickedSound);
+                        mediaPlayer.seekTo(audioposition);
+                        mediaPlayer.start();
+                        unclickable();
+
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                soundPlayed = false;
+                                playAudio.setImageResource(R.drawable.replay_black_48dp);
+                                playAudio.setVisibility(View.VISIBLE);
+                                clickable();
+
+                                if (limit == 1) {
+                                    startspeed = new Timestamp(System.currentTimeMillis());
+                                }
+
+                                if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+                                    playAudio.setImageResource(R.drawable.limit_black_48dp);
+                                    playAudio.setClickable(false);
+
+                                }
+                                mediaPlayer.release();
+                                mediaPlayer = null;
+                            }
+                        });
+                    }
+                }
+            } else {
+
+                if (currentRound == 0) {
+                    startButton.setVisibility(View.VISIBLE);
+
+                } else {
+                    startButton.setVisibility(View.VISIBLE);
+                    startButton.setText(getResources().getString(R.string.nextRound));
+                    textRounds.setText(currentRound + " / " + TotalRounds);
+                }
+            }
+
+        } else {
+
+            loadImageSounds();
+            asignAllButtons();
+
+            user_id = session.getUserIdSession();
+            game_id = session.getGameIdSession();
+            menuDifficulty =  session.getModeSession();
+        }
+
+
+
+        matchlists();
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
-        asignAllButtons();
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
-        loadImageSounds();
-        matchlists();
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +249,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         super.onPause();
 
         if (mediaPlayer != null){
-            //audioposition = mediaPlayer.getCurrentPosition();
+            audioposition = mediaPlayer.getCurrentPosition();
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
@@ -130,7 +265,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onClick(View view) {
                 limit++;
-             //   soundPlayed = true;
+                soundPlayed = true;
                 playAudio.setVisibility(View.INVISIBLE);
                 if (mediaPlayer == null) {
                     mediaPlayer = MediaPlayer.create(SoundImage.this, pickedSound);
@@ -140,7 +275,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                      //      soundPlayed = false;
+                            soundPlayed = false;
                             playAudio.setVisibility(View.VISIBLE);
                             playAudio.setImageResource(R.drawable.replay_black_48dp);
                             clickable();
@@ -162,12 +297,12 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             }
 
         });
-//        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
-//
-//            playAudio.setClickable(false);
-//        }
+        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
 
-      /*  exit.setOnClickListener(new View.OnClickListener() {
+            playAudio.setClickable(false);
+        }
+
+        exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (currentRound == 0 || click ==0 )
@@ -196,7 +331,38 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
                 }
             }
-        });*/
+        });
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (currentRound == 0 || click ==0 )
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+            if (startspeed == null || endspeed==null)
+            {
+                totalspeed +=0;
+            }
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
 
     }
 
@@ -331,6 +497,18 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             }
         }
 
+
+        for (int i : pickedImage) {
+            ListIterator itr = allimages.listIterator();
+            while (itr.hasNext()) {
+                int temp = (int) itr.next();
+                if (temp == i) {
+                    itr.remove();
+                    break;
+                }
+            }
+        }
+
         imageviews.remove(randompickedimgv);
 
 
@@ -338,6 +516,18 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         int secrandImgv = rand.nextInt(imageviews.size());
         ImageView ivvv = findViewById(imageviews.get(secrandImgv));
         ivvv.setImageResource(helper.get(sec));
+        imageviewImage.put(imageviews.get(secrandImgv), helper.get(sec));
+
+
+            ListIterator itr1 = allimages.listIterator();
+            while (itr1.hasNext()) {
+                int temp = (int) itr1.next();
+                if (temp == helper.get(sec)) {
+                    itr1.remove();
+                    break;
+                }
+            }
+
         helper.remove(sec);
         imageviews.remove(secrandImgv);
 
@@ -501,7 +691,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         imgv3.setOnClickListener(this);
         imgv4.setOnClickListener(this);
 
-    /*    if ((limitReplay>limit && gameInit) || (gameInit && limit >=1 && currentDifficulty.equals(getResources().getString(R.string.easyValue))))
+       if ((limitReplay>limit && gameInit) || (gameInit && limit >=1 && currentDifficulty.equals(getResources().getString(R.string.easyValue))))
         {
             playAudio.setVisibility(View.VISIBLE);
             playAudio.setImageResource(R.drawable.replay_black_48dp);
@@ -515,7 +705,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             playAudio.setClickable(false);
             clickable();
 
-        }*/
+        }
 
     }
 
@@ -641,5 +831,102 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         animatorSet.playTogether(objectAnimatorY, alpha);
         animatorSet.start();
     }
+
+
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString(MENUDIFFICULTY, menuDifficulty);
+        outState.putString(CURRENTDIFFICULTY, currentDifficulty);
+        outState.putInt(GAME_ID, game_id);
+        outState.putInt(USER_ID, user_id);
+        outState.putInt(TOTALROUNDS, TotalRounds);
+        outState.putInt(CURRENTROUND, currentRound);
+        outState.putInt(HIT, hit);
+        outState.putInt(MISS, miss);
+        outState.putInt(TOTALPOINTS, totalPoints);
+        outState.putInt(TRUECOUNTER, trueCounter);
+        outState.putInt(CLICK, click);
+        outState.putInt(PICKEDSOUND, pickedSound);
+        outState.putInt(LIMIT, limit);
+        outState.putInt(LIMITREPLAY, limitReplay);
+        outState.putDouble(TOTALSPEED, totalspeed);
+        outState.putSerializable(STARTTIME, startTime);
+        outState.putSerializable(ENDTIME, endTime);
+        outState.putSerializable(STARTSPEED, startspeed);
+        outState.putSerializable(ENDSPEED, endspeed);
+        outState.putBoolean(MISSPOINTS, missPoints);
+        outState.putBoolean(GAMEINIT, gameInit);
+        outState.putBoolean(SOUNDPLAYED, soundPlayed);
+        outState.putInt(AUDIOPOS,audioposition);
+        outState.putParcelable(DEVICES, new SparseIntArrayParcelable(imageSoundDevices));
+        outState.putParcelable(ANIMALS, new SparseIntArrayParcelable(imageSoundAnimals));
+        outState.putParcelable(INSTRUMENTS, new SparseIntArrayParcelable(imageSoundInstruments));
+        outState.putParcelable(RANDOM, new SparseIntArrayParcelable(imageSoundRandom));
+        outState.putParcelable(IMAGEVIEWIMAGE, new SparseIntArrayParcelable(imageviewImage));
+        outState.putIntegerArrayList(IMAGEVIEWS, imageviews);
+        outState.putIntegerArrayList(PICKEDIMAGES, pickedImage);
+        outState.putIntegerArrayList(ALLIMAGES, allimages);
+
+    }
+
+
+    public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
+        public Creator<SparseIntArrayParcelable> CREATOR = new Creator<SparseIntArrayParcelable>() {
+            @Override
+            public SparseIntArrayParcelable createFromParcel(Parcel source) {
+                SparseIntArrayParcelable read = new SparseIntArrayParcelable();
+                int size = source.readInt();
+
+                int[] keys = new int[size];
+                int[] values = new int[size];
+
+                source.readIntArray(keys);
+                source.readIntArray(values);
+
+                for (int i = 0; i < size; i++) {
+                    read.put(keys[i], values[i]);
+                }
+
+                return read;
+            }
+
+            @Override
+            public SparseIntArrayParcelable[] newArray(int size) {
+                return new SparseIntArrayParcelable[size];
+            }
+        };
+
+        public SparseIntArrayParcelable() {
+
+        }
+
+        public SparseIntArrayParcelable(SparseIntArray sparseIntArray) {
+            for (int i = 0; i < sparseIntArray.size(); i++) {
+                this.put(sparseIntArray.keyAt(i), sparseIntArray.valueAt(i));
+            }
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                int[] keys = new int[size()];
+                int[] values = new int[size()];
+
+                for (int i = 0; i < size(); i++) {
+                    keys[i] = keyAt(i);
+                    values[i] = valueAt(i);
+                }
+
+                dest.writeInt(size());
+                dest.writeIntArray(keys);
+                dest.writeIntArray(values);
+            }
+        }
 
 }
