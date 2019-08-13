@@ -7,6 +7,10 @@
     tools:context=".Charts">
 
 
+    <include
+        android:id="@+id/charttoolbar"
+        layout="@layout/toolbar" />
+
     <ImageView
         android:id="@+id/imageViewCharts"
         android:layout_width="0dp"
@@ -17,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tbl_TitleCharts"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/charttoolbar" />
 
 
     <TextView
@@ -33,7 +37,7 @@
         app:layout_constraintBottom_toTopOf="@+id/chart"
         app:layout_constraintLeft_toRightOf="@id/imageViewCharts"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/charttoolbar" />
 
 
     <com.github.mikephil.charting.charts.PieChart

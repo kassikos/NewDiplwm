@@ -44,6 +44,8 @@ public class UserViewModel extends AndroidViewModel {
 
     public List<UserGameStats> getAllStatsModel(int userid){return userRepository.getAllStats(userid);}
 
+    public UserGameStats getAllStatsByUserIdandGameId(int userid,int gameid){return userRepository.getStatsByUserIdANDGameId(userid,gameid);}
+
     public void saveTimer (CountDownTimer t)
     {
         this.timer = t;

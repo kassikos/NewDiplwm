@@ -109,12 +109,14 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private Timestamp endspeed;
     private double totalspeed = 0;
     MediaPlayer mediaPlayer;
+    private  Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_image);
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        session = new Session(getApplicationContext());
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
@@ -217,11 +219,10 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
             loadImageSounds();
             asignAllButtons();
-            Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            user_id = extras.getInt(USER_ID);
-            game_id = extras.getInt(GAME_ID);
-            menuDifficulty = extras.getString(DIFFICULTY);
+
+            user_id = session.getUserIdSession();
+            game_id = session.getGameIdSession();
+            menuDifficulty =  session.getModeSession();
         }
 
 

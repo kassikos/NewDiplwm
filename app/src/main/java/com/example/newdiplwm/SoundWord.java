@@ -75,6 +75,8 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     SoundWordMed soundWordMed;
     SoundWordAdv soundWordAdv;
 
+    private Session session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +85,17 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         soundWordViewModel = ViewModelProviders.of(this).get(SoundWordViewModel.class);
+        session = new Session(getApplicationContext());
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
         assignAllbuttons();
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        user_id = extras.getInt(USER_ID);
-        game_id = extras.getInt(GAME_ID);
-        menuDifficulty = extras.getString(DIFFICULTY);
+
+        user_id = session.getUserIdSession();
+        game_id = session.getGameIdSession();
+        menuDifficulty = session.getModeSession();
 
 
 

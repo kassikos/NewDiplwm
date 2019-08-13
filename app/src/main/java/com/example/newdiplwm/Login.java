@@ -3,6 +3,8 @@ package com.example.newdiplwm;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ public class Login extends AppCompatActivity {
     private MaterialButton loginbtn;
     private MaterialButton loginRegTv;
 
+    private Session session;
     private UserViewModel userViewModel;
 
 
@@ -32,6 +35,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        Context context = getApplicationContext();
+        session = new Session(context);
 
         Lnickname = (TextInputEditText) findViewById(R.id.TextInputEditText);
         loginbtn = (MaterialButton) findViewById(R.id.material_text_button);
@@ -55,12 +60,11 @@ public class Login extends AppCompatActivity {
 
                 if (user != null)
                 {
+                    session.setUsernameSession(user.getNickName());
+                    session.setUserIdSession(user.getUserId());
                     Toast.makeText(Login.this,"Καλώς ήρθες "+ user.getNickName(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login.this,GameList.class);
-                    Bundle extras = new Bundle();
-                    extras.putInt(USERID,user.getUserId());
-                    extras.putString(USERNAME,user.getNickName());
-                    intent.putExtras(extras);
+
                     startActivity(intent);
                     Animatoo.animateSplit(Login.this);
                 }

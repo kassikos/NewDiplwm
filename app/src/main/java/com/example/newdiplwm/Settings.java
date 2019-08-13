@@ -9,14 +9,16 @@ import android.view.MenuItem;
 
 public class Settings extends AppCompatActivity {
 
+    private  Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        session = new Session(getApplicationContext());
 
 
         Toolbar toolbar = findViewById(R.id.toolbar123);
-        toolbar.setTitle("username");
+        toolbar.setTitle(session.getUsernameSession());
         setSupportActionBar(toolbar);
 
         // add back arrow to toolbar

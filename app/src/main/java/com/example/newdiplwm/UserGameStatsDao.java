@@ -11,4 +11,7 @@ public interface UserGameStatsDao {
 
     @Query("select users.nickName , statistic.*, games.name from statistic INNER JOIN users on users.userId = statistic.userIdForeign  Left JOIN games on games.id = statistic.gameIdForeign where statistic.userIdForeign = :userid " )
     public List<UserGameStats> gellAllStats(int userid);
+
+    @Query("select users.nickName , statistic.*, games.name from statistic INNER JOIN users on users.userId = statistic.userIdForeign  Left JOIN games on games.id = statistic.gameIdForeign where statistic.gameIdForeign = :gameid AND statistic.userIdForeign = :userid "  )
+    public UserGameStats getlAllStatsByUserIdANDGameId(int userid,int gameid);
 }

@@ -45,10 +45,6 @@ public class ScalingGame extends AppCompatActivity {
     int game_id = -1;
     int user_id = -1;
 
-    private static final String GAME_ID = "GAME_ID";
-    private static final String USER_ID = "USER_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-
 
     private static final String WRONG = "Λάθος! ";
     private static final String CORRECT = "Σωστά ";
@@ -62,27 +58,25 @@ public class ScalingGame extends AppCompatActivity {
     private double totalspeed=0;
 
 
-    int hit = 0;
-    int miss = 0;
-    boolean missPoints = false;
-    int totalPoints=0;
-    int trueCounter=0;
+    private int hit = 0, miss = 0, totalPoints=0, trueCounter=0;
+
+    private boolean missPoints = false;
+
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
+    private Session session;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scaling_game);
+        session = new Session(getApplicationContext());
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        game_id = extras.getInt(GAME_ID);
-        user_id = extras.getInt(USER_ID);
-
-        menuDifficulty =  extras.getString(DIFFICULTY);
+        game_id = session.getGameIdSession();
+        user_id = session.getUserIdSession();
+        menuDifficulty =  session.getModeSession();
 
         startButton = findViewById(R.id.startButtonScalling);
 

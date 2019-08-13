@@ -33,7 +33,9 @@
             android:name=".ScalingGame"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape" />
-        <activity android:name=".Charts" />
+        <activity
+            android:name=".Charts"
+            android:parentActivityName=".StatisticsTable"/>
         <activity android:name=".RockPaperScissors" />
         <activity
             android:name=".StatisticsTable"
