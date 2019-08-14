@@ -1,6 +1,9 @@
 package com.example.newdiplwm;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -187,7 +191,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                     startActivity(intent);
 
                 }
-
             }
         });
 
@@ -236,29 +239,37 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
             actionBarDrawerToggle.setToolbarNavigationClickListener(null);
             mToolBarNavigationListenerIsRegistered = false;
         }
-
-        // So, one may think "Hmm why not simplify to:
-        // .....
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
-        // mDrawer.setDrawerIndicatorEnabled(!enable);
-        // ......
-        // To re-iterate, the order in which you enable and disable views IS important #dontSimplify.
+        
     }
 
 
     @Override
     public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("ΕΞΟΔΟΣ");
+        builder.setMessage("DO YOU WANT TO LEAVE ?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finishAndRemoveTask();
+                Intent intent = new Intent(GameList.this,Login.class);
+                startActivity(intent);
+
+            }
+        });
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        } //else {
+//            super.onBackPressed();
+//        }
+        builder.show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+
     }
 
 

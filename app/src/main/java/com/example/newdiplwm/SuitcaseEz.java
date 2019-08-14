@@ -80,7 +80,6 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
     private boolean missPoints = false;
 
     private int hit=0, miss=0 , round=0 , trueCounter=0;
-    private double speedseconds;
     private Timestamp startspeed,endspeed;
     private onDataPassEz dataPasser;
 
@@ -161,6 +160,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.suitcase_ez_layout, container, false);
 
         assignAllImageViews();
+
+        startspeed = new Timestamp(System.currentTimeMillis());
 
         return view;
     }
@@ -430,8 +431,10 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         }
 
 
+        long diffspeed = endspeed.getTime() - startspeed.getTime();
+        double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
 
-        passData(hit,miss,endspeed.getTime(),missPoints,trueCounter);
+        passData(hit,miss,speedseconds,missPoints,trueCounter);
 
 
 
@@ -510,10 +513,10 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
 
     public interface onDataPassEz {
-        public void onDataPass(int hit,int miss,long speedinSeconds,boolean misspoints,int truecounter);
+        public void onDataPass(int hit,int miss,double speedinSeconds,boolean misspoints,int truecounter);
     }
 
-    private void passData(int b,int c,long d,boolean e,int f) {
+    private void passData(int b,int c,double d,boolean e,int f) {
         dataPasser.onDataPass(b,c,d,e,f);
     }
 

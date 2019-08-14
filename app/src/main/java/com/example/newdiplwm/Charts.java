@@ -28,6 +28,7 @@ public class Charts extends AppCompatActivity {
     private UserViewModel userViewModel;
     PieChart pieChart;
 
+    Session session;
     private static final String GAMENAME = "GAMENAME";
     private static final String HIT = "HIT";
     private static final String MISS = "MISS";
@@ -37,6 +38,7 @@ public class Charts extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charts);
+        session = new Session(getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.charttoolbar);
         toolbar.setTitle("Charts");
@@ -60,16 +62,16 @@ public class Charts extends AppCompatActivity {
 
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        UserGameStats allstats = userViewModel.getAllStatsByUserIdandGameId(1,gameID);
+        UserGameStats allstats = userViewModel.getAllStatsByUserIdandGameId(session.getUserIdSession(),gameID);
         setUpChart(allstats);
     }
 
     public void setUpChart(UserGameStats allstats) {
         List<PieEntry> pieEntries = new ArrayList<>();
-      //  for (int i = 0; i < allstats.size(); i++) {
+
             pieEntries.add(new PieEntry(allstats.statistic.getHit(), "HIT"));
             pieEntries.add(new PieEntry(allstats.statistic.getMiss(),"MISS"));
-      //  }
+
         PieDataSet pieDataSet = new PieDataSet(pieEntries, allstats.name);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(pieDataSet);
@@ -78,6 +80,7 @@ public class Charts extends AppCompatActivity {
 
         pieChart.setData(data);
         pieChart.animateY(1000);
+        pieChart.setHoleRadius(25f);
         pieChart.invalidate();
     }
 

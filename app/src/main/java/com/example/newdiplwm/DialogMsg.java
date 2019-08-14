@@ -26,10 +26,6 @@ public class DialogMsg extends DialogFragment {
     private ImageView imageView;
 
 
-    private static final String GAME_ID = "GAME_ID";
-    private static final String USERID = "USERID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-
     public DialogMsg(int userId,Context context) {
         this.context =context;
         this.userId = userId;
@@ -65,7 +61,6 @@ public class DialogMsg extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog,int id) {
                         Intent intent = new Intent(context,GameList.class);
-                        intent.putExtra(USERID,userId);
                         startActivity(intent);
                     }
                 });
@@ -76,7 +71,6 @@ public class DialogMsg extends DialogFragment {
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         Intent intent = new Intent(context,GameList.class);
-        intent.putExtra(USERID,userId);
         startActivity(intent);
     }
 

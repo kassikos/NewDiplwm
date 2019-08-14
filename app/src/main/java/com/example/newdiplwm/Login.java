@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Process;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
@@ -22,6 +25,7 @@ public class Login extends AppCompatActivity {
     private MaterialButton loginRegTv;
 
     private Session session;
+    private Intent intent;
     private UserViewModel userViewModel;
 
 
@@ -51,6 +55,7 @@ public class Login extends AppCompatActivity {
         });//mporei na mpei kai h ontouck na dw pio einai kalitero
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        intent = getIntent();
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +68,7 @@ public class Login extends AppCompatActivity {
                     session.setUsernameSession(user.getNickName());
                     session.setUserIdSession(user.getUserId());
                     Toast.makeText(Login.this,"Καλώς ήρθες "+ user.getNickName(),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this,GameList.class);
+                    intent = new Intent(Login.this,GameList.class);
 
                     startActivity(intent);
                     Animatoo.animateSplit(Login.this);
@@ -77,4 +82,15 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+       moveTaskToBack(true);
+
+
+    }
+
+
 }

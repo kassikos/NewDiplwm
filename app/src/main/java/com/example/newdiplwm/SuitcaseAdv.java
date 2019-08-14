@@ -166,6 +166,7 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
         view = inflater.inflate(R.layout.suitcase_adv_layout, container, false);
 
         assignAllImageViews();
+        startspeed = new Timestamp(System.currentTimeMillis());
 
         return view;
     }
@@ -475,8 +476,11 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
             }
         }
 
+        long diffspeed = endspeed.getTime() - startspeed.getTime();
+        double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
 
-        passData(hit,miss,endspeed.getTime(),missPoints,trueCounter);
+
+        passData(hit,miss,speedseconds,missPoints,trueCounter);
 
 
 
@@ -555,10 +559,10 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
 
 
     public interface onDataPassAdv {
-        public void onDataPass(int hit,int miss,long speedinSeconds,boolean misspoints,int truecounter);
+        public void onDataPass(int hit,int miss,double speedinSeconds,boolean misspoints,int truecounter);
     }
 
-    private void passData(int b,int c,long d,boolean e,int f) {
+    private void passData(int b,int c,double d,boolean e,int f) {
         dataPasser.onDataPass(b,c,d,e,f);
     }
 

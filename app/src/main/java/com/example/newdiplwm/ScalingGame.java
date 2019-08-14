@@ -243,7 +243,7 @@ public class ScalingGame extends AppCompatActivity {
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
@@ -277,7 +277,7 @@ public class ScalingGame extends AppCompatActivity {
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
-                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,-1,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
+                    GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
