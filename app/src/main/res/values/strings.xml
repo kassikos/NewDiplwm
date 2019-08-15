@@ -45,7 +45,7 @@
 
     <!--settings-->
     <string name="settings">Δυσκολία</string>
-    <string name="statistics">Σταστιστικά</string>
+    <string name="statistics">Στατιστικά</string>
     <string name="home">Αρχική</string>
     <string name="info">Πληροφορίες</string>
     <string name="logout">Αποσύνδεση</string>

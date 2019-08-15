@@ -247,12 +247,18 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("ΕΞΟΔΟΣ");
-        builder.setMessage("DO YOU WANT TO LEAVE ?");
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setMessage("Έξοδος από την εφαρμογή;");
+        builder.setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                finishAndRemoveTask();
-                Intent intent = new Intent(GameList.this,Login.class);
-                startActivity(intent);
+
+                //kleinei teleiws thn efarmogh
+                finishAffinity();
+
+
+                //finishAndRemoveTask();
+                //auto kalutera na ginetai sthn aposyndesh
+//                Intent intent = new Intent(GameList.this,Login.class);
+//                startActivity(intent);
 
             }
         });
@@ -262,6 +268,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         } //else {
 //            super.onBackPressed();
 //        }
+
         builder.show();
     }
 
