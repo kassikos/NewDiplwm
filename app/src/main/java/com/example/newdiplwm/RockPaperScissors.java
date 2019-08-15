@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.Parcel;

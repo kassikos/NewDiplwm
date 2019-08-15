@@ -71,8 +71,8 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         gameHolder.textView3.setText(String.valueOf(currentStatistic.statistic.getPlayTotalTime()) + " (Δευ/λεπτα)");
         gameHolder.textView2.setText(String.valueOf(currentStatistic.statistic.getScore()));
         gameHolder.textView4.setText(String.valueOf(currentStatistic.statistic.getDays()));
-        //gameHolder.textView6.setText(String.valueOf(currentStatistic.statistic.getPlayTotalTime()));
         gameHolder.textView5.setText(String.format("%.2f", currentStatistic.statistic.getAccuracy()).toString());
+        gameHolder.textView6.setText(String.valueOf(currentStatistic.statistic.getQuits()));
 
 
         gameHolder.setOnClickListener(new OnItemClickListener() {
@@ -122,6 +122,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         private TextView textView3;
         private TextView textView4;
         private TextView textView5;
+        private TextView textView6;
         private TextView textViewTitle;
 
         private OnItemClickListener onItemClickListener;
@@ -135,6 +136,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
             textView3 = itemView.findViewById(R.id.tbl_txt4_value);
             textView4 = itemView.findViewById(R.id.tbl_txt5_value);
             textView5 = itemView.findViewById(R.id.tbl_txt6_value);
+            textView6 = itemView.findViewById(R.id.tbl_txt7_value);
             textViewTitle = itemView.findViewById(R.id.tbl_Title);
 
             itemView.setOnClickListener(this);

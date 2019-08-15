@@ -151,6 +151,25 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tbl_txt5_value" />
 
+            <TextView
+                android:id="@+id/tbl_txt7"
+                style="@style/Textstyle"
+                android:text="@string/quits"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt7_value"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt3" />
+
+            <TextView
+                android:id="@+id/tbl_txt7_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt7"
+                app:layout_constraintRight_toLeftOf="@id/tbl_txt6"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt3_value" />
+
+
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

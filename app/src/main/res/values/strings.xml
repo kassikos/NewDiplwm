@@ -100,6 +100,7 @@
     <string name="days">Μέρες</string>
     <string name="responseTime">Χρόνος Απόκρισης</string>
     <string name="accuracy">Ευστοχία</string>
+    <string name="quits">Εξοδοι</string>
 
     <string name="open">open</string>
     <string name="close">close</string>

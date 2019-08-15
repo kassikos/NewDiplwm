@@ -7,50 +7,79 @@
 
     <application
         android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SoundImage"></activity>
+        <activity android:name=".SoundImage"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"/>
         <activity
             android:name=".SoundWord"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList" />
         <activity
             android:name=".Suitcase"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity android:name=".AudioPersonPick" />
-        <activity android:name=".ShadowGame" />
-        <activity android:name=".OrderGame" />
-        <activity android:name=".ObjectSelector" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList" />
+
+        <activity
+            android:name=".AudioPersonPick"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList" />
+        <activity
+            android:name=".ShadowGame"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList" />
+        <activity
+            android:name=".OrderGame"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
+        <activity
+            android:name=".ObjectSelector"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"/>
         <activity
             android:name=".MemoryMatrix"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"/>
         <activity
             android:name=".ScalingGame"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"/>
         <activity
             android:name=".Charts"
-            android:parentActivityName=".StatisticsTable"/>
+            android:parentActivityName=".StatisticsTable"
+            android:launchMode="singleTop" />
         <activity android:name=".RockPaperScissors" />
         <activity
             android:name=".StatisticsTable"
-            android:parentActivityName=".GameList" />
+            android:parentActivityName=".GameList"
+            android:launchMode="singleTop" />
         <activity
+            android:launchMode="singleTop"
             android:name=".Settings"
             android:parentActivityName=".GameList" />
         <activity
             android:name=".GameList"
             android:launchMode="singleTop" />
-        <activity android:name=".Register" />
+        <activity android:name=".Register"
+            android:launchMode="singleTop" />
         <activity android:name=".Login">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

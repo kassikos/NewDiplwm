@@ -27,9 +27,8 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     MaterialButton startbutton;
 
     private String menuDifficulty, currentDifficulty;
-
-
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, trueCounter=0, totalPoints=0,RoundsCounter = 0;
+    private int click=0;
 
     boolean missPoints = false;
 
@@ -235,7 +234,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,-1,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+            GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,0,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
 
@@ -260,9 +259,9 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
     @Override
-    public void onDataPass(int hit, int miss, long speedInSeconds, boolean misspoints, int truecounter) {
+    public void onDataPass(int hit, int miss, double speedInSeconds, boolean misspoints, int truecounter) {
 
-        //RoundsCounter +=rounds;
+        click++;
         totalhit +=hit;
         totalmiss +=miss;
         totalspeed += speedInSeconds;
