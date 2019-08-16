@@ -211,7 +211,8 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
 
-                } else {
+                }
+                    else {
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
@@ -496,12 +497,18 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                     advancedTextTimer.setText("");
 
                 }
+
                 textQuestion.setText("");
                 imageView1.setImageResource(0);
                 imageView2.setImageResource(0);
                 startButton.setText(getResources().getString(R.string.nextRound));
                 startButton.setVisibility(View.VISIBLE);
                 unclickable();
+
+                if (currentRound == TotalRounds)
+                {
+                    startButton.setVisibility(View.INVISIBLE);
+                }
             }
         }.start();
 

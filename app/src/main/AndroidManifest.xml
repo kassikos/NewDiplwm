@@ -13,30 +13,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SoundImage"
+        <activity
+            android:name=".SoundImage"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList"/>
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".SoundWord"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList" />
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".Suitcase"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList" />
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
 
         <activity
             android:name=".AudioPersonPick"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList" />
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".ShadowGame"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList" />
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".OrderGame"
             android:launchMode="singleTop"
@@ -45,24 +51,32 @@
         <activity
             android:name=".ObjectSelector"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList"/>
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".MemoryMatrix"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList"/>
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".ScalingGame"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="landscape"
             android:launchMode="singleTop"
-            android:parentActivityName=".GameList"/>
+            android:parentActivityName=".GameList"
+            android:noHistory="true"/>
         <activity
             android:name=".Charts"
             android:parentActivityName=".StatisticsTable"
             android:launchMode="singleTop" />
-        <activity android:name=".RockPaperScissors" />
+        <activity
+            android:name=".RockPaperScissors"
+            android:launchMode="singleTop"
+            android:parentActivityName=".GameList"
+            android:noHistory="true"
+            />
         <activity
             android:name=".StatisticsTable"
             android:parentActivityName=".GameList"
@@ -74,7 +88,8 @@
         <activity
             android:name=".GameList"
             android:launchMode="singleTop" />
-        <activity android:name=".Register"
+        <activity
+            android:name=".Register"
             android:launchMode="singleTop" />
         <activity android:name=".Login">
 

@@ -502,10 +502,11 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 for (int key : imageIDS.keySet()) {
                     ImageView v = findViewById(key);
                     v.setImageResource(0);
-                    startButton.setText(getResources().getString(R.string.nextRound));
-                    startButton.setVisibility(View.VISIBLE);
+
 
                 }
+                startButton.setText(getResources().getString(R.string.nextRound));
+                startButton.setVisibility(View.VISIBLE);
 
                 picked.clear();
                 unpicked.clear();
@@ -513,6 +514,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
                 if (currentRound == TotalRounds)
                 {
+                    startButton.setVisibility(View.INVISIBLE);
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);

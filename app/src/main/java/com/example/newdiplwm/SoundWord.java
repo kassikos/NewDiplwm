@@ -405,6 +405,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         startButton.setVisibility(View.VISIBLE);
 
         if (currentRound == TotalRounds) {
+            startButton.setVisibility(View.INVISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);

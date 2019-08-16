@@ -578,6 +578,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         }
 
         if (currentRound == TotalRounds) {
+            startButton.setVisibility(View.INVISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
