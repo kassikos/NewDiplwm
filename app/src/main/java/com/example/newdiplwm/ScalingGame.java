@@ -47,7 +47,7 @@ public class ScalingGame extends AppCompatActivity {
 
 
     private static final String WRONG = "Λάθος! ";
-    private static final String CORRECT = "Σωστά ";
+    private static final String CORRECT = "Σωστά! ";
 
     private String rightResult = "";
 
@@ -814,7 +814,9 @@ public class ScalingGame extends AppCompatActivity {
             trueCounter++;
 
             textQuestion.setText(CORRECT+rightResult);
-            textQuestion.setTextColor(Color.GREEN);
+
+            //tsekare prasinaki
+            textQuestion.setTextColor(Color.parseColor("#00CC00"));
 
         }
         else
