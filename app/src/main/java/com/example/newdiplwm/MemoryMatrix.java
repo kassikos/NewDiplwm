@@ -316,6 +316,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,0,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
+            startbutton.setVisibility(View.INVISIBLE);
             shopPopUp();
         }
     }

@@ -602,8 +602,13 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 textTimer.setText(getResources().getString(R.string.timeFinish));
                 countPoints();
                 setCleanTimer();
+                gameInit = false;
+                displayedImageview.clear();
+                displayedimages.clear();
+                startButton.setVisibility(View.VISIBLE);
                 if (currentRound == TotalRounds)
                 {
+                    startButton.setVisibility(View.INVISIBLE);
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -612,11 +617,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
                 }
-
-                gameInit = false;
-                displayedImageview.clear();
-                displayedimages.clear();
-                startButton.setVisibility(View.VISIBLE);
             }
 
 
@@ -803,12 +803,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         }
 
 
+        startButton.setVisibility(View.VISIBLE);
         setCleanTimer();
         unclickable();
         countPoints();
 
         if (currentRound == TotalRounds)
         {
+            startButton.setVisibility(View.INVISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -820,10 +822,9 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         gameInit = false;
         displayedImageview.clear();
         displayedimages.clear();
-        startButton.setVisibility(View.VISIBLE);
+
 
     }
-    //TODO rotate
 
 
     private void setCleanTimer(){

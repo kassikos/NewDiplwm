@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
-
-import android.os.Process;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -191,10 +189,10 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                     startActivity(intent);
 
                 }
-            }
+                //finishAffinity();
+
+        }
         });
-
-
 
     }
 
@@ -251,14 +249,14 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         builder.setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                //kleinei teleiws thn efarmogh
-                finishAffinity();
-
-
+                 finishAffinity();
                 //finishAndRemoveTask();
-                //auto kalutera na ginetai sthn aposyndesh
-//                Intent intent = new Intent(GameList.this,Login.class);
-//                startActivity(intent);
+             //   startActivity(intent);
+
+                if (isTaskRoot())
+                {
+                    moveTaskToBack(true);
+                }
 
             }
         });
@@ -315,7 +313,9 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                 break;
 
             case R.id.nav_logout:
-                finish();
+                finishAndRemoveTask();
+                Intent intent = new Intent(GameList.this,Login.class);
+                startActivity(intent);
                 break;
         }
 

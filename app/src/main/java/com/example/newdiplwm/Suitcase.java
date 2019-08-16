@@ -1,10 +1,13 @@
 package com.example.newdiplwm;
 
 
-import android.content.Intent;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
     MaterialButton startbutton;
+    private ImageView exit;
 
     private String menuDifficulty, currentDifficulty;
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, trueCounter=0, totalPoints=0,RoundsCounter = 0;
@@ -81,8 +85,10 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         pointsHashMap.put("EASY",0);
         pointsHashMap.put("MEDIUM",5);
         pointsHashMap.put("ADVANCED",10);
+
         startbutton = findViewById(R.id.Suitcase_startButton);
         textView = findViewById(R.id.Suitcase_textRounds);
+        exit = findViewById(R.id.ExitSuitcase);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -105,6 +111,65 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (RoundsCounter == 0 || click ==0 )
+                {
+                    startTime = new Timestamp(System.currentTimeMillis());
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+                else
+                {
+
+                    endTime = new Timestamp(System.currentTimeMillis());
+                    long longTime = endTime.getTime() - startTime.getTime();
+                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+                    gameEventViewModel.insertGameEvent(gameEvent);
+                    userViewModel.updatestatsTest(user_id, game_id);
+                    finish();
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (RoundsCounter == 0 || click ==0 )
+        {
+            startTime = new Timestamp(System.currentTimeMillis());
+            endTime = new Timestamp(System.currentTimeMillis());
+            GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+        else
+        {
+
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            finish();
+
+        }
+
+    }
 
     public void checkMode()
     {
@@ -187,6 +252,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
 
+
     private void countPoints()
     {
 
@@ -231,6 +297,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         if (RoundsCounter >= TotalRounds)
         {
 
+
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -238,8 +305,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
 
-            //timer gia na emfanizetai to PopUp META to anoigma ths valitsas
-            //genikotera oi timers trexoun parallhla auto an einai thema na to doume mhpws ginei alliws
+
             shopPopUpTimer = new CountDownTimer(6000, 1000) {
                 @Override
                 public void onTick(long l) {
@@ -250,6 +316,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 public void onFinish() {
 
                     startbutton.setVisibility(View.INVISIBLE);
+
                     shopPopUp();
 
                 }

@@ -688,6 +688,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
                 if (currentRound == TotalRounds)
                 {
+                    startButton.setVisibility(View.INVISIBLE);
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);

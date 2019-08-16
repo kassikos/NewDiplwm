@@ -741,6 +741,10 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 pickedImage.clear();
                 startButton.setText(getResources().getString(R.string.nextRound));
                 startButton.setVisibility(View.VISIBLE);
+                if (currentRound == TotalRounds)
+                {
+                    startButton.setVisibility(View.INVISIBLE);
+                }
             }
         };
         limit = 0;
