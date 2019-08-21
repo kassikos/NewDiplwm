@@ -31,24 +31,14 @@ import java.util.List;
 public class GameList extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
 
     private  GameViewModel gameViewModel;
-    private int currentGameId;
-    private static final String GAME_ID = "GAME_ID";
-    private static final String USER_ID = "USER_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
     private Session session;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     List<Game> allgamesList = new ArrayList<Game>();
-    List<Integer> allgamesIDList = new ArrayList<Integer>();
-
-    private int userid;
-
-
-    private boolean mToolBarNavigationListenerIsRegistered = false;
+    private boolean mToolBarNavigationListenerIsRegistered = false, rememberMe;
     private String preferenceDifficulty;
 
-    private static final String USERNAME = "USERNAME";
 
 
 
@@ -57,9 +47,8 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        setupPreferences();
         session = new Session(getApplicationContext());
-        userid = session.getUserIdSession();
+        setupPreferences();
 
 //        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 //
@@ -282,6 +271,8 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferenceDifficulty = sharedPreferences.getString(getString(R.string.difficultyKey),getString(R.string.mediumValue));
+        rememberMe = sharedPreferences.getBoolean("rememberME",true);
+        session.setRememberme(rememberMe);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
     }
@@ -293,6 +284,10 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         if (key.equals(getString(R.string.difficultyKey)))
         {
             preferenceDifficulty = sharedPreferences.getString(getString(R.string.difficultyKey),getString(R.string.mediumValue));
+        }
+        if (key.equals("rememberME"))
+        {
+            rememberMe = sharedPreferences.getBoolean("rememberME",true);
         }
     }
 
@@ -311,8 +306,16 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                 startActivity(intentStats);
                 Animatoo.animateDiagonal(GameList.this);
                 break;
-
+            case R.id.nav_chart:
+                Intent intentChart = new Intent(this,MenuChart.class);
+                startActivity(intentChart);
+                break;
+            case R.id.nav_questionnaire:
+                Intent intentQuestionnaire = new Intent(this,Questionnaire.class);
+                startActivity(intentQuestionnaire);
+                break;
             case R.id.nav_logout:
+                session.setRememberme(false);
                 finishAndRemoveTask();
                 Intent intent = new Intent(GameList.this,Login.class);
                 startActivity(intent);

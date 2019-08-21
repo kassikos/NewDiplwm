@@ -167,10 +167,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tbl_txt3_value" />
 
 
-
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
