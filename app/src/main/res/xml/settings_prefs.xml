@@ -5,7 +5,7 @@
 
     <SwitchPreferenceCompat
         app:key="rememberME"
-        android:defaultValue="true"
+        android:defaultValue="false"
         app:title="Παραμείνετε Συνδεδεμένος" />
 
     <PreferenceCategory android:title="@string/settings">

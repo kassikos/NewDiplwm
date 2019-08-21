@@ -271,7 +271,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferenceDifficulty = sharedPreferences.getString(getString(R.string.difficultyKey),getString(R.string.mediumValue));
-        rememberMe = sharedPreferences.getBoolean("rememberME",true);
+        rememberMe = sharedPreferences.getBoolean("rememberME",false);
         session.setRememberme(rememberMe);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
@@ -287,7 +287,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         }
         if (key.equals("rememberME"))
         {
-            rememberMe = sharedPreferences.getBoolean("rememberME",true);
+            rememberMe = sharedPreferences.getBoolean("rememberME",false);
         }
     }
 
