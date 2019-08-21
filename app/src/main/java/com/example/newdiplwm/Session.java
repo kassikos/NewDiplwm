@@ -55,7 +55,7 @@ public class Session {
         prefs.edit().putBoolean("rememberME",value).apply();
     }
     public Boolean getRememberme(){
-        Boolean remember = prefs.getBoolean("rememberME",true);
+        Boolean remember = prefs.getBoolean("rememberME",false);
         return remember;
     }
 
