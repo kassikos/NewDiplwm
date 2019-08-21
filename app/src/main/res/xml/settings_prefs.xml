@@ -4,13 +4,10 @@
 
 
     <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications" />
+        app:key="rememberME"
+        android:defaultValue="true"
+        app:title="Παραμείνετε Συνδεδεμένος" />
 
-    <Preference
-        app:key="feedback"
-        app:summary="Report technical issues or suggest new features"
-        app:title="Send feedback" />
     <PreferenceCategory android:title="@string/settings">
     <ListPreference
         android:defaultValue="@string/mediumValue"

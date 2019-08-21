@@ -42,6 +42,14 @@ public class Login extends AppCompatActivity {
         Context context = getApplicationContext();
         session = new Session(context);
 
+        if (session.getRememberme())
+        {
+            intent = new Intent(Login.this,GameList.class);
+            Toast.makeText(Login.this,"Καλώς ήρθες "+ session.getUsernameSession(),Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            Animatoo.animateSplit(Login.this);
+        }
+
         Lnickname = (TextInputEditText) findViewById(R.id.TextInputEditText);
         loginbtn = (MaterialButton) findViewById(R.id.material_text_button);
         loginRegTv = (MaterialButton) findViewById(R.id.btnText);

@@ -51,5 +51,13 @@ public class Session {
         return mode;
     }
 
+    public void setRememberme(boolean value){
+        prefs.edit().putBoolean("rememberME",value).apply();
+    }
+    public Boolean getRememberme(){
+        Boolean remember = prefs.getBoolean("rememberME",true);
+        return remember;
+    }
+
 
 }

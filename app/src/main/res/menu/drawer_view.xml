@@ -40,6 +40,24 @@
     </group>
 
     <group
+        android:id="@+id/grp7"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_chart"
+            android:icon="@drawable/chart_bar"
+            android:title="@string/BarChart" />
+    </group>
+
+    <group
+        android:id="@+id/grp8"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_questionnaire"
+            android:icon="@drawable/baseline_feedback_black_24dp"
+            android:title="@string/questionnaire" />
+    </group>
+
+    <group
         android:id="@+id/grp5"
         android:checkableBehavior="single">
         <item
@@ -48,13 +66,7 @@
             android:title="@string/info" />
     </group>
 
-    <group
-        android:id="@+id/grp7"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_chart"
-            android:title="chart" />
-    </group>
+
 
     <group
         android:id="@+id/grp6"

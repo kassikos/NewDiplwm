@@ -50,6 +50,7 @@
     <string name="info">Πληροφορίες</string>
     <string name="logout">Αποσύνδεση</string>
     <string name="profile">Προφίλ</string>
+    <string name="questionnaire">Ερωτηματολόγιο</string>
 
 
     <!--labels-->
@@ -123,6 +124,30 @@
     <string name="bronze">Καλή προσπάθεια, μπορείς και καλύτερα! </string>
     <string name="silver">Μπράβο!! Συνέχισε έτσι! </string>
     <string name="gold">Συγχαρητήρια!!! Είσαι από τους καλύτερους! </string>
+
+    <!-- bars activity-->
+    <string name="BarChart">Ραβδόγραμμα Χρόνου</string>
+    <string name="SecPerGame">Δευτερόλπεπτα / Παιχνίδι</string>
+
+    <!-- questionnaire-->
+    <string name="agree">Συμφωνώ \n απολύτως</string>
+    <string name="disagree">Διαφωνώ \n απολύτως</string>
+    <string name="next">Επόμενη Ερώτηση</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="question_one">Νομίζω ότι θα ήθελα να χρησιμοποιώ αυτά τα παιχνίδια συχνά</string>
+    <string name="question_two">Βρήκα αυτά τα παιχνίδια αδικαιολόγητα περίπλοκα</string>
+    <string name="question_three">Σκέφτηκα ότι αυτά τα παιχνίδια ήταν εύκολα στη χρήση</string>
+    <string name="question_four">Νομίζω ότι θα χρειαστώ βοήθεια από κάποιον ειδικό για να μπορέσω να χρησιμοποιήσω αυτά τα παιχνίδια</string>
+    <string name="question_five">Βρήκα τις διάφορες λειτουργίες σ’ αυτά τα παιχνίδια καλά ενσωματωμένες</string>
+    <string name="question_six">Σκέφτηκα ότι υπήρχε μεγάλη ασυνέπεια στη λειτουργία των παιχνιδιών </string>
+    <string name="question_seven">Φαντάζομαι ότι οι περισσότεροι άνθρωποι θα μάθουν να χρησιμοποιούν αυτά τα παιχνίδια πολύ γρήγορα</string>
+    <string name="question_eight">Βρήκα αυτά τα παιχνίδια πολύ δύσκολα/περίπλοκα στη χρήση</string>
+    <string name="question_nine">Ένιωσα πολύ σίγουρος/η χρησιμοποιώντας αυτά τα παιχνίδια</string>
+    <string name="question_ten">Χρειάστηκε να μάθω πολλά πράγματα πριν να μπορέσω να ξεκινήσω με αυτά τα παιχνίδια</string>
 
 
 </resources>
