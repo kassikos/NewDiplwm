@@ -20,11 +20,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.button.MaterialButton;
 
-public class Question10 extends Fragment implements View.OnClickListener{
+public class Question10 extends Fragment implements View.OnClickListener, DialogInterface.OnDismissListener {
     private View view;
     private MaterialButton mtb1,mtb2,mtb3,mtb4,mtb5 , next;
     private int picked = -1;
     private FragmentTransaction fragmentTransaction;
+    private Context context;
 
 
 
@@ -43,32 +44,26 @@ public class Question10 extends Fragment implements View.OnClickListener{
     }
 
     private void loadFragment() {
+        final Fragment fragment = this;
+        context = getContext();
 
-        final Context context = getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("ΕΞΟΔΟΣ");
-        builder.setMessage("Έξοδος από την εφαρμογή;");
-        builder.setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
+        builder.setMessage("Τέλος αξιολόγησης");
+
+        builder.setOnDismissListener(this);
+
+
+        builder.setPositiveButton("Συνέχεια", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-
-                Intent intent = new Intent(context,GameList.class);
-                startActivity(intent);
+                dialog.dismiss();
 
             }
         });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
-
-
-        builder.show();
-// create a FragmentManager
-        FragmentManager fm = getFragmentManager();
-         fragmentTransaction = fm.beginTransaction();
-// replace the FrameLayout with new Fragment
-        fragmentTransaction.remove(this);
-        fragmentTransaction.commit();
-//        fragmentTransaction.replace(R.id.frameLayoutQuestionnaire,fragment);// edw prepei na ginei h allagh toy fragment
-         // save the changes
     }
 
     private void assignAllbuttons(){
@@ -127,4 +122,16 @@ public class Question10 extends Fragment implements View.OnClickListener{
 
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        final Fragment fragment = this;
+        Intent intent = new Intent(context, GameList.class);
+        startActivity(intent);
+
+        FragmentManager fm = getFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+
+    }
 }
