@@ -44,7 +44,7 @@
 
 
     <!--settings-->
-    <string name="settings">Δυσκολία</string>
+    <string name="settings">Ρυθμίσεις</string>
     <string name="statistics">Στατιστικά</string>
     <string name="home">Αρχική</string>
     <string name="info">Πληροφορίες</string>
@@ -148,6 +148,9 @@
     <string name="question_eight">Βρήκα αυτά τα παιχνίδια πολύ δύσκολα/περίπλοκα στη χρήση</string>
     <string name="question_nine">Ένιωσα πολύ σίγουρος/η χρησιμοποιώντας αυτά τα παιχνίδια</string>
     <string name="question_ten">Χρειάστηκε να μάθω πολλά πράγματα πριν να μπορέσω να ξεκινήσω με αυτά τα παιχνίδια</string>
+
+    <!-- Tutorials-->
+    <string name="NotAgain">Απενεργοποίηση Οδηγιών</string>
 
 
 </resources>

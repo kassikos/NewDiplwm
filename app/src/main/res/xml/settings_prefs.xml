@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
+    <PreferenceCategory android:title="Σύνδεση">
     <SwitchPreferenceCompat
         app:key="rememberME"
         android:defaultValue="false"
         app:title="Παραμείνετε Συνδεδεμένος" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Οδηγίες">
+    <SwitchPreferenceCompat
+        app:key="testing"
+        android:defaultValue="false"
+        app:title="@string/NotAgain" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings">
     <ListPreference
+        android:positiveButtonText="@string/ok"
         android:defaultValue="@string/mediumValue"
         android:entries="@array/difficulty_options"
         android:entryValues="@array/difficulty_values"

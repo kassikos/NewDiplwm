@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,7 +21,6 @@ public class Question10 extends Fragment implements View.OnClickListener, Dialog
     private View view;
     private MaterialButton mtb1,mtb2,mtb3,mtb4,mtb5 , next;
     private int picked = -1;
-    private FragmentTransaction fragmentTransaction;
     private Context context;
 
 
@@ -129,7 +125,7 @@ public class Question10 extends Fragment implements View.OnClickListener, Dialog
         startActivity(intent);
 
         FragmentManager fm = getFragmentManager();
-        fragmentTransaction = fm.beginTransaction();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.remove(fragment);
         fragmentTransaction.commit();
 

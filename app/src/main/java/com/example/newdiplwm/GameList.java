@@ -289,6 +289,10 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         {
             rememberMe = sharedPreferences.getBoolean("rememberME",false);
         }
+        if (key.equals("testing"))
+        {
+            session.setPlayAgainVideo(sharedPreferences.getBoolean("testing",false));
+        }
     }
 
     @Override

@@ -588,7 +588,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onTick(long l) {
 
                 mTimeLeftInMillis=l;
-                textTimer.setText("Remain "+ l/1000+" Seconds");
+                textTimer.setText("Απομένουν "+ l/1000+" Δευτ/λεπτα");
 
             }
 
