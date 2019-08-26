@@ -10,7 +10,6 @@ public class Session {
     private SharedPreferences prefs;
 
     public Session(Context cntx) {
-        // TODO Auto-generated constructor stub
         prefs = PreferenceManager.getDefaultSharedPreferences(cntx);
     }
 
@@ -57,6 +56,14 @@ public class Session {
     public Boolean getRememberme(){
         Boolean remember = prefs.getBoolean("rememberME",false);
         return remember;
+    }
+
+    public void setPlayAgainVideo(boolean value){
+        prefs.edit().putBoolean("testing",value).apply();
+    }
+    public Boolean getPlayAgainVideo(){
+        Boolean repeat = prefs.getBoolean("testing",false);
+        return repeat;
     }
 
 

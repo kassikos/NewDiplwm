@@ -186,7 +186,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
                             }
 
                             @Override
@@ -237,7 +237,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
                             }
 
                             @Override
@@ -283,7 +283,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
                             }
 
                             @Override
@@ -506,7 +506,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
             }
 
             @Override
@@ -557,7 +557,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
             }
 
             @Override
@@ -626,7 +626,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Remain "+ mTimeLeftInMillis/1000+" Seconds");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
             }
 
             @Override

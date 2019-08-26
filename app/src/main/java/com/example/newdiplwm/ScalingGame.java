@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Random;
@@ -19,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ScalingGame extends AppCompatActivity {
 
-    Button startButton,leftButton,rightButton,equalButton;//na ginoyn material buttons
+    MaterialButton startButton,leftButton,rightButton,equalButton;//na ginoyn material buttons
     ImageView exit;
 
     TextView leftText, rightText,textRounds;
@@ -81,8 +84,11 @@ public class ScalingGame extends AppCompatActivity {
         startButton = findViewById(R.id.startButtonScalling);
 
         leftButton = findViewById(R.id.buttonLeft);
+        leftButton.setBackgroundColor(getResources().getColor(R.color.gray));
         rightButton = findViewById(R.id.buttonRight);
+        rightButton.setBackgroundColor(getResources().getColor(R.color.gray));
         equalButton = findViewById(R.id.buttonEqual);
+        equalButton.setBackgroundColor(getResources().getColor(R.color.gray));
         exit = findViewById(R.id.ExitScalGame);
 
         leftText = findViewById(R.id.textLeft);
@@ -454,7 +460,7 @@ public class ScalingGame extends AppCompatActivity {
         }
         else
         {
-            textRounds.setText("Rounds: "+ RoundsCounter +" / "+TotalRounds);
+            textRounds.setText(RoundsCounter +" / "+TotalRounds);
         }
 
         //gia na proxwrhsoun oi dyskolies

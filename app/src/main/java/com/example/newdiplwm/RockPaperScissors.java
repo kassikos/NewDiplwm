@@ -6,8 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.CountDownTimer;
@@ -29,7 +34,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
-public class RockPaperScissors extends AppCompatActivity implements View.OnClickListener{
+public class RockPaperScissors extends AppCompatActivity implements View.OnClickListener {
 
 
     private static final String MISSPOINTS = "MISSPOINTS";
@@ -103,7 +108,24 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rock_paper_scissors);
 
+
         session = new Session(getApplicationContext());
+
+        boolean test = session.getPlayAgainVideo();
+
+        if (!test) {
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("Tutorial");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+        }
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
@@ -117,7 +139,6 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (savedInstanceState != null)
         {
-
 
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
@@ -625,6 +646,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id, RockPaperScissors.this, hit, totalPoints);
         newFragment.show(getSupportFragmentManager(), "RockPaperScissors");
+    }
+
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(RockPaperScissors.this,R.raw.test,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"Tutorial");
     }
 
     private void countPoints() {
