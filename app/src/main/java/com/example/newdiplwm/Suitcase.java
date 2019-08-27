@@ -80,6 +80,22 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         setContentView(R.layout.activity_suitcase);
         session = new Session(getApplicationContext());
 
+        if (!session.getPlayAgainVideo()) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialSuitcase");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
+
 
 
         pointsHashMap.put("EASY",0);
@@ -245,9 +261,14 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     }
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(Suitcase.this,R.raw.tutorial_suitcase,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialSuitcase");
+    }
+
     public void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,Suitcase.this,totalhit,totalPoints);
-        newFragment.show(getSupportFragmentManager(), "rockpaperScissor");
+        newFragment.show(getSupportFragmentManager(), "Suitcase");
     }
 
 

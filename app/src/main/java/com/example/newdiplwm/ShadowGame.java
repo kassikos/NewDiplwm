@@ -3,6 +3,9 @@ package com.example.newdiplwm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.animation.AnimatorSet;
@@ -117,6 +120,22 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         assignAllButtons();
+
+        if (!session.getPlayAgainVideo()) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialShadowGame");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
 
 
         if (savedInstanceState != null)
@@ -554,6 +573,11 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         }
         else
             animationTextPoints.setTextColor(Color.GREEN);
+    }
+
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(ShadowGame.this,R.raw.tutorial_shadowgame,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialShadowGame");
     }
 
     private void shopPopUp() {

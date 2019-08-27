@@ -2,6 +2,9 @@ package com.example.newdiplwm;
 
 
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -76,6 +79,22 @@ public class ScalingGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scaling_game);
         session = new Session(getApplicationContext());
+
+        if (!session.getPlayAgainVideo()) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialScalingGame");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
 
         game_id = session.getGameIdSession();
         user_id = session.getUserIdSession();
@@ -864,6 +883,10 @@ public class ScalingGame extends AppCompatActivity {
         totalPoints += currentPoints;
     }
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(ScalingGame.this,R.raw.tutorial_scalinggame,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialScalingGame");
+    }
 
     public void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,ScalingGame.this,hit,totalPoints);
