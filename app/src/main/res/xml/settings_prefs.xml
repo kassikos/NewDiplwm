@@ -24,6 +24,7 @@
         android:defaultValue="@string/mediumValue"
         android:entries="@array/difficulty_options"
         android:entryValues="@array/difficulty_values"
+        android:summary="%s"
         android:key="@string/difficultyKey"
         android:title="@string/difficultyLabel"/>
     </PreferenceCategory>

@@ -57,6 +57,25 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
         session = new Session(getApplicationContext());
 
+
+        boolean test = session.getPlayAgainVideo();
+
+        if (!test) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialMemoryMatrix");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
+
        // Fragment existingFragment = getSupportFragmentManager().findFragmentById(R.id.gridLayoutMatrix);
 
 //        if (savedInstanceState != null)
@@ -249,9 +268,14 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
     }
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(MemoryMatrix.this,R.raw.tutorial_memorymatrix,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialMemoryMatrix");
+    }
+
     public void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,MemoryMatrix.this,totalhit,totalPoints);
-        newFragment.show(getSupportFragmentManager(), "rockpaperScissor");
+        newFragment.show(getSupportFragmentManager(), "MemoryMatrixPopUp");
     }
 
 

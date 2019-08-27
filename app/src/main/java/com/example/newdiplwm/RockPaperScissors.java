@@ -114,6 +114,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         boolean test = session.getPlayAgainVideo();
 
         if (!test) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             showTutorialPopUp();
 
         }
@@ -125,6 +126,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 

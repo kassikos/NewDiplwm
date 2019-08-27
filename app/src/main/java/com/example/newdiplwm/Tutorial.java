@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     public void onResume() {
         super.onResume();
         Log.d("onResume","onResume");
-//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
 //       // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
 
         videoView.setOnCompletionListener(this);
@@ -139,6 +140,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         getDialog().dismiss();
+
     }
 
 //    @Override

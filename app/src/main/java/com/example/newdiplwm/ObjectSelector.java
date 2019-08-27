@@ -3,6 +3,9 @@ package com.example.newdiplwm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.animation.AnimatorSet;
@@ -103,6 +106,23 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         assignAllButtons();
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         session = new Session(getApplicationContext());
+
+
+        if (!session.getPlayAgainVideo()) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialObjectSelector");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
@@ -618,6 +638,12 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         }
 
     }
+
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(ObjectSelector.this,R.raw.tutorial_objectselector,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialObjectSelector");
+    }
+
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,ObjectSelector.this,hit,totalPoints);
         newFragment.show(getSupportFragmentManager(), "ObjectSelector");
