@@ -3,6 +3,9 @@ package com.example.newdiplwm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -107,7 +110,6 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         session = new Session(getApplicationContext());
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-
 
         if (savedInstanceState != null) {
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
@@ -217,6 +219,28 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialAudioPersonPick");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
+
+
+
+
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -594,6 +618,10 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(AudioPersonPick.this,R.raw.tutorial_audiopersonpick,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialAudioPersonPick");
+    }
 
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id, AudioPersonPick.this, hit, totalPoints);

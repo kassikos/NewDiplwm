@@ -3,6 +3,9 @@ package com.example.newdiplwm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.animation.AnimatorSet;
@@ -339,6 +342,26 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
+
+
+
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialOrderGame");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
 
 
 
@@ -777,6 +800,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         }
     }
+
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(OrderGame.this,R.raw.tutorial_ordergame,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialOrderGame");
+    }
+
 
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id,OrderGame.this,hit,totalPoints);

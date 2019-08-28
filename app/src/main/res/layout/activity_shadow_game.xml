@@ -41,7 +41,6 @@ tools:context=".ShadowGame">
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
-    android:fontFamily="@font/alfa_slab_one"
     android:gravity="center"
     android:textSize="40sp"
     app:layout_constraintBottom_toTopOf="@id/gridLayoutShadwGame"
