@@ -37,7 +37,7 @@ public class MenuChart extends AppCompatActivity {
         session = new Session(getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.menucharttoolbar);
-        toolbar.setTitle("BarChart");
+        toolbar.setTitle(R.string.BarChart);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null){

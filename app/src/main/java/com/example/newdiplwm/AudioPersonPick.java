@@ -192,6 +192,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
+                    unclickable();
 
                 } else {
                     startButton.setVisibility(View.VISIBLE);
@@ -209,6 +210,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             menuDifficulty = session.getModeSession();
             matching();
             matchFourColours();
+            unclickable();
         }
 
 

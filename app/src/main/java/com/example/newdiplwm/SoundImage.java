@@ -207,6 +207,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
+                    unclickable();
 
                 } else {
                     startButton.setVisibility(View.VISIBLE);
@@ -223,6 +224,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             user_id = session.getUserIdSession();
             game_id = session.getGameIdSession();
             menuDifficulty =  session.getModeSession();
+            unclickable();
         }
 
 
