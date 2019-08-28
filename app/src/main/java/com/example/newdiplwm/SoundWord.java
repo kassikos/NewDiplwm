@@ -87,6 +87,30 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         soundWordViewModel = ViewModelProviders.of(this).get(SoundWordViewModel.class);
         session = new Session(getApplicationContext());
 
+        boolean test = session.getPlayAgainVideo();
+
+        if (!test) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialSoundWord");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
+
+
+
+
+
+
+
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
@@ -96,6 +120,10 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         user_id = session.getUserIdSession();
         game_id = session.getGameIdSession();
         menuDifficulty = session.getModeSession();
+
+
+
+
 
 
 
@@ -356,10 +384,14 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     }
 
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(SoundWord.this,R.raw.tutorial_soundword,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialSoundWord");
+    }
 
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id, SoundWord.this, totalhit, totalPoints);
-        newFragment.show(getSupportFragmentManager(), "AudioPersonPick");
+        newFragment.show(getSupportFragmentManager(), "SoundWordPopUp");
     }
 
     private void countPoints() {

@@ -3,6 +3,9 @@ package com.example.newdiplwm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.animation.AnimatorSet;
@@ -233,6 +236,26 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
+
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialSoundImage");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
+
+
 
 
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -794,9 +817,16 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    private void showTutorialPopUp(){
+        DialogFragment dialogFragment = new Tutorial(SoundImage.this,R.raw.tutorial_soundimage,getPackageName());
+        dialogFragment.show(getSupportFragmentManager(),"TutorialSoundImage");
+    }
+
+
+
     private void shopPopUp() {
         DialogFragment newFragment = new DialogMsg(user_id, SoundImage.this, hit, totalPoints);
-        newFragment.show(getSupportFragmentManager(), "AudioPersonPick");
+        newFragment.show(getSupportFragmentManager(), "SoundImage");
     }
 
     private void countPoints() {

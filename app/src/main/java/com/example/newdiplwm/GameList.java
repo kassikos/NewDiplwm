@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameList extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +41,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     private String preferenceDifficulty;
 
 
-
+    private HashMap<String, String> GameNamesHashmap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,17 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         session = new Session(getApplicationContext());
         setupPreferences();
+
+        GameNamesHashmap.put("Rock",getString(R.string.Rock));
+        GameNamesHashmap.put("Calcution",getString(R.string.Calcution));
+        GameNamesHashmap.put("MemoryMatrix",getString(R.string.MemoryMatrix));
+        GameNamesHashmap.put("ObjectSelector",getString(R.string.ObjectSelector));
+        GameNamesHashmap.put("OrderGame",getString(R.string.OrderGame));
+        GameNamesHashmap.put("Suitcase",getString(R.string.Suitcase));
+        GameNamesHashmap.put("ShadowGame",getString(R.string.ShadowGame));
+        GameNamesHashmap.put("PersonPickGame",getString(R.string.PersonPickGame));
+        GameNamesHashmap.put("SoundWord",getString(R.string.SoundWord));
+        GameNamesHashmap.put("SoundImage",getString(R.string.SoundImage));
 
 //        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 //
@@ -103,7 +115,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         gameAdapter.setOnClickListener(new GameAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Game game) {
-                Toast.makeText(GameList.this, "Επιλογή "+game.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GameList.this, "Επέλεξες: "+GameNamesHashmap.get(game.getName()), Toast.LENGTH_SHORT).show();
 
 
                 session.setModeSession(preferenceDifficulty);
