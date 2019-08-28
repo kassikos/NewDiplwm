@@ -918,6 +918,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         imagebutton3.setClickable(true);
         imagebutton4.setClickable(true);
         imagebutton5.setClickable(true);
+        missingObj.setClickable(true);
     }
     private  void unclickable(){
         imagebutton1.setClickable(false);
@@ -1032,6 +1033,4 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             dest.writeIntArray(values);
         }
     }
-
-    //TODO kapoy paizei lathos me ta clickable kai ta unclickable
 }
