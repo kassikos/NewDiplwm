@@ -107,23 +107,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         session = new Session(getApplicationContext());
 
-
-        if (!session.getPlayAgainVideo()) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
-
-        }
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
-        Fragment prev = fm.findFragmentByTag("TutorialObjectSelector");
-        if (prev != null) {
-
-            fragmentTransaction.remove(prev);
-            fragmentTransaction.commit();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-        }
-
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
@@ -185,6 +168,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 imageviews = savedInstanceState.getIntegerArrayList(IMAGEVIEWS);
                 picked = savedInstanceState.getIntegerArrayList(PICKED);
                 imageIDS = (HashMap<Integer, Integer>) savedInstanceState.getSerializable(MATCH);
+                unclick();
             }
 
         }
@@ -195,10 +179,30 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             game_id = session.getGameIdSession();
             menuDifficulty = session.getModeSession();
             fillListImageview();
+            unclick();
         }
+
+
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialObjectSelector");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+        }
 
         startButton.setOnClickListener(new View.OnClickListener(){
             @Override

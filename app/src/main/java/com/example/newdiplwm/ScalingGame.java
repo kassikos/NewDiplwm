@@ -80,7 +80,7 @@ public class ScalingGame extends AppCompatActivity {
         setContentView(R.layout.activity_scaling_game);
         session = new Session(getApplicationContext());
 
-        if (!session.getPlayAgainVideo()) {
+        if (!session.getPlayAgainVideo() && RoundsCounter == 1) {
             //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             showTutorialPopUp();
 

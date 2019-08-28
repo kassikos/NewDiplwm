@@ -80,7 +80,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         setContentView(R.layout.activity_suitcase);
         session = new Session(getApplicationContext());
 
-        if (!session.getPlayAgainVideo()) {
+        if (!session.getPlayAgainVideo() && RoundsCounter == 0) {
             //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             showTutorialPopUp();
 

@@ -313,6 +313,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             {
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
+                    unclickable();
                 }
                 else
                 {
@@ -330,6 +331,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             matchlists();
             initialiseLists();
             fillListImageview();
+            unclickable();
         }
 
 
@@ -923,6 +925,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         imagebutton3.setClickable(false);
         imagebutton4.setClickable(false);
         imagebutton5.setClickable(false);
+        missingObj.setClickable(false);
     }
 
     private void initialiseLists(){

@@ -103,7 +103,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         gameAdapter.setOnClickListener(new GameAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Game game) {
-                Toast.makeText(GameList.this, "to patisa "+game.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GameList.this, "Επιλογή "+game.getName(), Toast.LENGTH_SHORT).show();
 
 
                 session.setModeSession(preferenceDifficulty);

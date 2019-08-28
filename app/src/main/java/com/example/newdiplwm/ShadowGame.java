@@ -121,23 +121,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         assignAllButtons();
 
-        if (!session.getPlayAgainVideo()) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
-
-        }
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
-        Fragment prev = fm.findFragmentByTag("TutorialShadowGame");
-        if (prev != null) {
-
-            fragmentTransaction.remove(prev);
-            fragmentTransaction.commit();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-        }
-
-
         if (savedInstanceState != null)
         {
 
@@ -201,6 +184,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 {
                     startButton.setVisibility(View.VISIBLE);
                     clearScreen();
+                    unclickable();
 
                 }
                 else
@@ -218,6 +202,24 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             user_id = session.getUserIdSession();
             game_id = session.getGameIdSession();
             menuDifficulty = session.getModeSession();
+            unclickable();
+        }
+
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("TutorialShadowGame");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
 
 
@@ -477,6 +479,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private void createRound(){
         startButton.setVisibility(View.INVISIBLE);
+
 
 
         if (currentRound == 0)

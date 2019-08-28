@@ -111,23 +111,6 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         session = new Session(getApplicationContext());
 
-        boolean test = session.getPlayAgainVideo();
-
-        if (!test) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
-
-        }
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
-        Fragment prev = fm.findFragmentByTag("Tutorial");
-        if (prev != null) {
-
-            fragmentTransaction.remove(prev);
-            fragmentTransaction.commit();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-        }
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
@@ -252,6 +235,24 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             assignAllbuttons();
             unclickable();
             loadImages();
+
+        }
+
+
+        if (!session.getPlayAgainVideo() && currentRound == 0) {
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+            showTutorialPopUp();
+
+        }
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        Fragment prev = fm.findFragmentByTag("Tutorial");
+        if (prev != null) {
+
+            fragmentTransaction.remove(prev);
+            fragmentTransaction.commit();
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
 
         startButton.setOnClickListener(new View.OnClickListener() {
