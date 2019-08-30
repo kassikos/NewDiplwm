@@ -24,6 +24,7 @@
         android:layout_marginRight="4dp"
         android:text="@string/imageDesc"
         android:gravity="center"
+        style="@style/MenuItems"
         android:layout_marginBottom="4dp"
         android:textSize="38sp"/>
 
@@ -35,6 +36,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:text="@string/imageDesc"
+        style="@style/MenuItems"
         android:gravity="center"
         android:layout_marginBottom="4dp"
         android:textSize="38sp"/>

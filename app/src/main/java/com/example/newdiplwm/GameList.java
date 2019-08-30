@@ -3,6 +3,7 @@ package com.example.newdiplwm;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,12 +22,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GameList extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
@@ -40,9 +42,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     private boolean mToolBarNavigationListenerIsRegistered = false, rememberMe;
     private String preferenceDifficulty;
 
-
-    private HashMap<String, String> GameNamesHashmap = new HashMap<String, String>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,16 +50,11 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         session = new Session(getApplicationContext());
         setupPreferences();
 
-        GameNamesHashmap.put("Rock",getString(R.string.Rock));
-        GameNamesHashmap.put("Calcution",getString(R.string.Calcution));
-        GameNamesHashmap.put("MemoryMatrix",getString(R.string.MemoryMatrix));
-        GameNamesHashmap.put("ObjectSelector",getString(R.string.ObjectSelector));
-        GameNamesHashmap.put("OrderGame",getString(R.string.OrderGame));
-        GameNamesHashmap.put("Suitcase",getString(R.string.Suitcase));
-        GameNamesHashmap.put("ShadowGame",getString(R.string.ShadowGame));
-        GameNamesHashmap.put("PersonPickGame",getString(R.string.PersonPickGame));
-        GameNamesHashmap.put("SoundWord",getString(R.string.SoundWord));
-        GameNamesHashmap.put("SoundImage",getString(R.string.SoundImage));
+        if (GameHelper.sizeOfMap() <= 0)
+        {
+            GameHelper.initHasmap();
+        }
+
 
 //        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 //
@@ -115,7 +109,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         gameAdapter.setOnClickListener(new GameAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Game game) {
-                Toast.makeText(GameList.this, "Επέλεξες: "+GameNamesHashmap.get(game.getName()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(GameList.this, "Επέλεξες: "+GameHelper.getGreekName(game.getName()), Toast.LENGTH_SHORT).show();
 
 
                 session.setModeSession(preferenceDifficulty);
@@ -251,9 +245,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
             public void onClick(DialogInterface dialog, int id) {
 
                  finishAffinity();
-                //finishAndRemoveTask();
-             //   startActivity(intent);
-
                 if (isTaskRoot())
                 {
                     moveTaskToBack(true);
@@ -268,7 +259,24 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 //            super.onBackPressed();
 //        }
 
-        builder.show();
+        final AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                btnPositive.setTextSize(22);
+                btnPositive.setTextColor(getResources().getColor(R.color.black));
+
+                TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+                textView.setTextSize(28);
+                textView.setTextColor(getResources().getColor(R.color.black));
+
+            }
+        });
+
+        dialog.show();
     }
 
     @Override

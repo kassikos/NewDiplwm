@@ -31,60 +31,60 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         if (currentGame.getName().equals("Rock"))
         {
             gameHolder.imageView.setImageResource(R.drawable.stone);
-            gameHolder.textView.setText(R.string.Rock);
+       //     gameHolder.textView.setText(R.string.Rock);
 
         }
         else if(currentGame.getName().equals("Calcution"))
         {
             gameHolder.imageView.setImageResource(R.drawable.numeric);
-            gameHolder.textView.setText(R.string.Calcution);
+       //     gameHolder.textView.setText(R.string.Calcution);
         }
         else if (currentGame.getName().equals("MemoryMatrix"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.MemoryMatrix);
+      //      gameHolder.textView.setText(R.string.MemoryMatrix);
         }
         else if (currentGame.getName().equals("ObjectSelector"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.ObjectSelector);
+      //      gameHolder.textView.setText(R.string.ObjectSelector);
         }
         else if (currentGame.getName().equals("OrderGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.OrderGame);
+    //        gameHolder.textView.setText(R.string.OrderGame);
         }
         else if (currentGame.getName().equals("Suitcase"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.Suitcase);
+     //       gameHolder.textView.setText(R.string.Suitcase);
         }
         else if (currentGame.getName().equals("ShadowGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.ShadowGame);
+     //       gameHolder.textView.setText(R.string.ShadowGame);
         }
         else if (currentGame.getName().equals("PersonPickGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.PersonPickGame);
+      //      gameHolder.textView.setText(R.string.PersonPickGame);
         }
         else if (currentGame.getName().equals("SoundWord"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.SoundWord);
+     //       gameHolder.textView.setText(R.string.SoundWord);
         }
         else if (currentGame.getName().equals("SoundImage"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-            gameHolder.textView.setText(R.string.SoundImage);
+         //   gameHolder.textView.setText(R.string.SoundImage);
         }
 
 
 
 
+        gameHolder.textView.setText(GameHelper.getGreekName(currentGame.getName()));
         gameHolder.textView1.setText(currentGame.getDescription());
-        // Bitmap bmp = BitmapFactory.decodeByteArray(currentGame.getImage(), 0, currentGame.getImage().length);
 
 
 

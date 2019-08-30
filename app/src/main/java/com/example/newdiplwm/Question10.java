@@ -1,5 +1,6 @@
 package com.example.newdiplwm;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +61,28 @@ public class Question10 extends Fragment implements View.OnClickListener, Dialog
             }
         });
         final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                btnPositive.setTextSize(22);
+                btnPositive.setTextColor(getResources().getColor(R.color.black));
+
+                TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+                textView.setTextSize(28);
+                textView.setTextColor(getResources().getColor(R.color.black));
+
+
+//                int titleId = getResources().getIdentifier( "alertTitle", "id", "android" );
+//                    TextView dialogTitle = (TextView) dialog.findViewById(android.R.id.alertTitle);
+//                    if (dialogTitle != null) {
+//
+//                        dialogTitle.setTextSize(30);
+//                        dialogTitle.setTextColor(getResources().getColor(R.color.rednext));
+//                    }
+
+            }
+        });
         dialog.show();
 
     }

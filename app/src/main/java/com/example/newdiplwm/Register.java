@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -110,7 +111,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
+                int year = 1980;
                 int month = calendar.get(Calendar.MONTH);
                 int day  = calendar.get(Calendar.DAY_OF_MONTH);
 
@@ -127,9 +128,10 @@ public class Register extends AppCompatActivity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 
-                String Dates = year + "-" +(month<10?("0"+month):(month)) + "-" + (dayOfMonth<10?("0"+dayOfMonth):(dayOfMonth))+" 00:00:00";
-                String DatesT = year + "-" +(month<10?("0"+month):(month)) + "-" + (dayOfMonth<10?("0"+dayOfMonth):(dayOfMonth));
+                String Dates = year + "-" + (month < 10 ? ("0" + month) : (month)) + "-" + (dayOfMonth < 10 ? ("0" + dayOfMonth) : (dayOfMonth)) + " 00:00:00";
+                String DatesT = year + "-" + (month < 10 ? ("0" + month) : (month)) + "-" + (dayOfMonth < 10 ? ("0" + dayOfMonth) : (dayOfMonth));
                 userdate = Timestamp.valueOf(Dates);
+
                 birthdate.setText(DatesT);
                 birthdate.setFocusable(false);
                 birthdate.setClickable(true);
@@ -143,13 +145,6 @@ public class Register extends AppCompatActivity {
         gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
 
-
-
-//        appDatabase = Room.databaseBuilder(getApplicationContext(),
-//               // AppDatabase.class, "myDB").allowMainThreadQueries().fallbackToDestructiveMigration().build();
-//                AppDatabase.class, "myDB").allowMainThreadQueries().build();
-
-
         Rbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,10 +152,17 @@ public class Register extends AppCompatActivity {
                 Context context = Register.this;
                 User checkUserIfExists = userViewModel.getUserByName(nickname.getText().toString());
 
-                if (checkUserIfExists != null)
+                if (isEmpty(nickname) || nickname.getMinEms()>nickname.getText().toString().length())
+                {
+
+                    nickname.setText("");
+                    Toast.makeText(context,"Κενό Πεδίο ή λίγοι χαρακτήρες \nΑπαιτούνται 3 ή περισσότεροι χαρακτήρες",Toast.LENGTH_LONG).show();
+                }
+
+                else if (checkUserIfExists != null)
                 {
                     nickname.setText("");
-                    Toast.makeText(context,"The Nickname exists",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"Το όνομα χρησιμοποιείτε",Toast.LENGTH_LONG).show();
 
                 }
                 else {
@@ -174,7 +176,7 @@ public class Register extends AppCompatActivity {
                     List<Game> gamelist = gameViewModel.loadAllGames();
                     userViewModel.insertStatistics(StatisticHelper.createStatisticInstances(var.getUserId(), gamelist));
 
-                    Toast.makeText(context, "egine", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Επιτυχής Εγγραφή", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(Register.this, Login.class);
                     startActivity(intent);
                 }
@@ -182,6 +184,10 @@ public class Register extends AppCompatActivity {
         });
 
 
+    }
+
+    private boolean isEmpty(TextInputEditText etText) {
+        return etText.getText().toString().trim().length() == 0;
     }
 
     @Override

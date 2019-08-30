@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/notAgain"
         android:key="testing"
+        style="@style/MenuItems"
         android:text="@string/NotAgain"
         android:defaultValue="false" />
 

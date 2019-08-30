@@ -65,7 +65,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         }
         //gameHolder.imageView.setImageResource(R.drawable.numeric);
         //gameHolder.textView.setText(String.valueOf(currentStatistic.name));
-        gameHolder.textViewTitle.setText(String.valueOf(currentStatistic.name));
+        gameHolder.textViewTitle.setText(String.valueOf(GameHelper.getGreekName(currentStatistic.name)));
         gameHolder.textView.setText(String.valueOf(currentStatistic.statistic.getHit()));
         gameHolder.textView1.setText(String.valueOf(currentStatistic.statistic.getMiss()));
         gameHolder.textView3.setText(String.valueOf(currentStatistic.statistic.getPlayTotalTime()) + " (Δευ/λεπτα)");
@@ -85,7 +85,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
 
                 ActivityOptionsCompat activityOptionsCompat = (ActivityOptionsCompat) ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,p1,p2);
                 Intent intent = new Intent(context, Charts.class);
-                intent.putExtra("image", statistics.get(position).name);
+                intent.putExtra("image", GameHelper.getGreekName(statistics.get(position).name));
                 intent.putExtra("gameId", statistics.get(position).statistic.getGameIdForeign());
                 intent.putExtra("lel",images.get(position));
 //                intent.putExtra(HIT,statistics.get(position).statistic.getHit());
