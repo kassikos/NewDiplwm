@@ -1,15 +1,14 @@
 package com.example.newdiplwm;
 
 
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.content.Context;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.util.HashMap;
 
 
 public class GameHelper {
@@ -36,6 +35,8 @@ public class GameHelper {
 
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
+
+    private static HashMap<String, String> GameNamesHashmap = new HashMap<String, String>();
 
 
 
@@ -79,6 +80,28 @@ public class GameHelper {
 //        byte[] b = baos.toByteArray();
 //        return b;
 
+    }
+
+    public static void initHasmap(){
+        GameNamesHashmap.put("Rock","Πέτρα Ψαλίδι Χαρτί");
+        GameNamesHashmap.put("Calcution","Παιχνίδι Αριθμών");
+        GameNamesHashmap.put("MemoryMatrix","Πίνακας Μνήμης");
+        GameNamesHashmap.put("ObjectSelector","Επιλογή Αντικειμένων");
+        GameNamesHashmap.put("OrderGame","Παιχνίδι Παραγγελιών");
+        GameNamesHashmap.put("Suitcase","Κλείσιμο Βαλίτσας");
+        GameNamesHashmap.put("ShadowGame","Παιχνίδι Σκιών");
+        GameNamesHashmap.put("PersonPickGame","Συνδυασμοί Ρούχων");
+        GameNamesHashmap.put("SoundWord","Παιχνίδι Φθόγγων");
+        GameNamesHashmap.put("SoundImage","Ηχος - Εικόνα");
+
+    }
+
+    public static String getGreekName(String engName){
+       return GameNamesHashmap.get(engName);
+
+    }
+    public static int sizeOfMap(){
+        return GameNamesHashmap.size();
     }
 
 

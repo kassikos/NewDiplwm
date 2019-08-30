@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.VideoView;
 import androidx.annotation.NonNull;
@@ -58,7 +59,18 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
                     }
                 });
 
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                btnPositive.setTextSize(22);
+                btnPositive.setTextColor(getResources().getColor(R.color.black));
+
+            }
+        });
         return dialog;
     }
 

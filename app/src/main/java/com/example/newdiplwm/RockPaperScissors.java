@@ -487,9 +487,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
 
     private void loadImages(){
-        images.add(R.drawable.xarti);
-        images.add(R.drawable.petra);
-        images.add(R.drawable.psalidi);
+        images.add(R.drawable.paper);
+        images.add(R.drawable.rock);
+        images.add(R.drawable.scissors);
     }
 
     private void assignAllbuttons(){
@@ -610,15 +610,15 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private int result(int picked , int nonpicked){
         if (mode == 0)
         {
-            if (picked == R.drawable.xarti && nonpicked == R.drawable.petra)
+            if (picked == R.drawable.paper && nonpicked == R.drawable.rock)
             {
                 return  1;
             }
-            else if (picked == R.drawable.petra && nonpicked == R.drawable.psalidi)
+            else if (picked == R.drawable.rock && nonpicked == R.drawable.scissors)
             {
                 return 1;
             }
-            else if (picked == R.drawable.psalidi && nonpicked == R.drawable.xarti)
+            else if (picked == R.drawable.scissors && nonpicked == R.drawable.paper)
             {
                 return 1;
             }
@@ -627,15 +627,15 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         }
         else if (mode == 1)
         {
-            if (picked == R.drawable.xarti && nonpicked == R.drawable.petra)
+            if (picked == R.drawable.paper && nonpicked == R.drawable.rock)
             {
                 return  0;
             }
-            else if (picked == R.drawable.petra && nonpicked == R.drawable.psalidi)
+            else if (picked == R.drawable.rock && nonpicked == R.drawable.scissors)
             {
                 return 0;
             }
-            else if (picked == R.drawable.psalidi && nonpicked == R.drawable.xarti)
+            else if (picked == R.drawable.scissors && nonpicked == R.drawable.paper)
             {
                 return 0;
             }

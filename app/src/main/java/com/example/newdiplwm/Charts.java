@@ -41,7 +41,7 @@ public class Charts extends AppCompatActivity {
         session = new Session(getApplicationContext());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.charttoolbar);
-        toolbar.setTitle("Charts");
+        toolbar.setTitle("Γράφημα Πίτας");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null){
@@ -69,8 +69,8 @@ public class Charts extends AppCompatActivity {
     public void setUpChart(UserGameStats allstats) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
-            pieEntries.add(new PieEntry(allstats.statistic.getHit(), "HIT"));
-            pieEntries.add(new PieEntry(allstats.statistic.getMiss(),"MISS"));
+            pieEntries.add(new PieEntry(allstats.statistic.getHit(), getResources().getString(R.string.hit)));
+            pieEntries.add(new PieEntry(allstats.statistic.getMiss(),getResources().getString(R.string.miss)));
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, allstats.name);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);

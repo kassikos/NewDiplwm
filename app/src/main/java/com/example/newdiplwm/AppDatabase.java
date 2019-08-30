@@ -41,6 +41,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             @Override
                             public void run() {
 
+                                GameHelper.initHasmap();
                                 getInstance(context).gameDao().addGames(GameHelper.createInstances());
                             }
                         });
