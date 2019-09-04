@@ -57,6 +57,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
             images.add(R.drawable.scissors);
             images.add(R.drawable.scissors);
             images.add(R.drawable.scissors);
+            images.add(R.drawable.scissors);
 
         }
         else

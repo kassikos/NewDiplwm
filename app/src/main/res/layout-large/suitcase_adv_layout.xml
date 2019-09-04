@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Suitcase_FrameLayoutAdv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SuitcaseEz"
+    android:layout_gravity="center"
+    android:padding="24dp"
+    app:layout_constraintDimensionRatio="w,1:1"
+    android:background="@drawable/suitcase_background">
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/sizetext"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginTop="2dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/nextitem"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/nextitem"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sizetext"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:id="@+id/SuitcaseAdv_Base_LinearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/SuitcaseAdv_Lid_LinearLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/suitcase_base_adv">
+
+        <GridLayout
+            android:id="@+id/SuitcaseAdv_Base_GridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rowCount="3"
+            android:columnCount="2"
+            android:layout_marginLeft="40sp"
+            android:layout_marginRight="20sp"
+            android:layout_marginBottom="180sp"
+            android:layout_marginTop="180sp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Base_imageView6"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+        </GridLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:id="@+id/SuitcaseAdv_Lid_LinearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/SuitcaseAdv_Base_LinearLayout"
+        android:background="@drawable/suitcase_lid_adv">
+
+
+
+        <GridLayout
+            android:id="@+id/SuitcaseAdv_Lid_GridLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rowCount="3"
+            android:columnCount="2"
+            android:layout_marginRight="40sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginBottom="180sp"
+            android:layout_marginTop="180sp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView5"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+            <ImageView
+                android:id="@+id/SuitcaseAdv_Lid_imageView6"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill_horizontal"
+                android:contentDescription="@string/imageDesc"
+                android:layout_margin="4dp" />
+
+
+        </GridLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

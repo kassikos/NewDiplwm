@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BucketGame"></activity>
+        <activity android:name=".BucketGame"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:parentActivityName=".GameList"/>
         <activity
             android:name=".Questionnaire"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -108,8 +111,15 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens= "true"
+        android:anyDensity="true" />
 
 </manifest>

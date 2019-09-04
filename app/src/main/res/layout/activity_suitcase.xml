@@ -22,8 +22,8 @@
 
     <ImageView
         android:id="@+id/ExitSuitcase"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
         android:layout_margin="20dp"
         android:contentDescription="@string/imageDesc"
         android:src="@drawable/exit_button"
@@ -73,7 +73,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/Suitcase_startButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="450dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"

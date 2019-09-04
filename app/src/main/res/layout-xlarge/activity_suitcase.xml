@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Suitcase">
+
+    <TextView
+        android:id="@+id/Suitcase_textRounds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:gravity="center"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/Suitcase_FragmentLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ExitSuitcase"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/ExitSuitcase"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/imageDesc"
+        android:src="@drawable/exit_button"
+        app:layout_constraintBottom_toTopOf="@id/Suitcase_FragmentLayout"
+        app:layout_constraintLeft_toRightOf="@+id/Suitcase_textRounds"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Suitcase_FragmentLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Suitcase_textRounds"
+        app:layout_constraintBottom_toTopOf="@id/Suitcase_startButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp" />
+
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/AnimPoints"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_alignTop="@+id/Suitcase_startButton"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:orientation="vertical"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/Suitcase_startButton"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/AnimTextPoints"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:fontFamily="@font/alfa_slab_one"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="80sp" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/Suitcase_startButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="450dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:padding="8dp"
+        android:text="@string/Start"
+        android:textColor="@color/purple"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Suitcase_FragmentLayout"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

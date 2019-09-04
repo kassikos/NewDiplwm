@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ndroid="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="300dp"
+        app:cardBackgroundColor="@color/statisticColor"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="300dp"
+            android:padding="8dp">
+
+
+            <ImageView
+                android:id="@+id/imageViewC"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:contentDescription="@string/imageDesc"
+
+                android:transitionName="test"
+                app:layout_constraintBottom_toTopOf="@id/tbl_txt1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tbl_Title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tbl_Title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:transitionName="Stringaki"
+                android:textAlignment="gravity"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tbl_txt4"
+                app:layout_constraintLeft_toRightOf="@id/imageViewC"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tbl_txt1"
+                style="@style/Textstyle"
+                android:text="@string/hit"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt1_value"
+                app:layout_constraintTop_toBottomOf="@id/imageViewC" />
+
+            <TextView
+                android:id="@+id/tbl_txt1_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@+id/tbl_txt1"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt4"
+                app:layout_constraintTop_toBottomOf="@id/imageViewC" />
+
+
+            <!-- Column 2 -->
+            <TextView
+                android:id="@+id/tbl_txt2"
+                style="@style/Textstyle"
+                android:text="@string/miss"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt2_value"
+                app:layout_constraintTop_toBottomOf="@+id/tbl_txt1" />
+
+            <TextView
+                android:id="@+id/tbl_txt2_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@+id/tbl_txt2"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt5"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt1_value" />
+
+
+            <TextView
+                android:id="@+id/tbl_txt3"
+                style="@style/Textstyle"
+                android:text="@string/score"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt3_value"
+                app:layout_constraintTop_toBottomOf="@+id/tbl_txt2" />
+
+            <TextView
+                android:id="@+id/tbl_txt3_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@+id/tbl_txt3"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt6"
+                app:layout_constraintTop_toBottomOf="@+id/tbl_txt2_value" />
+
+
+            <TextView
+                android:id="@+id/tbl_txt4"
+                style="@style/Textstyle"
+                android:text="@string/playTotalTime"
+                ndroid:textSize="13sp"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt1_value"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt4_value"
+                app:layout_constraintTop_toBottomOf="@id/imageViewC" />
+
+            <TextView
+                android:id="@+id/tbl_txt4_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt4"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewC" />
+
+
+            <TextView
+                android:id="@+id/tbl_txt5"
+                style="@style/Textstyle"
+                android:text="@string/days"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt2_value"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt5_value"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt4" />
+
+            <TextView
+                android:id="@+id/tbl_txt5_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt5"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt4_value" />
+
+
+            <TextView
+                android:id="@+id/tbl_txt6"
+                style="@style/Textstyle"
+                android:text="@string/accuracy"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt3_value"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt6_value"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt5" />
+
+            <TextView
+                android:id="@+id/tbl_txt6_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt6"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt5_value" />
+
+            <TextView
+                android:id="@+id/tbl_txt7"
+                style="@style/Textstyle"
+                android:text="@string/quits"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tbl_txt7_value"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt3" />
+
+            <TextView
+                android:id="@+id/tbl_txt7_value"
+                style="@style/Textstyle"
+                app:layout_constraintLeft_toRightOf="@id/tbl_txt7"
+                app:layout_constraintRight_toLeftOf="@id/tbl_txt6"
+                app:layout_constraintTop_toBottomOf="@id/tbl_txt3_value" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

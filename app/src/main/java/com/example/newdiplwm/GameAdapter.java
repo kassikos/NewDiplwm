@@ -79,11 +79,16 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
          //   gameHolder.textView.setText(R.string.SoundImage);
         }
+        else
+        {
+            gameHolder.imageView.setImageResource(R.drawable.scissors);
+        }
 
 
 
 
         gameHolder.textView.setText(GameHelper.getGreekName(currentGame.getName()));
+
         gameHolder.textView1.setText(currentGame.getDescription());
 
 
