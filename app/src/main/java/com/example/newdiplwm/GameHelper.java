@@ -1,8 +1,6 @@
 package com.example.newdiplwm;
 
 
-import android.content.Context;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +30,10 @@ public class GameHelper {
     private static final String  PersonPickGameDesc = "Επέλεξε τον σωστό συνδυασμό ρούχων από το ηχητικό μήνυμα!";
 
     private static final String  SoundWordDesc = "Βρες τον σωστό φθόγγο που υπάρχει μέσα στις λέξεις!";
+
+    private static final String  SoundimageDesc = "Βρες το σωστό αντικείμενο απο τον ήχο του!";
+
+    private static final String  BucketDesc = "Τοποθέτησε τα αντικείμενα στα σωστά κουτιά!";
 
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
@@ -93,6 +95,7 @@ public class GameHelper {
         GameNamesHashmap.put("PersonPickGame","Συνδυασμοί Ρούχων");
         GameNamesHashmap.put("SoundWord","Παιχνίδι Φθόγγων");
         GameNamesHashmap.put("SoundImage","Ηχος - Εικόνα");
+        GameNamesHashmap.put("BOX","Ταξινόμηση Αντικειμένων");
 
     }
 
@@ -117,7 +120,8 @@ public class GameHelper {
                 new Game("ShadowGame","memory",ShadowDesc),
                 new Game("PersonPickGame","memory",PersonPickGameDesc),
                 new Game("SoundWord","memory",SoundWordDesc),
-                new Game("SoundImage","memory",SoundWordDesc),
+                new Game("SoundImage","memory",SoundimageDesc),
+                new Game("BOX","memory",BucketDesc),
         };
 
     }

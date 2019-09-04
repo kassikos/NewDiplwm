@@ -73,6 +73,7 @@
     <string name="easymediumValue" translatable="false">EASYtoMEDIUM</string>
 
     <!--RockPaperScissors Activity -->
+
     <string name="Time">Χρόνος</string>
     <string name="Result">Αποτέλεσμα</string>
     <string name="Rounds">Γύροι</string>
@@ -90,6 +91,10 @@
     <string name="less">Μικρότερη</string>
 
     <string name="label">Επέλεξε ποιά πλευρά είναι μεγαλύτερη ή αν είναι ίσες.</string>
+
+
+    <!--RockPaperScissors Activity -->
+    <string name="bucketInstructions">"Τοποθέτησε τα αντικείμενα στα κουτιά"</string>
 
 
     <!--STATISTICS-->

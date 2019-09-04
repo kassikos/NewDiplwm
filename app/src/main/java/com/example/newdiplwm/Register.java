@@ -162,7 +162,7 @@ public class Register extends AppCompatActivity {
                 else if (checkUserIfExists != null)
                 {
                     nickname.setText("");
-                    Toast.makeText(context,"Το όνομα χρησιμοποιείτε",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"Το όνομα χρησιμοποιείται",Toast.LENGTH_LONG).show();
 
                 }
                 else {

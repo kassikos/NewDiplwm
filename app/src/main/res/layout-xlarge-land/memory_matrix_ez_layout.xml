@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<GridLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gridLayoutMatrix"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="3"
+    android:layout_gravity="center"
+    android:layout_marginRight="100dp"
+    android:layout_marginLeft="100dp"
+    android:padding="24dp"
+    android:rowCount="3">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView1MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView2MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView3MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView4MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView5MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView6MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView7MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView8MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/imageView9MatrixEz"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1"
+        android:layout_gravity="fill_horizontal"
+        app:strokeColor="@color/black"
+        app:strokeWidth="3dp"
+        android:textSize="40sp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:layout_margin="8dp" />
+    </GridLayout>
