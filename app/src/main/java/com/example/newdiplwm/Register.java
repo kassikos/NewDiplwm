@@ -167,6 +167,14 @@ public class Register extends AppCompatActivity {
                 }
                 else {
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                    if(userdate == null)
+                    {
+                        userdate = Timestamp.valueOf(timestamp.toString());
+                    }
+                    if (education == null)
+                    {
+                        education= "Not Given by user";
+                    }
                     User user = new User(nickname.getText().toString(),userdate, gender, education);
                     userViewModel.insert(user);
 

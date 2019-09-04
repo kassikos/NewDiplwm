@@ -65,21 +65,21 @@ public class BucketGame extends AppCompatActivity {
     private SparseArray matchbucketList = new SparseArray(12);
 
 
-    private ArrayList<Integer> imageviews  = new ArrayList<>();
+    private ArrayList<Integer> imageviews = new ArrayList<>();
     private ArrayList<Integer> generalbucketsImages = new ArrayList<>(3);
 
 
     ArrayList<Integer> AnimalsEz = new ArrayList<>(Arrays.asList(R.drawable.animals_fish_goldfish,
-            R.drawable.animals_fish_shark,R.drawable.animals_fish_swordfish,R.drawable.animals_birds_owl,R.drawable.animals_birds_parrot,
-    R.drawable.animals_birds_pigeon,R.drawable.animals_insects_bee,R.drawable.animals_insects_fly,R.drawable.animals_insects_mosquito));
+            R.drawable.animals_fish_shark, R.drawable.animals_fish_swordfish, R.drawable.animals_birds_owl, R.drawable.animals_birds_parrot,
+            R.drawable.animals_birds_pigeon, R.drawable.animals_insects_bee, R.drawable.animals_insects_fly, R.drawable.animals_insects_mosquito));
 
     ArrayList<Integer> foodsEz = new ArrayList<>(Arrays.asList(R.drawable.foods_meats_salami,
-            R.drawable.foods_meats_sausage,R.drawable.foods_meats_souvlaki,R.drawable.foods_veg_cucumber,R.drawable.foods_veg_lettuce,
-            R.drawable.foods_veg_tomato,R.drawable.foods_liquids_drink,R.drawable.foods_liquids_juice,R.drawable.foods_liquids_milk));
+            R.drawable.foods_meats_sausage, R.drawable.foods_meats_souvlaki, R.drawable.foods_veg_cucumber, R.drawable.foods_veg_lettuce,
+            R.drawable.foods_veg_tomato, R.drawable.foods_liquids_drink, R.drawable.foods_liquids_juice, R.drawable.foods_liquids_milk));
 
     ArrayList<Integer> clothesEz = new ArrayList<>(Arrays.asList(R.drawable.clothes_pants_shorts,
-            R.drawable.clothes_pants_skirt,R.drawable.clothes_pants_trousers,R.drawable.clothes_shirts_dress,R.drawable.clothes_shirts_suit,
-            R.drawable.clothes_shirts_tshirt,R.drawable.clothes_shoes_allstars,R.drawable.clothes_shoes_heels,R.drawable.clothes_shoes_sayonares));
+            R.drawable.clothes_pants_skirt, R.drawable.clothes_pants_trousers, R.drawable.clothes_shirts_dress, R.drawable.clothes_shirts_suit,
+            R.drawable.clothes_shirts_tshirt, R.drawable.clothes_shoes_allstars, R.drawable.clothes_shoes_heels, R.drawable.clothes_shoes_sayonares));
 
     private SparseIntArray imageviewImage = new SparseIntArray();
     private SparseIntArray bucketLinearImageBucket = new SparseIntArray();
@@ -88,23 +88,22 @@ public class BucketGame extends AppCompatActivity {
     private SparseIntArray normalbucketEnterbucket = new SparseIntArray();
 
 
-
     private SparseArray labelsubBuckets = new SparseArray();
-    private ArrayList<Integer> bucketsubAnimals  = new ArrayList<>(3);
-    private ArrayList<Integer> bucketsubClothes  = new ArrayList<>(3);
-    private ArrayList<Integer> bucketsubFoods  = new ArrayList<>(3);
+    private ArrayList<Integer> bucketsubAnimals = new ArrayList<>(3);
+    private ArrayList<Integer> bucketsubClothes = new ArrayList<>(3);
+    private ArrayList<Integer> bucketsubFoods = new ArrayList<>(3);
 
 
-    private ImageView thing1, thing2 ,thing3 ,thing4, thing5, thing6, exit;
-    private LinearLayout bucket1Linear , bucket2Linear , bucket3Linear ;
+    private ImageView thing1, thing2, thing3, thing4, thing5, thing6, exit;
+    private LinearLayout bucket1Linear, bucket2Linear, bucket3Linear;
     private MaterialButton startButton;
     private TextView textRounds, animationTextPoints;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private String menuDifficulty , currentDifficulty;
-    private int user_id, game_id, currentRound=0 , TotalRounds=0;
-    private int hit=0 ,miss=0 ,trueCounter=0 , totalPoints=0;
+    private String menuDifficulty, currentDifficulty;
+    private int user_id, game_id, currentRound = 0, TotalRounds = 0;
+    private int hit = 0, miss = 0, trueCounter = 0, totalPoints = 0;
     private boolean missPoints = false;
     private Timestamp startTime;
     private Timestamp endTime;
@@ -113,10 +112,9 @@ public class BucketGame extends AppCompatActivity {
     private double totalspeed = 0;
 
     private CountDownTimer cleanTimer;
-
     private Session session;
-    private  int limitEz=3 ,limitAdv = 6, limitcounter=0;
-    private HashMap<String , Integer> pointsHashMap = new HashMap<String, Integer>();
+    private int limitEz = 3, limitAdv = 6, limitMed = 4, limitcounter = 0;
+    private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
 
 
     @Override
@@ -168,7 +166,6 @@ public class BucketGame extends AppCompatActivity {
         });
 
 
-
     }
 
 
@@ -191,9 +188,8 @@ public class BucketGame extends AppCompatActivity {
 
     }
 
-    private void onbackAndExitCode(){
-        if (currentRound == 0)
-        {
+    private void onbackAndExitCode() {
+        if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
             endTime = new Timestamp(System.currentTimeMillis());
             GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
@@ -201,17 +197,14 @@ public class BucketGame extends AppCompatActivity {
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
-        }
-        else
-        {
-            if (startspeed == null || endspeed==null)
-            {
-                totalspeed +=0;
+        } else {
+            if (startspeed == null || endspeed == null) {
+                totalspeed += 0;
             }
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / TotalRounds, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / TotalRounds, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
@@ -220,18 +213,17 @@ public class BucketGame extends AppCompatActivity {
 
     }
 
-    private void displayGameEz(){
+    private void displayGameEz() {
         setOntouchlistenerEZ();
         Collections.shuffle(generalCategories);
-        for (int i=0; i<3;i++)
-        {
+        for (int i = 0; i < 3; i++) {
             ImageView iv1 = findViewById(imageviews.get(i));
 
             ArrayList<ArrayList> tempGeneral = generalCategories.get(i);
-            ArrayList<Integer> tempSubcategorie =   tempGeneral.get(i);
+            ArrayList<Integer> tempSubcategorie = tempGeneral.get(i);
             Collections.shuffle(tempSubcategorie);
             iv1.setImageResource(tempSubcategorie.get(i));
-            imageviewImage.put(imageviews.get(i),tempSubcategorie.get(i));
+            imageviewImage.put(imageviews.get(i), tempSubcategorie.get(i));
         }
 
         Collections.shuffle(generalbucketsImages);
@@ -239,45 +231,101 @@ public class BucketGame extends AppCompatActivity {
         bucket2Linear.setBackground(getResources().getDrawable(generalbucketsImages.get(1)));
         bucket3Linear.setBackground(getResources().getDrawable(generalbucketsImages.get(2)));
 
-        bucketLinearImageBucket.put(bucket1Linear.getId(),generalbucketsImages.get(0));
-        bucketLinearImageBucket.put(bucket2Linear.getId(),generalbucketsImages.get(1));
-        bucketLinearImageBucket.put(bucket3Linear.getId(),generalbucketsImages.get(2));
+        bucketLinearImageBucket.put(bucket1Linear.getId(), generalbucketsImages.get(0));
+        bucketLinearImageBucket.put(bucket2Linear.getId(), generalbucketsImages.get(1));
+        bucketLinearImageBucket.put(bucket3Linear.getId(), generalbucketsImages.get(2));
 
         startspeed = new Timestamp(System.currentTimeMillis());
 
     }
 
 
-    private void displayGameMed(){
-
-        setOntouchlistenerEZ();
+    private void displayGameMed() {
+        setOntouchlistenerMed();
         Collections.shuffle(generalCategories);
-        for (int i=0; i<4;i++)
-        {
-            ImageView iv1 = findViewById(imageviews.get(i));
+        int first = 0;
+        for (ArrayList<ArrayList> check : generalCategories) {
+            if (check.equals(Animals)) {
+                resetGeneralCategories(first, "subanimals");
 
-            ArrayList<ArrayList> tempGeneral = generalCategories.get(i);
-            ArrayList<Integer> tempSubcategorie =   tempGeneral.get(i);
-            Collections.shuffle(tempSubcategorie);
-            iv1.setImageResource(tempSubcategorie.get(i));
-            imageviewImage.put(imageviews.get(i),tempSubcategorie.get(i));
+            } else if (check.equals(clothes)) {
+                resetGeneralCategories(first, "subclothes");
+            } else if (check.equals(food)) {
+                resetGeneralCategories(first, "subfoods");
+            }
+            first++;
         }
 
-        Collections.shuffle(generalbucketsImages);
-//        bucket1Linear.setBackground(getResources().getDrawable(generalbucketsImages.get(0)));
-//        bucket2Linear.setBackground(getResources().getDrawable(generalbucketsImages.get(1)));
-//        bucket3Linear.setBackground(getResources().getDrawable(generalbucketsImages.get(2)));
-//
-//        bucketLinearImageBucket.put(bucket1Linear.getId(),generalbucketsImages.get(0));
-//        bucketLinearImageBucket.put(bucket2Linear.getId(),generalbucketsImages.get(1));
-//        bucketLinearImageBucket.put(bucket3Linear.getId(),generalbucketsImages.get(2));
+        int generalpick = 0;
+        int getBucket = 0;
+
+        ArrayList<Integer> Imageviewsforshuffle = new ArrayList<Integer>(4);
+
+        for (int i = 0; i < 4; i++) {
+            if (i < 2) {
+
+                ArrayList<ArrayList> tempGeneral = generalCategories.get(0);
+                ArrayList<Integer> tempSubcategorie = tempGeneral.get(i);
+                if (i == 0) {
+
+                    if (tempGeneral.equals(Animals)) {
+                        getBucket = matchStringlabelWitGeneralbucketIcons("AnimalsBucket");
+
+                    } else if (tempGeneral.equals(clothes)) {
+                        getBucket = matchStringlabelWitGeneralbucketIcons("ClothesBucket");
+                    } else if (tempGeneral.equals(food)) {
+                        getBucket = matchStringlabelWitGeneralbucketIcons("FoodsBucket");
+                    }
+                    Collections.shuffle(tempSubcategorie);
+                }
+
+                Imageviewsforshuffle.add(tempSubcategorie.get(i));
+
+            } else {
+                generalpick++;
+
+                ArrayList<ArrayList> tempGeneral = generalCategories.get(generalpick);
+                ArrayList<Integer> tempSubcategorie = tempGeneral.get(generalpick);
+                Collections.shuffle(tempSubcategorie);
+                Imageviewsforshuffle.add(tempSubcategorie.get(generalpick));
+
+            }
+
+        }
+        Collections.shuffle(Imageviewsforshuffle);
+
+        for (int i = 0; i < 4; i++) {
+            ImageView iv1 = findViewById(imageviews.get(i));
+            iv1.setImageResource(Imageviewsforshuffle.get(i));
+            imageviewImage.put(imageviews.get(i), Imageviewsforshuffle.get(i));
+
+        }
+
+        ArrayList<Integer> subbuckets1 = (ArrayList<Integer>) labelsubBuckets.get(generalpick - 1);
+        ArrayList<Integer> subbuckets = (ArrayList<Integer>) labelsubBuckets.get(generalpick);
+
+
+        ArrayList<Integer> generalbucketsforshuffle = new ArrayList<Integer>(3);
+        generalbucketsforshuffle.add(subbuckets1.get(generalpick - 1));
+        generalbucketsforshuffle.add(subbuckets.get(generalpick));
+        generalbucketsforshuffle.add(getBucket);
+        Collections.shuffle(generalbucketsforshuffle);
+
+
+        bucket1Linear.setBackground(getResources().getDrawable(generalbucketsforshuffle.get(0)));
+        bucket2Linear.setBackground(getResources().getDrawable(generalbucketsforshuffle.get(1)));
+        bucket3Linear.setBackground(getResources().getDrawable(generalbucketsforshuffle.get(2)));
+
+
+        bucketLinearImageBucket.put(bucket1Linear.getId(), generalbucketsforshuffle.get(0));
+        bucketLinearImageBucket.put(bucket2Linear.getId(), generalbucketsforshuffle.get(1));
+        bucketLinearImageBucket.put(bucket3Linear.getId(), generalbucketsforshuffle.get(2));
 
         startspeed = new Timestamp(System.currentTimeMillis());
     }
 
 
-
-    private void displayGameAdv(){
+    private void displayGameAdv() {
 
         setOntouchlistenerADV();
 
@@ -288,22 +336,21 @@ public class BucketGame extends AppCompatActivity {
         ArrayList<ArrayList> tempGeneral = generalCategories.get(temp);
 
 
-        for (int i=0; i <=2;i++)
-        {
+        for (int i = 0; i <= 2; i++) {
 
             ImageView iv1 = findViewById(imageviews.get(iconspicked));
-            ImageView iv2 = findViewById(imageviews.get(iconspicked+1));
+            ImageView iv2 = findViewById(imageviews.get(iconspicked + 1));
 
 
-            ArrayList<Integer> tempSubcategorie =   tempGeneral.get(i);
+            ArrayList<Integer> tempSubcategorie = tempGeneral.get(i);
             Collections.shuffle(tempSubcategorie);
 
             iv1.setImageResource(tempSubcategorie.get(0));
             iv2.setImageResource(tempSubcategorie.get(1));
-            imageviewImage.put(imageviews.get(iconspicked),tempSubcategorie.get(0));
-            imageviewImage.put(imageviews.get(iconspicked+1),tempSubcategorie.get(1));
+            imageviewImage.put(imageviews.get(iconspicked), tempSubcategorie.get(0));
+            imageviewImage.put(imageviews.get(iconspicked + 1), tempSubcategorie.get(1));
 
-            iconspicked +=2;
+            iconspicked += 2;
 
         }
 
@@ -315,188 +362,163 @@ public class BucketGame extends AppCompatActivity {
         bucket3Linear.setBackground(getResources().getDrawable(GeneralCategorie.get(2)));
 
 
-        bucketLinearImageBucket.put(bucket1Linear.getId(),GeneralCategorie.get(0));
-        bucketLinearImageBucket.put(bucket2Linear.getId(),GeneralCategorie.get(1));
-        bucketLinearImageBucket.put(bucket3Linear.getId(),GeneralCategorie.get(2));
+        bucketLinearImageBucket.put(bucket1Linear.getId(), GeneralCategorie.get(0));
+        bucketLinearImageBucket.put(bucket2Linear.getId(), GeneralCategorie.get(1));
+        bucketLinearImageBucket.put(bucket3Linear.getId(), GeneralCategorie.get(2));
 
         startspeed = new Timestamp(System.currentTimeMillis());
     }
 
 
-    private void createRound(){
+    private void createRound() {
         startButton.setVisibility(View.INVISIBLE);
 
-        if (currentRound == 0)
-        {
+        if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
         }
 
-        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))){
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameEz();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameMed();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue))) {
             currentDifficulty = menuDifficulty;
-            TotalRounds=3;
+            TotalRounds = 3;
             displayGameAdv();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue))) {
             TotalRounds = 4;
 
-            if (currentRound<=1){
+            if (currentRound <= 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMed();
             }
-        }
-        else
-        {
-            TotalRounds =5;
-            if (currentRound<1)
-            {
+        } else {
+            TotalRounds = 5;
+            if (currentRound < 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else if (currentRound>=1 && currentRound<=2)
-            {
+            } else if (currentRound >= 1 && currentRound <= 2) {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMed();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
                 displayGameAdv();
             }
         }
         setTouchlistenermethod(imageviews);
         currentRound++;
-        textRounds.setText((currentRound)+"/"+TotalRounds);
+        textRounds.setText((currentRound) + "/" + TotalRounds);
 
     }
 
 
     //--------------------------------------------------------
 
-        private final class MyTouchListener implements View.OnTouchListener {
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("eeeeeee", "gdfgdf");
-                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
-                            view);
-                    view.startDrag(data, shadowBuilder, view, 0);
-                    view.setVisibility(View.INVISIBLE);
-                    view.setEnabled(false);
-                    return true;
-                } else {
-                    return false;
-                }
+    private final class MyTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("eeeeeee", "gdfgdf");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+                        view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.INVISIBLE);
+                view.setEnabled(false);
+                return true;
+            } else {
+                return false;
             }
         }
+    }
 
 
-        class MyDragListener implements View.OnDragListener {
+    class MyDragListener implements View.OnDragListener {
         Context context = BucketGame.this;
 
 
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
 
-                LinearLayout container = (LinearLayout) v;
+            LinearLayout container = (LinearLayout) v;
 
-                int kadakiId = bucketLinearImageBucket.get(container.getId());
+            int kadakiId = bucketLinearImageBucket.get(container.getId());
 
-                Drawable enterShape = getResources().getDrawable(normalbucketEnterbucket.get(kadakiId));
+            Drawable enterShape = getResources().getDrawable(normalbucketEnterbucket.get(kadakiId));
 
-                Drawable normalShape = getResources().getDrawable(bucketLinearImageBucket.get(container.getId()));
-                int action = event.getAction();
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED:
-                        Log.d("ACTION_DRAG_STARTED","ACTION_DRAG_STARTED");
-                        break;
-                    case DragEvent.ACTION_DRAG_ENTERED:
-                        Log.d("ACTION_DRAG_ENTERED","ACTION_DRAG_ENTERED");
-                        v.setBackgroundDrawable(enterShape);
-                        break;
-                    case DragEvent.ACTION_DRAG_EXITED:
-                        Log.d("ACTION_DRAG_EXITED","ACTION_DRAG_EXITED");
-                        v.setBackgroundDrawable(normalShape);
-                        break;
-                    case DragEvent.ACTION_DROP:
-                        Log.d("ACTION_DROP","ACTION_DROP");
-                        // Dropped, reassign View to ViewGroup
-
-
-                        View view = (View) event.getLocalState();
-                        ViewGroup owner = (ViewGroup) view.getParent();
-                        owner.removeView(view);
-                       // LinearLayout container = (LinearLayout) v;
-
-                      //  int kadakiId = bucketLinearImageBucket.get(container.getId()); //pairnw to id atoy kadakioy apo to id toy linearlayot
-
-                        ArrayList<Integer> temp = (ArrayList<Integer>) matchbucketList.get(kadakiId); //apo to id toy kadakioy pairnw to tin lista me ta antikeimena poy prepexei na exei o kados
-
-                        view.requestLayout();
-                        view.getLayoutParams().height = 50;
-                        view.getLayoutParams().width = 50;
+            Drawable normalShape = getResources().getDrawable(bucketLinearImageBucket.get(container.getId()));
+            int action = event.getAction();
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    Log.d("ACTION_DRAG_STARTED", "ACTION_DRAG_STARTED");
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    Log.d("ACTION_DRAG_ENTERED", "ACTION_DRAG_ENTERED");
+                    v.setBackgroundDrawable(enterShape);
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    Log.d("ACTION_DRAG_EXITED", "ACTION_DRAG_EXITED");
+                    v.setBackgroundDrawable(normalShape);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    Log.d("ACTION_DROP", "ACTION_DROP");
+                    // Dropped, reassign View to ViewGroup
 
 
-                        container.addView(view);
-                        view.setVisibility(View.VISIBLE);
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+                    ArrayList<Integer> temp = (ArrayList<Integer>) matchbucketList.get(kadakiId); //apo to id toy kadakioy pairnw to tin lista me ta antikeimena poy prepexei na exei o kados
+
+                    view.requestLayout();
+                    view.getLayoutParams().height = 50;
+                    view.getLayoutParams().width = 50;
 
 
-                        if (temp.contains(imageviewImage.get(view.getId()))) //elegxw an sthn lista me ta anikeimena yparxei to antikeimeno poy m hr8e
-                        {
+                    container.addView(view);
+                    view.setVisibility(View.VISIBLE);
 
-                            //nikises
 
-                            limitcounter++;
+                    if (temp.contains(imageviewImage.get(view.getId()))) //elegxw an sthn lista me ta anikeimena yparxei to antikeimeno poy m hr8e
+                    {
 
-                            if ((limitcounter == limitEz && currentDifficulty.equals(getResources().getString(R.string.easyValue))) || (limitcounter == limitAdv && currentDifficulty.equals(getResources().getString(R.string.advancedValue))))
-                            {
-                                onActionMade(false);
+                        //nikises
 
-                            }
+                        limitcounter++;
+
+                        if ((limitcounter == limitEz && currentDifficulty.equals(getResources().getString(R.string.easyValue))) || (limitcounter == limitAdv && currentDifficulty.equals(getResources().getString(R.string.advancedValue))) || (limitcounter == limitMed && currentDifficulty.equals(getResources().getString(R.string.mediumValue)))) {
+                            onActionMade(false);
+
                         }
-                        else
-                        {
+                    } else {
 
-                            Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
-                            view.startAnimation(animShake);
-                            int vibeduration = 1000;
-                            vibe.vibrate(vibeduration);
-                            onActionMade(true);
-                        }
+                        Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+                        view.startAnimation(animShake);
+                        int vibeduration = 1000;
+                        vibe.vibrate(vibeduration);
+                        onActionMade(true);
+                    }
 
 
-                        break;
-                    case DragEvent.ACTION_DRAG_ENDED:
-                        Log.d("ACTION_DRAG_ENDED","ACTION_DRAG_ENDED");
-                        v.setBackgroundDrawable(normalShape);
-                    default:
-                        break;
-                }
-                return true;
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    Log.d("ACTION_DRAG_ENDED", "ACTION_DRAG_ENDED");
+                    v.setBackgroundDrawable(normalShape);
+                default:
+                    break;
             }
+            return true;
         }
+    }
 
 
-    //--------------------------------------------------------
-
-    private void setCleanTimer(){
-        cleanTimer = new CountDownTimer(1500,1000) {
+    private void setCleanTimer() {
+        cleanTimer = new CountDownTimer(1500, 1000) {
             @Override
             public void onTick(long l) {
 
@@ -510,7 +532,7 @@ public class BucketGame extends AppCompatActivity {
         }.start();
     }
 
-    private void clearScreen(){
+    private void clearScreen() {
 
         final GridLayout layout = (GridLayout) findViewById(R.id.gridLayoutBucket);
 
@@ -532,17 +554,15 @@ public class BucketGame extends AppCompatActivity {
         startButton.setText(getResources().getString(R.string.nextRound));
         startButton.setVisibility(View.VISIBLE);
 
-        if (currentRound == TotalRounds)
-        {
+        if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
         }
-
 
 
     }
 
 
-        private void setViews(){
+    private void setViews() {
         imageviews.clear();
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayoutBucket);
         gridLayout.removeAllViews();
@@ -552,45 +572,42 @@ public class BucketGame extends AppCompatActivity {
 
         int idsetter = 0;
 
-            for(int i=0; i<gridLayout.getRowCount(); i++)
-            {
-                GridLayout.Spec rowSpec = GridLayout.spec(i, 1,1);
+        for (int i = 0; i < gridLayout.getRowCount(); i++) {
+            GridLayout.Spec rowSpec = GridLayout.spec(i, 1, 1);
 
-                for(int j=0;j<gridLayout.getColumnCount();j++)
-                {
-                    GridLayout.Spec colSpec = GridLayout.spec(j,1,1);
+            for (int j = 0; j < gridLayout.getColumnCount(); j++) {
+                GridLayout.Spec colSpec = GridLayout.spec(j, 1, 1);
 
-                    ImageView imageView = new ImageView(this);
-                    imageView.setId(idsetter);
-                    GridLayout.LayoutParams myGLP = new GridLayout.LayoutParams();
-                    myGLP.leftMargin = 16;
-                    myGLP.rightMargin = 16;
-                    GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
-                    layoutParams.width = 0;
-                    layoutParams.height = 0;
-                    layoutParams.setMargins(4,4,4,4);
-                    layoutParams.rowSpec = rowSpec;
-                    layoutParams.columnSpec = colSpec;
-                    imageView.setLayoutParams(layoutParams);
-                    gridLayout.addView(imageView, myGLP );
-                    imageviews.add(imageView.getId());
-                    idsetter++;
-                }
+                ImageView imageView = new ImageView(this);
+                imageView.setId(idsetter);
+                GridLayout.LayoutParams myGLP = new GridLayout.LayoutParams();
+                myGLP.leftMargin = 16;
+                myGLP.rightMargin = 16;
+                GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
+                layoutParams.width = 0;
+                layoutParams.height = 0;
+                layoutParams.setMargins(4, 4, 4, 4);
+                layoutParams.rowSpec = rowSpec;
+                layoutParams.columnSpec = colSpec;
+                imageView.setLayoutParams(layoutParams);
+                gridLayout.addView(imageView, myGLP);
+                imageviews.add(imageView.getId());
+                idsetter++;
             }
+        }
 
     }
 
-    private void onActionMade(boolean value){
+    private void onActionMade(boolean value) {
         endspeed = new Timestamp(System.currentTimeMillis());
         long diffspeed = endspeed.getTime() - startspeed.getTime();
         double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
         totalspeed += speedseconds;
 
-        if (value){
+        if (value) {
             miss++;
             missPoints = true;
-        }
-        else{
+        } else {
             hit++;
             trueCounter++;
         }
@@ -607,18 +624,17 @@ public class BucketGame extends AppCompatActivity {
     }
 
     private void setTouchlistenermethod(ArrayList<Integer> imageviews) {
-        int i=0;
+        int i = 0;
 
-        for (int imgv : imageviews)
-        {
-            if (currentDifficulty.equals(getResources().getString(R.string.easyValue)) && i<=2)
-            {
+        for (int imgv : imageviews) {
+            if (currentDifficulty.equals(getResources().getString(R.string.easyValue)) && i <= 2) {
                 ImageView imageView = findViewById(imgv);
                 imageView.setOnTouchListener(new MyTouchListener());
 
-            }
-            else if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
-            {
+            } else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)) && i <= 3) {
+                ImageView imageView = findViewById(imgv);
+                imageView.setOnTouchListener(new MyTouchListener());
+            } else {
                 ImageView imageView = findViewById(imgv);
                 imageView.setOnTouchListener(new MyTouchListener());
 
@@ -627,23 +643,22 @@ public class BucketGame extends AppCompatActivity {
         }
     }
 
-    private void checkifEnds(){
+    private void checkifEnds() {
 
-        if (currentRound == TotalRounds)
-        {
+        if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,totalPlayInSeconds,menuDifficulty,startTime,endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / TotalRounds, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
-            userViewModel.updatestatsTest(user_id,game_id);
+            userViewModel.updatestatsTest(user_id, game_id);
             shopPopUp();
         }
 
     }
 
-    private void loadAnimalImages(){
+    private void loadAnimalImages() {
         fish.add(R.drawable.animals_fish_goldfish);
         fish.add(R.drawable.animals_fish_shark);
         fish.add(R.drawable.animals_fish_swordfish);
@@ -662,7 +677,7 @@ public class BucketGame extends AppCompatActivity {
     }
 
 
-    private void loadFoodsImages(){
+    private void loadFoodsImages() {
         meats.add(R.drawable.foods_meats_sausage);
         meats.add(R.drawable.foods_meats_salami);
         meats.add(R.drawable.foods_meats_souvlaki);
@@ -681,7 +696,7 @@ public class BucketGame extends AppCompatActivity {
     }
 
 
-    private void loadClothedsImages(){
+    private void loadClothedsImages() {
         shirts.add(R.drawable.clothes_shirts_dress);
         shirts.add(R.drawable.clothes_shirts_suit);
         shirts.add(R.drawable.clothes_shirts_tshirt);
@@ -699,81 +714,109 @@ public class BucketGame extends AppCompatActivity {
         clothes.add(shoes);
     }
 
-    private void loadGeneralCategories(){
+    private void loadGeneralCategories() {
         generalCategories.add(Animals);
         generalCategories.add(food);
         generalCategories.add(clothes);
     }
 
 
-
-    private void matchGeneralCategorieswithsubbuckets(){
+    private void matchGeneralCategorieswithsubbuckets() {
         bucketsubAnimals.add(R.drawable.animals_fish);
         bucketsubAnimals.add(R.drawable.animals_birds);
         bucketsubAnimals.add(R.drawable.animals_insects);
+
+        bucketsubFoods.add(R.drawable.foods_meats);
+        bucketsubFoods.add(R.drawable.foods_veg);
+        bucketsubFoods.add(R.drawable.foods_liquids);
 
         bucketsubClothes.add(R.drawable.clothes_shirts);
         bucketsubClothes.add(R.drawable.clothes_pants);
         bucketsubClothes.add(R.drawable.clothes_shoes);
 
-        bucketsubFoods.add(R.drawable.foods_liquids);
-        bucketsubFoods.add(R.drawable.foods_meats);
-        bucketsubFoods.add(R.drawable.foods_veg);
-
-        labelsubBuckets.put(0,bucketsubAnimals);
-        labelsubBuckets.put(1,bucketsubFoods);
-        labelsubBuckets.put(2,bucketsubClothes);
+        labelsubBuckets.put(0, bucketsubAnimals);
+        labelsubBuckets.put(1, bucketsubFoods);
+        labelsubBuckets.put(2, bucketsubClothes);
     }
 
 
+    private void resetGeneralCategories(int first, String sec) {
+        //     labelsubBuckets.clear();
+        if (sec.equals("subanimals")) {
+            labelsubBuckets.put(first, bucketsubAnimals);
+        } else if (sec.equals("subfoods")) {
+            labelsubBuckets.put(first, bucketsubFoods);
+        } else {
+            labelsubBuckets.put(first, bucketsubClothes);
+        }
 
-    private void loadGeneralbucketsImages(){
+    }
+
+    private int matchStringlabelWitGeneralbucketIcons(String bucketName) {
+
+        if (bucketName.equals("AnimalsBucket")) {
+            return R.drawable.general_animals;
+        } else if (bucketName.equals("ClothesBucket")) {
+            return R.drawable.general_clothes;
+        } else
+            return R.drawable.general_foods;
+    }
+
+
+    private void loadGeneralbucketsImages() {
         generalbucketsImages.add(R.drawable.general_clothes);
         generalbucketsImages.add(R.drawable.general_animals);
         generalbucketsImages.add(R.drawable.general_foods);
 
-        matchbucketList.put(R.drawable.general_clothes ,clothesEz);
-        matchbucketList.put(R.drawable.general_animals ,AnimalsEz);
-        matchbucketList.put(R.drawable.general_foods ,foodsEz);
+        matchbucketList.put(R.drawable.general_clothes, clothesEz);
+        matchbucketList.put(R.drawable.general_animals, AnimalsEz);
+        matchbucketList.put(R.drawable.general_foods, foodsEz);
 
-        matchbucketList.put(R.drawable.animals_fish ,fish);
-        matchbucketList.put(R.drawable.animals_birds ,birds);
-        matchbucketList.put(R.drawable.animals_insects ,insects);
+        matchbucketList.put(R.drawable.animals_fish, fish);
+        matchbucketList.put(R.drawable.animals_birds, birds);
+        matchbucketList.put(R.drawable.animals_insects, insects);
 
-        matchbucketList.put(R.drawable.foods_liquids ,liquids);
-        matchbucketList.put(R.drawable.foods_meats ,meats);
-        matchbucketList.put(R.drawable.foods_veg ,vegs);
+        matchbucketList.put(R.drawable.foods_liquids, liquids);
+        matchbucketList.put(R.drawable.foods_meats, meats);
+        matchbucketList.put(R.drawable.foods_veg, vegs);
 
-        matchbucketList.put(R.drawable.clothes_shirts ,shirts);
-        matchbucketList.put(R.drawable.clothes_pants ,pants);
-        matchbucketList.put(R.drawable.clothes_shoes ,shoes);
+        matchbucketList.put(R.drawable.clothes_shirts, shirts);
+        matchbucketList.put(R.drawable.clothes_pants, pants);
+        matchbucketList.put(R.drawable.clothes_shoes, shoes);
     }
 
-    private void matchnormalwithredbucket(){
-        normalbucketEnterbucket.put(R.drawable.general_clothes,R.drawable.red_general_clothes);
-        normalbucketEnterbucket.put(R.drawable.general_animals,R.drawable.red_general_animals);
-        normalbucketEnterbucket.put(R.drawable.general_foods,R.drawable.red_general_foods);
+    private void matchnormalwithredbucket() {
+        normalbucketEnterbucket.put(R.drawable.general_clothes, R.drawable.red_general_clothes);
+        normalbucketEnterbucket.put(R.drawable.general_animals, R.drawable.red_general_animals);
+        normalbucketEnterbucket.put(R.drawable.general_foods, R.drawable.red_general_foods);
 
-        normalbucketEnterbucket.put(R.drawable.animals_fish,R.drawable.red_animals_fish);
-        normalbucketEnterbucket.put(R.drawable.animals_birds,R.drawable.red_animals_birds);
-        normalbucketEnterbucket.put(R.drawable.animals_insects,R.drawable.red_animals_insects);
+        normalbucketEnterbucket.put(R.drawable.animals_fish, R.drawable.red_animals_fish);
+        normalbucketEnterbucket.put(R.drawable.animals_birds, R.drawable.red_animals_birds);
+        normalbucketEnterbucket.put(R.drawable.animals_insects, R.drawable.red_animals_insects);
 
-        normalbucketEnterbucket.put(R.drawable.foods_liquids,R.drawable.red_foods_liquids);
-        normalbucketEnterbucket.put(R.drawable.foods_meats,R.drawable.red_foods_meats);
-        normalbucketEnterbucket.put(R.drawable.foods_veg,R.drawable.red_foods_veg);
+        normalbucketEnterbucket.put(R.drawable.foods_liquids, R.drawable.red_foods_liquids);
+        normalbucketEnterbucket.put(R.drawable.foods_meats, R.drawable.red_foods_meats);
+        normalbucketEnterbucket.put(R.drawable.foods_veg, R.drawable.red_foods_veg);
 
-        normalbucketEnterbucket.put(R.drawable.clothes_shirts,R.drawable.red_clothes_shirts);
-        normalbucketEnterbucket.put(R.drawable.clothes_pants,R.drawable.red_clothes_pants);
-        normalbucketEnterbucket.put(R.drawable.clothes_shoes,R.drawable.red_clothes_shoes);
+        normalbucketEnterbucket.put(R.drawable.clothes_shirts, R.drawable.red_clothes_shirts);
+        normalbucketEnterbucket.put(R.drawable.clothes_pants, R.drawable.red_clothes_pants);
+        normalbucketEnterbucket.put(R.drawable.clothes_shoes, R.drawable.red_clothes_shoes);
     }
 
-    private void setOntouchlistenerEZ(){
+    private void setOntouchlistenerEZ() {
         thing1.setOnTouchListener(new MyTouchListener());
         thing2.setOnTouchListener(new MyTouchListener());
         thing3.setOnTouchListener(new MyTouchListener());
     }
 
-    private void setOntouchlistenerADV(){
+    private void setOntouchlistenerMed() {
+        thing1.setOnTouchListener(new MyTouchListener());
+        thing2.setOnTouchListener(new MyTouchListener());
+        thing3.setOnTouchListener(new MyTouchListener());
+        thing4.setOnTouchListener(new MyTouchListener());
+    }
+
+    private void setOntouchlistenerADV() {
         thing1.setOnTouchListener(new MyTouchListener());
         thing2.setOnTouchListener(new MyTouchListener());
         thing3.setOnTouchListener(new MyTouchListener());
@@ -782,7 +825,7 @@ public class BucketGame extends AppCompatActivity {
         thing6.setOnTouchListener(new MyTouchListener());
     }
 
-    private void assignAllButtons(){
+    private void assignAllButtons() {
         thing1 = findViewById(R.id.imageView1Bucket);
         thing2 = findViewById(R.id.imageView2Bucket);
         thing3 = findViewById(R.id.imageView3Bucket);
@@ -806,7 +849,7 @@ public class BucketGame extends AppCompatActivity {
     }
 
 
-    private void fillImageviews(){
+    private void fillImageviews() {
         imageviews.add(R.id.imageView1Bucket);
         imageviews.add(R.id.imageView2Bucket);
         imageviews.add(R.id.imageView3Bucket);
@@ -816,62 +859,51 @@ public class BucketGame extends AppCompatActivity {
     }
 
 
+    private void countPoints() {
 
+        int currentPoints = 0;
 
-    private void countPoints()
-    {
-
-        int currentPoints=0;
-
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
         }
         totalPoints += currentPoints;
-        animationTextPoints.setText("+ " +currentPoints);
-        if (currentPoints == 0)
-        {
+        animationTextPoints.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
             animationTextPoints.setTextColor(Color.RED);
-        }
-        else
+        } else
             animationTextPoints.setTextColor(Color.GREEN);
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(BucketGame.this,R.raw.tutorial_shadowgame,getPackageName());
-        dialogFragment.show(getSupportFragmentManager(),"TutorialBucketGame");
+    private void showTutorialPopUp() {
+        DialogFragment dialogFragment = new Tutorial(BucketGame.this, R.raw.tutorial_shadowgame, getPackageName());
+        dialogFragment.show(getSupportFragmentManager(), "TutorialBucketGame");
     }
 
     private void shopPopUp() {
-        DialogFragment newFragment = new DialogMsg(user_id,BucketGame.this,hit,totalPoints);
+        DialogFragment newFragment = new DialogMsg(user_id, BucketGame.this, hit, totalPoints);
         newFragment.show(getSupportFragmentManager(), "BucketGame");
     }
 
-    private void startAnimation(){
+    private void startAnimation() {
         long duration = 2000;
-        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animationTextPoints,"y",500f,-500f);
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animationTextPoints, "y", 500f, -500f);
         objectAnimatorY.setDuration(duration);
 
-        ObjectAnimator alpha =  ObjectAnimator.ofFloat(animationTextPoints,View.ALPHA,1.0f,0.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(animationTextPoints, View.ALPHA, 1.0f, 0.0f);
         alpha.setDuration(duration);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.playTogether(objectAnimatorY, alpha);
         animatorSet.start();
     }
 }
