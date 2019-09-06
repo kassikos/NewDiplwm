@@ -20,14 +20,23 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
 
 
     private List<UserGameStats> statistics = new ArrayList<>();
-    private List<Integer> images = new ArrayList<Integer>();
+    private static final List<Integer> images = new ArrayList<Integer>();
     Context context;
 
-    private static final String GAMENAME = "GAMENAME";
-    private static final String HIT = "HIT";
-    private static final String MISS = "MISS";
-    private static final String PLAYTOTALTIME = "PLAYTOTALTIME";
-    private static final String SCORE = "SCORE";
+    private void initList(){
+        images.add(R.drawable.rock_scissor_paper);
+        images.add(R.drawable.math_game);
+        images.add(R.drawable.memory_game);
+        images.add(R.drawable.select_object);
+        images.add(R.drawable.order_game);
+        images.add(R.drawable.scissors);
+        images.add(R.drawable.scissors);
+        images.add(R.drawable.scissors);
+        images.add(R.drawable.scissors);
+        images.add(R.drawable.scissors);
+        images.add(R.drawable.scissors);
+    }
+
 
     @NonNull
     @Override
@@ -40,32 +49,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
     public void onBindViewHolder(@NonNull final StatisticHolder gameHolder, int i) {
         UserGameStats currentStatistic = statistics.get(i);
 
-        if (currentStatistic.name.equals("Rock"))
-        {
-            gameHolder.imageView.setImageResource(R.drawable.stone);
-            images.add(R.drawable.stone);
-
-        }
-        else if(currentStatistic.name.equals("Calcution")){
-            gameHolder.imageView.setImageResource(R.drawable.numeric);
-            images.add(R.drawable.numeric);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-            images.add(R.drawable.scissors);
-
-        }
-        else
-        {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
-        }
-        //gameHolder.imageView.setImageResource(R.drawable.numeric);
-        //gameHolder.textView.setText(String.valueOf(currentStatistic.name));
+        gameHolder.imageView.setImageResource(images.get(i));
         gameHolder.textViewTitle.setText(String.valueOf(GameHelper.getGreekName(currentStatistic.name)));
         gameHolder.textView.setText(String.valueOf(currentStatistic.statistic.getHit()));
         gameHolder.textView1.setText(String.valueOf(currentStatistic.statistic.getMiss()));
@@ -82,6 +66,11 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
 
                 Pair<View, String> p1 = Pair.create((View) gameHolder.imageView, "test");
                 Pair<View, String> p2 = Pair.create((View) gameHolder.textViewTitle, "Stringaki");
+
+                if (images.size() <=0)
+                {
+                    initList();
+                }
 
 
                 ActivityOptionsCompat activityOptionsCompat = (ActivityOptionsCompat) ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,p1,p2);
@@ -113,6 +102,7 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         this.context = context;
 
         notifyDataSetChanged();
+        initList();
     }
 
     class StatisticHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

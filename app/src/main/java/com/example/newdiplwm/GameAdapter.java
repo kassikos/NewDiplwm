@@ -30,28 +30,28 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         Game currentGame = games.get(i);
         if (currentGame.getName().equals("Rock"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.stone);
+            gameHolder.imageView.setImageResource(R.drawable.rock_scissor_paper);
        //     gameHolder.textView.setText(R.string.Rock);
 
         }
         else if(currentGame.getName().equals("Calcution"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.numeric);
+            gameHolder.imageView.setImageResource(R.drawable.math_game);
        //     gameHolder.textView.setText(R.string.Calcution);
         }
         else if (currentGame.getName().equals("MemoryMatrix"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.memory_game);
       //      gameHolder.textView.setText(R.string.MemoryMatrix);
         }
         else if (currentGame.getName().equals("ObjectSelector"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.select_object);
       //      gameHolder.textView.setText(R.string.ObjectSelector);
         }
         else if (currentGame.getName().equals("OrderGame"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.order_game);
     //        gameHolder.textView.setText(R.string.OrderGame);
         }
         else if (currentGame.getName().equals("Suitcase"))
