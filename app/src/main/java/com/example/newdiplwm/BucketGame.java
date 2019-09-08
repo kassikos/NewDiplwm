@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
@@ -437,9 +439,11 @@ public class BucketGame extends AppCompatActivity {
         }
     }
 
+    boolean ee;
 
     class MyDragListener implements View.OnDragListener {
         Context context = BucketGame.this;
+
 
 
         @Override
@@ -471,6 +475,7 @@ public class BucketGame extends AppCompatActivity {
 
 
                     View view = (View) event.getLocalState();
+                    ee = event.getResult();
                     ViewGroup owner = (ViewGroup) view.getParent();
                     owner.removeView(view);
                     ArrayList<Integer> temp = (ArrayList<Integer>) matchbucketList.get(kadakiId); //apo to id toy kadakioy pairnw to tin lista me ta antikeimena poy prepexei na exei o kados
@@ -512,9 +517,19 @@ public class BucketGame extends AppCompatActivity {
                 default:
                     break;
             }
+//            if (!ee)
+//            {
+//                View vieww = (View) event.getLocalState();
+//                ViewGroup owner = (ViewGroup) vieww.getParent();
+//                owner.removeView(vieww);
+//                vieww.setVisibility(View.VISIBLE);
+//
+//            }
             return true;
         }
+
     }
+
 
 
     private void setCleanTimer() {
@@ -886,7 +901,7 @@ public class BucketGame extends AppCompatActivity {
     }
 
     private void showTutorialPopUp() {
-        DialogFragment dialogFragment = new Tutorial(BucketGame.this, R.raw.tutorial_shadowgame, getPackageName());
+        DialogFragment dialogFragment = new Tutorial(BucketGame.this, R.raw.tutorial_boxgame, getPackageName());
         dialogFragment.show(getSupportFragmentManager(), "TutorialBucketGame");
     }
 

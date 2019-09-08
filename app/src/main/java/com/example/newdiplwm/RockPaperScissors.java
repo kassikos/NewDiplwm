@@ -653,7 +653,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     }
 
     private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(RockPaperScissors.this,R.raw.tutorial_scalinggame,getPackageName());
+        DialogFragment dialogFragment = new Tutorial(RockPaperScissors.this,R.raw.tutorial_rps,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"Tutorial");
     }
 

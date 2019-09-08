@@ -17,9 +17,6 @@
     <SwitchPreferenceCompat
         app:key="testing"
         android:defaultValue="false"
-        android:summaryOn="Απενεργοποιημένοι"
-        android:summaryOff="Ενεργοποιημένοι"
-
         app:title="@string/NotAgain" />
     </PreferenceCategory>
 
