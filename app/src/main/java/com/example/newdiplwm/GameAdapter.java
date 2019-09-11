@@ -3,8 +3,6 @@ package com.example.newdiplwm;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,53 +29,42 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         if (currentGame.getName().equals("Rock"))
         {
             gameHolder.imageView.setImageResource(R.drawable.rock_scissor_paper);
-       //     gameHolder.textView.setText(R.string.Rock);
-
         }
         else if(currentGame.getName().equals("Calcution"))
         {
             gameHolder.imageView.setImageResource(R.drawable.math_game);
-       //     gameHolder.textView.setText(R.string.Calcution);
         }
         else if (currentGame.getName().equals("MemoryMatrix"))
         {
             gameHolder.imageView.setImageResource(R.drawable.memory_game);
-      //      gameHolder.textView.setText(R.string.MemoryMatrix);
         }
         else if (currentGame.getName().equals("ObjectSelector"))
         {
             gameHolder.imageView.setImageResource(R.drawable.select_object);
-      //      gameHolder.textView.setText(R.string.ObjectSelector);
         }
         else if (currentGame.getName().equals("OrderGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.order_game);
-    //        gameHolder.textView.setText(R.string.OrderGame);
         }
         else if (currentGame.getName().equals("Suitcase"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-     //       gameHolder.textView.setText(R.string.Suitcase);
         }
         else if (currentGame.getName().equals("ShadowGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-     //       gameHolder.textView.setText(R.string.ShadowGame);
         }
         else if (currentGame.getName().equals("PersonPickGame"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-      //      gameHolder.textView.setText(R.string.PersonPickGame);
         }
         else if (currentGame.getName().equals("SoundWord"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-     //       gameHolder.textView.setText(R.string.SoundWord);
         }
         else if (currentGame.getName().equals("SoundImage"))
         {
             gameHolder.imageView.setImageResource(R.drawable.scissors);
-         //   gameHolder.textView.setText(R.string.SoundImage);
         }
         else
         {
@@ -85,10 +72,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         }
 
 
-
-
         gameHolder.textView.setText(GameHelper.getGreekName(currentGame.getName()));
-
         gameHolder.textView1.setText(currentGame.getDescription());
 
 

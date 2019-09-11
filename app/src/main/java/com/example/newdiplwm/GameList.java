@@ -339,10 +339,17 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
             case R.id.nav_chart:
                 Intent intentChart = new Intent(this,MenuChart.class);
                 startActivity(intentChart);
+                Animatoo.animateFade(GameList.this);
                 break;
             case R.id.nav_questionnaire:
                 Intent intentQuestionnaire = new Intent(this,Questionnaire.class);
                 startActivity(intentQuestionnaire);
+                Animatoo.animateFade(GameList.this);
+                break;
+            case R.id.nav_info:
+                Intent intentInfo = new Intent(GameList.this,AboutActivity.class);
+                startActivity(intentInfo);
+                Animatoo.animateFade(GameList.this);
                 break;
             case R.id.nav_logout:
                 session.setRememberme(false);
