@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AboutActivity">
+
+    <include
+        android:id="@+id/toolbarAbout"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/imgviewLinearAbout"
+
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/statisticColor"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageViewAbout"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/biglogo"
+            android:contentDescription="@string/imageDesc"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="200dp"
+        android:elevation="@dimen/cardview_default_elevation"
+        app:cardBackgroundColor="@color/statisticColor"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/aboutText"
+            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:text="Η εφαρμογή αυτή αποτελεί προίον Διπλωματικής Εργασίας των φοιτητών του ΜΠΕΣ: Βασίλη Κασσικού και Αντώνη Αντωνόπουλου.\n\nΕπικοινωνία :     bill.kassikos@gmail.com"
+            style="@style/MenuItems" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
