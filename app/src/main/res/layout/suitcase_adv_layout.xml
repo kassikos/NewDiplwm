@@ -27,8 +27,8 @@
         />
 
     <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/nextitem"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -51,10 +51,10 @@
             android:layout_height="match_parent"
             android:rowCount="3"
             android:columnCount="2"
-            android:layout_marginLeft="40sp"
-            android:layout_marginRight="20sp"
-            android:layout_marginBottom="180sp"
-            android:layout_marginTop="180sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="10sp"
+            android:layout_marginBottom="150sp"
+            android:layout_marginTop="150sp"
             android:layout_gravity="center">
 
             <ImageView
@@ -141,10 +141,10 @@
             android:layout_height="match_parent"
             android:rowCount="3"
             android:columnCount="2"
-            android:layout_marginRight="40sp"
-            android:layout_marginLeft="20sp"
-            android:layout_marginBottom="180sp"
-            android:layout_marginTop="180sp"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="20sp"
+            android:layout_marginBottom="150sp"
+            android:layout_marginTop="150sp"
             android:layout_gravity="center">
 
             <ImageView

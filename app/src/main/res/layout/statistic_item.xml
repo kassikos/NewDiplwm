@@ -107,7 +107,8 @@
             <TextView
                 android:id="@+id/tbl_txt4"
                 style="@style/Textstyle"
-                android:text="@string/playTotalTime"
+                android:text="χρόνος"
+
                 app:layout_constraintLeft_toRightOf="@id/tbl_txt1_value"
                 app:layout_constraintRight_toLeftOf="@+id/tbl_txt4_value"
                 app:layout_constraintTop_toBottomOf="@id/imageViewC" />

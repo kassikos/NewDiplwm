@@ -85,6 +85,7 @@ public class Question1 extends Fragment implements View.OnClickListener{
             public void onClick(View view) {
                 if (picked != -1)
                 {
+
                     Question2 question2 = new Question2();
                      loadFragment(question2);
                 }
@@ -99,6 +100,7 @@ public class Question1 extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view1) {
         picked = view1.getId();
+        MaterialButton mtbbb = (MaterialButton) view1;
         clear();
         view1.setBackgroundColor(getResources().getColor(R.color.gray));
     }

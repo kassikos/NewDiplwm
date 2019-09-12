@@ -26,8 +26,6 @@ public class Converters {
     static DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss" );
     @TypeConverter
     public static Date fromTimestamp(String value) {
-
-        String valueee = value;
         try {
             return  dateFormatter.parse(value) ;
         } catch (ParseException e) {
