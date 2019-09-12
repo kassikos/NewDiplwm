@@ -17,6 +17,7 @@
             android:name=".BucketGame"
             android:launchMode="singleTop"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:parentActivityName=".GameList" />
         <activity
             android:name=".Questionnaire"

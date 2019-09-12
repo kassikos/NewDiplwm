@@ -27,8 +27,8 @@
         />
 
     <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/nextitemEZ"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -52,10 +52,10 @@
             android:layout_height="match_parent"
             android:rowCount="2"
             android:columnCount="2"
-            android:layout_marginLeft="40sp"
-            android:layout_marginRight="20sp"
-            android:layout_marginBottom="250sp"
-            android:layout_marginTop="250sp"
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginBottom="180sp"
+            android:layout_marginTop="180sp"
             android:layout_gravity="center">
 
             <ImageView
@@ -121,10 +121,10 @@
             android:layout_height="match_parent"
             android:rowCount="2"
             android:columnCount="2"
-            android:layout_marginRight="40sp"
-            android:layout_marginLeft="20sp"
-            android:layout_marginBottom="250sp"
-            android:layout_marginTop="250sp"
+            android:layout_marginRight="20sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginBottom="180sp"
+            android:layout_marginTop="180sp"
             android:layout_gravity="center">
 
             <ImageView
