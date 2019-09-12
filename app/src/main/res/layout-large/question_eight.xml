@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toBottomOf="@id/Qquestion"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/nextQ">
+                app:layout_constraintBottom_toTopOf="@id/textsQ">
 
 
                 <com.google.android.material.button.MaterialButton

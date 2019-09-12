@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:id="@+id/imageViewCustomPopUp"
         android:contentDescription="@string/imageDesc"
         app:srcCompat="@drawable/goldcup"
@@ -26,7 +26,7 @@
         android:gravity="center"
         style="@style/MenuItems"
         android:layout_marginBottom="4dp"
-        android:textSize="38sp"/>
+        android:textSize="30sp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -39,6 +39,6 @@
         style="@style/MenuItems"
         android:gravity="center"
         android:layout_marginBottom="4dp"
-        android:textSize="38sp"/>
+        android:textSize="30sp"/>
 
 </LinearLayout>

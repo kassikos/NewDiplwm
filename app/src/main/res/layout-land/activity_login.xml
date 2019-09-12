@@ -5,14 +5,13 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root"
     tools:context=".Login">
-    <!---->
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/imgviewLinearLand"
+        android:id="@+id/imgviewLinear"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/gradient_green_blue"
         android:orientation="vertical"
@@ -20,7 +19,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_margin="16dp"
             app:srcCompat="@drawable/biglogo"
             android:contentDescription="@string/imageDesc"
@@ -28,16 +27,18 @@
 
     </LinearLayout>
 
+
+
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:id="@+id/loginTextInputLayout"
-        app:layout_constraintTop_toBottomOf="@id/imgviewLinearLand"
+        app:layout_constraintTop_toBottomOf="@id/imgviewLinear"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="40dp"
         android:layout_width="0dp"
         app:boxStrokeColor="@color/black"
-       android:focusableInTouchMode="true"
+        android:focusableInTouchMode="true"
         app:hintTextColor="@color/black"
         app:hintAnimationEnabled="true"
         android:layout_height="wrap_content">
@@ -45,8 +46,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/TextInputEditText"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:textSize="25sp"
+            android:layout_height="60dp"
+            android:textSize="20sp"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:focusableInTouchMode="true"
@@ -62,32 +63,30 @@
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
         android:text="@string/login"
-        android:textSize="30sp"
-        android:layout_width="400dp"
+        android:textSize="25sp"
+        android:layout_width="300dp"
         android:padding="8dp"
         android:textColor="@color/purple"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/loginTextInputLayout"
-        android:layout_marginTop="65dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/btnText"/>
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnText"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="600dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintTop_toBottomOf="@id/material_text_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeColor="@color/black"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:padding="8dp"
-        app:strokeWidth="3dp"
         android:textColor="@color/purple"
         android:text="@string/logRegister"
-        app:layout_constraintTop_toBottomOf="@+id/loginTextInputLayout"
-        app:layout_constraintRight_toLeftOf="@+id/material_text_button"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="65dp"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

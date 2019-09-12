@@ -23,7 +23,7 @@
         <ImageView
             android:id="@+id/imageViewAbout"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="200dp"
             android:layout_margin="16dp"
             app:srcCompat="@drawable/biglogo"
             android:contentDescription="@string/imageDesc"
@@ -51,7 +51,8 @@
             android:layout_margin="16dp"
             android:layout_gravity="center"
             android:text="Η εφαρμογή αυτή αποτελεί προίον Διπλωματικής Εργασίας των φοιτητών του ΜΠΕΣ: Βασίλη Κασσικού και Αντώνη Αντωνόπουλου.\n\nΕπικοινωνία :     bill.kassikos@gmail.com"
-            style="@style/MenuItems" />
+            style="@style/MenuItems"
+            android:textSize="16sp"/>
 
 
     </com.google.android.material.card.MaterialCardView>
