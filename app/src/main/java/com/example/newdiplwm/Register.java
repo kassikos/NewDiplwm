@@ -195,7 +195,7 @@ public class Register extends AppCompatActivity {
     }
 
     private boolean isEmpty(TextInputEditText etText) {
-        return etText.getText().toString().trim().length() == 0;
+        return etText.getText().toString().trim().length() <= 2;
     }
 
     @Override
