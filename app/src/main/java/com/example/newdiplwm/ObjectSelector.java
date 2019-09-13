@@ -563,6 +563,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
             if (picked.contains(imageIDS.get(view.getId())))
             {
+                unclick();
                 startAnimation();
                 Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 view.startAnimation(animShake);
@@ -596,6 +597,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
                 if (picked.size() == 3 && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
                 {
+                    unclick();
                     startAnimation();
                     helper = picked.size();
                     totalspeed = totalspeed/picked.size();
@@ -612,6 +614,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 }
                 if (picked.size() == 4 && currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
                 {
+                    unclick();
                     startAnimation();
                     helper = picked.size();
                     hit++;
@@ -625,6 +628,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 }
                 if (picked.size() == 5 && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
                 {
+                    unclick();
                     startAnimation();
                     helper = picked.size();
                     hit++;

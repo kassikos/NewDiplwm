@@ -751,6 +751,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        unclickable();
 
         Timer = new CountDownTimer(1500, 1000) {
             @Override
