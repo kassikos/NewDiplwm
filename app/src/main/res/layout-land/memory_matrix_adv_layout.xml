@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:columnCount="4"
     android:layout_gravity="center"
-    android:padding="24dp"
+
     android:layout_marginLeft="100dp"
     android:layout_marginRight="100dp"
     android:rowCount="4">

@@ -55,7 +55,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:columnCount="3"
-        android:padding="24dp"
         android:rowCount="3"
         app:layout_constraintBottom_toTopOf="@id/missingObjectsOG"
         app:layout_constraintLeft_toLeftOf="parent"
