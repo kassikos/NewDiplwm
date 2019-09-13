@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 public class GameHelper {
 
-    //private static final byte[] logoImageRock = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/stone.png");
 
     private static final String  rockDesc = "Παίξε Πέτρα, Ψαλίδι, Χαρτί και επέλεξε σωστά ποίος κερδίζει ή χάνει!";
 

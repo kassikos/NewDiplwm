@@ -703,6 +703,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imagebutton3.setImageResource(0);
         imagebutton4.setImageResource(0);
         imagebuttoncolorfull.setImageResource(0);
+        Timer = null;
     }
 
     private void initaliseSparceArray(){

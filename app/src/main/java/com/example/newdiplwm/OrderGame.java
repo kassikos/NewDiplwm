@@ -382,6 +382,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (Timer != null)
+                {
+                    Timer.cancel();
+                }
                 if (currentRound == 0 || click ==0 )
                 {
                     startTime = new Timestamp(System.currentTimeMillis());
@@ -415,6 +419,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onBackPressed()
     {
+        if (Timer != null)
+        {
+            Timer.cancel();
+        }
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -700,6 +708,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     v.setImageResource(0);
                     v.setColorFilter(0);
                 }
+                Timer = null;
                 mTimeLeftInMillis=0;
                 falsepick = false;
                 textTimer.setText("");
