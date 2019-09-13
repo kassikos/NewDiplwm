@@ -273,6 +273,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(Advancedtimer != null)
+                {
+                    Advancedtimer.cancel();
+                }
                 if (currentRound == 0 || click ==0 )
                 {
                     startTime = new Timestamp(System.currentTimeMillis());
@@ -306,6 +310,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     @Override
     public void onBackPressed()
     {
+        if(Advancedtimer != null)
+        {
+            Advancedtimer.cancel();
+        }
+
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -520,9 +529,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
                 {
                     advancedTextTimer.setText("");
+                    Advancedtimer = null;
 
                 }
-
                 textQuestion.setText("");
                 imageView1.setImageResource(0);
                 imageView2.setImageResource(0);
