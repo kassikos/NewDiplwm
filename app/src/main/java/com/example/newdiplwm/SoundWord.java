@@ -1,40 +1,26 @@
 package com.example.newdiplwm;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.Intent;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.PersistableBundle;
-import android.os.Vibrator;
-import android.util.Log;
-import android.util.SparseArray;
-import android.util.SparseIntArray;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataPassSWEz,SoundWordMed.OnDataPassSWMed,SoundWordAdv.OnDataPassSWAdv{
