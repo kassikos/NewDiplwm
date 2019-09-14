@@ -557,6 +557,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        unclickable();
         Timer = new CountDownTimer(1500, 1000) {
             @Override
             public void onTick(long l) {

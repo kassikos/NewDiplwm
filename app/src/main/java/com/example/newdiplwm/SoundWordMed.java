@@ -227,7 +227,7 @@ public class SoundWordMed extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view1) {
-
+        unclickable();
 
         Timer = new CountDownTimer(1500, 1000) {
             @Override

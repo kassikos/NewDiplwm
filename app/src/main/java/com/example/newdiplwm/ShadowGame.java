@@ -189,6 +189,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 }
                 else
                 {
+                    unclickable();
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound+ " / "+ TotalRounds);

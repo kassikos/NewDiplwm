@@ -320,6 +320,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
                 else
                 {
+                    unclickable();
                     textRounds.setText(currentRound+"/"+TotalRounds);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     startButton.setVisibility(View.VISIBLE);
@@ -745,6 +746,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
         if (missingObj.getId() == view.getId() && caseMissingObj == 1)
         {
+            unclickable();
             startAnimation();
             MaterialButton iv = (MaterialButton)findViewById(view.getId());
             iv.setText("Σωστά");
@@ -773,6 +775,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             if (rightpick == pickedImages.size())
             {
+                unclickable();
                 startAnimation();
                 hit++;
                 trueCounter++;
@@ -781,6 +784,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             }
             else if (falsepick)
             {
+                unclickable();
                 startAnimation();
                 ImageView iv = (ImageView)findViewById(view.getId());
                 iv.setColorFilter(Color.RED, PorterDuff.Mode.LIGHTEN);
@@ -796,6 +800,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         }
         else
         {
+            unclickable();
             startAnimation();
             MaterialButton iv = (MaterialButton)findViewById(view.getId());
             iv.setText("Λαθος");

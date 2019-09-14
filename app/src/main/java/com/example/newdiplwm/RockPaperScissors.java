@@ -550,6 +550,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
+        unclickable();
         if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
         {
             Advancedtimer.cancel();
