@@ -34,6 +34,8 @@ public class GameHelper {
 
     private static final String  BucketDesc = "Τοποθέτησε τα αντικείμενα στα σωστά κουτιά!";
 
+    private static final String RotationGameDesc = "Περίστρεψε σωστά τα τρίγωνα για να αντιστοιχιστεί το σωστό χρώμα!";
+
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
 
@@ -94,6 +96,7 @@ public class GameHelper {
         GameNamesHashmap.put("PersonPickGame","Συνδυασμοί Ρούχων");
         GameNamesHashmap.put("SoundWord","Παιχνίδι Φθόγγων");
         GameNamesHashmap.put("SoundImage","Ηχος - Εικόνα");
+        GameNamesHashmap.put("RotationGame","Παιχνίδι Περιστροφής");
         GameNamesHashmap.put("BOX","Ταξινόμηση Αντικειμένων");
 
     }
@@ -120,6 +123,7 @@ public class GameHelper {
                 new Game("PersonPickGame","memory",PersonPickGameDesc),
                 new Game("SoundWord","memory",SoundWordDesc),
                 new Game("SoundImage","memory",SoundimageDesc),
+                new Game("RotationGame","memory",RotationGameDesc),
                 new Game("BOX","memory",BucketDesc),
         };
 

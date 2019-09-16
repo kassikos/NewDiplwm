@@ -184,6 +184,13 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                     startActivity(intent);
 
                 }
+                else if (game.getName().equals("RotationGame"))
+                {
+                    session.setGameIdSession(game.getId());
+                    Intent intent = new Intent(GameList.this,RotationGame.class);
+                    startActivity(intent);
+
+                }
                 else if (game.getName().equals("BOX"))
                 {
                     session.setGameIdSession(game.getId());
