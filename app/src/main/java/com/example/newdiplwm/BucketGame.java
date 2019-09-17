@@ -8,8 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
@@ -425,21 +423,22 @@ public class BucketGame extends AppCompatActivity {
 
     private final class MyTouchListener implements View.OnTouchListener {
         public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 ClipData data = ClipData.newPlainText("eeeeeee", "gdfgdf");
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
                         view);
                 view.startDrag(data, shadowBuilder, view, 0);
-                view.setVisibility(View.INVISIBLE);
-                view.setEnabled(false);
+                view.setVisibility(View.VISIBLE);
+                view.setEnabled(true);
                 return true;
-            } else {
-                return false;
             }
+            else
+                return false;
         }
     }
 
-    boolean ee;
 
     class MyDragListener implements View.OnDragListener {
         Context context = BucketGame.this;
@@ -475,7 +474,6 @@ public class BucketGame extends AppCompatActivity {
 
 
                     View view = (View) event.getLocalState();
-                    ee = event.getResult();
                     ViewGroup owner = (ViewGroup) view.getParent();
                     owner.removeView(view);
                     ArrayList<Integer> temp = (ArrayList<Integer>) matchbucketList.get(kadakiId); //apo to id toy kadakioy pairnw to tin lista me ta antikeimena poy prepexei na exei o kados
@@ -483,6 +481,7 @@ public class BucketGame extends AppCompatActivity {
                     view.requestLayout();
                     view.getLayoutParams().height = 50;
                     view.getLayoutParams().width = 50;
+                    view.setEnabled(false);
 
 
                     container.addView(view);
@@ -517,14 +516,6 @@ public class BucketGame extends AppCompatActivity {
                 default:
                     break;
             }
-//            if (!ee)
-//            {
-//                View vieww = (View) event.getLocalState();
-//                ViewGroup owner = (ViewGroup) vieww.getParent();
-//                owner.removeView(vieww);
-//                vieww.setVisibility(View.VISIBLE);
-//
-//            }
             return true;
         }
 
