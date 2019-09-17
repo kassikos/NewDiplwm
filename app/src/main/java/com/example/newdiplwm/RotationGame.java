@@ -490,7 +490,11 @@ public class RotationGame extends AppCompatActivity{
 
         rectToMatch.setTextColor(easyColors.get(0));
 
-        Collections.shuffle(easyColors);
+        do
+        {
+            Collections.shuffle(easyColors);
+        }while (easyColors.get(0)==rectToMatch.getCurrentTextColor());
+
 
         int i=0;
         for (int rect: allrects)
@@ -517,7 +521,10 @@ public class RotationGame extends AppCompatActivity{
 
         rectToMatch.setTextColor(randomList.get(0));
 
-        Collections.shuffle(randomList);
+        do
+        {
+            Collections.shuffle(randomList);
+        }while (randomList.get(0)==rectToMatch.getCurrentTextColor());
 
         int i=0;
         for (int rect: allrects)
@@ -543,7 +550,11 @@ public class RotationGame extends AppCompatActivity{
 
         rectToMatch.setTextColor(randomList.get(0));
 
-        Collections.shuffle(randomList);
+        do
+        {
+            Collections.shuffle(randomList);
+        }while (randomList.get(0)==rectToMatch.getCurrentTextColor());
+
 
 
         int i=0;
@@ -712,7 +723,7 @@ public class RotationGame extends AppCompatActivity{
     }
 
     private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(RotationGame.this,R.raw.tutorial_objectselector,getPackageName());
+        DialogFragment dialogFragment = new Tutorial(RotationGame.this,R.raw.tutorial_rotationgame,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialRotationGame");
     }
 
