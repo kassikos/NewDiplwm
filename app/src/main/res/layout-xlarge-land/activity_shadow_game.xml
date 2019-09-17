@@ -162,7 +162,6 @@ tools:context=".ShadowGame">
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:gravity="center_horizontal"
-    android:padding="8dp"
     android:text="@string/Start"
     android:textColor="@color/purple"
     android:textSize="35sp"
