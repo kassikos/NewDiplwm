@@ -123,6 +123,7 @@ public class RotationGame extends AppCompatActivity{
 
 
     private ArrayList<Integer> randomList = new ArrayList<>(4);
+    private ArrayList<Integer> allrects = new ArrayList<>(4);
 
 
     private Session session;
@@ -191,6 +192,7 @@ public class RotationGame extends AppCompatActivity{
         else
         {
 
+            loadRects();
             user_id = session.getUserIdSession();
             game_id = session.getGameIdSession();
             menuDifficulty = session.getModeSession();
@@ -374,44 +376,7 @@ public class RotationGame extends AppCompatActivity{
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed()
-    {
+    private void onbackAndExitCode() {
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -431,7 +396,7 @@ public class RotationGame extends AppCompatActivity{
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
@@ -439,6 +404,21 @@ public class RotationGame extends AppCompatActivity{
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onbackAndExitCode();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed()
+    { onbackAndExitCode(); }
 
 
     private void createRound(){
@@ -512,11 +492,14 @@ public class RotationGame extends AppCompatActivity{
 
         Collections.shuffle(easyColors);
 
-        rect1.setTextColor(easyColors.get(0));
-        rect2.setTextColor(easyColors.get(1));
-        rect3.setTextColor(easyColors.get(2));
-        rect4.setTextColor(easyColors.get(3));
+        int i=0;
+        for (int rect: allrects)
+        {
+            TextView textView = findViewById(rect);
+            textView.setTextColor(easyColors.get(i));
+            i++;
 
+        }
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
 
@@ -536,12 +519,14 @@ public class RotationGame extends AppCompatActivity{
 
         Collections.shuffle(randomList);
 
-        rect1.setTextColor(randomList.get(0));
-        rect2.setTextColor(randomList.get(1));
-        rect3.setTextColor(randomList.get(2));
-        rect4.setTextColor(randomList.get(3));
+        int i=0;
+        for (int rect: allrects)
+        {
+            TextView textView = findViewById(rect);
+            textView.setTextColor(randomList.get(i));
+            i++;
 
-
+        }
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
     }
@@ -560,19 +545,28 @@ public class RotationGame extends AppCompatActivity{
 
         Collections.shuffle(randomList);
 
-        rect1.setTextColor(randomList.get(0));
-        rect2.setTextColor(randomList.get(1));
-        rect3.setTextColor(randomList.get(2));
-        rect4.setTextColor(randomList.get(3));
 
+        int i=0;
+        for (int rect: allrects)
+        {
+            TextView textView = findViewById(rect);
+            textView.setTextColor(randomList.get(i));
+            i++;
 
+        }
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
 
 
     }
 
+    private void loadRects(){
+        allrects.add(R.id.RG_rect1);
+        allrects.add(R.id.RG_rect2);
+        allrects.add(R.id.RG_rect3);
+        allrects.add(R.id.RG_rect4);
 
+    }
 
 
     private void assignAllButtons()
