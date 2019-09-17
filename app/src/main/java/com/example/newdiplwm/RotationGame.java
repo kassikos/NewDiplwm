@@ -307,7 +307,7 @@ public class RotationGame extends AppCompatActivity{
 
                 if (rectToCheck.getCurrentTextColor()==rectToMatch.getCurrentTextColor())
                 {
-                    buttonCheck.setColorFilter(Color.GREEN, PorterDuff.Mode.LIGHTEN);
+                    buttonCheck.setColorFilter(Color.GREEN, PorterDuff.Mode.OVERLAY);
 
                     unclick();
                     startAnimation();
@@ -325,7 +325,7 @@ public class RotationGame extends AppCompatActivity{
                 }
                 else
                 {
-                    buttonCheck.setColorFilter(Color.RED,PorterDuff.Mode.LIGHTEN);
+                    buttonCheck.setColorFilter(Color.RED,PorterDuff.Mode.OVERLAY);
 
                     unclick();
 
