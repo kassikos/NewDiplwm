@@ -37,9 +37,9 @@ public class SettingsClass extends PreferenceFragmentCompat {
             @Override
             public CharSequence provideSummary(Preference preference) {
                 if (switchPreferenceCompat1.isChecked()) {
-                    return "Απενεργοποιημένοι";
+                    return "Απενεργοποιημένες";
                 }
-                return "Ενεργοποιημένοι";
+                return "Ενεργοποιημένες";
 
 
             }
