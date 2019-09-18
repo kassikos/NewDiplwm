@@ -48,15 +48,15 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         }
         else if (currentGame.getName().equals("Suitcase"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.suitcase_game);
         }
         else if (currentGame.getName().equals("ShadowGame"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.shadow_game);
         }
         else if (currentGame.getName().equals("PersonPickGame"))
         {
-            gameHolder.imageView.setImageResource(R.drawable.scissors);
+            gameHolder.imageView.setImageResource(R.drawable.clothes_game);
         }
         else if (currentGame.getName().equals("SoundWord"))
         {
