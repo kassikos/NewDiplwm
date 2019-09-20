@@ -45,7 +45,8 @@
 
     <!--settings-->
     <string name="settings">Ρυθμίσεις</string>
-    <string name="statistics">Στατιστικά</string>
+    <string name="statistics">Στατιστικά %1$s</string>
+    <string name="statisticsMenu">Στατιστικά</string>
     <string name="home">Αρχική</string>
     <string name="info">Πληροφορίες</string>
     <string name="logout">Αποσύνδεση</string>
@@ -56,11 +57,11 @@
     <!--labels-->
     <string name="difficultyLabel">Δυσκολία</string>
 
-    <string name="all">Όλα τα επίπεδα</string>
-    <string name="easy">Εύκολο</string>
-    <string name="medium">Μεσαίο</string>
-    <string name="advanced">Προχωρημένο</string>
-    <string name="easy_medium">Εύκολο έως Μεσαίο</string>
+    <string name="all"><big>Όλα τα επίπεδα</big></string>
+    <string name="easy"><big>Εύκολο</big></string>
+    <string name="medium"><big>Μεσαίο</big></string>
+    <string name="advanced"><big>Προχωρημένο</big></string>
+    <string name="easy_medium"><big>Εύκολο έως Μεσαίο</big></string>
 
 
     <!--values-->
@@ -81,13 +82,13 @@
     <string name="Start">Έναρξη Παιχνιδιού</string>
     <string name="StartN">Έναρξη \n Παιχνιδιού</string>
     <string name="AdvancedTimer">Advanced Timer</string>
-    <string name="WinMode">Ποιος Κερδίζει;</string>
-    <string name="LoseMode">Ποιος Χάνει;</string>
+    <string name="WinMode">Ποιο αντικείμενο νικά;</string>
+    <string name="LoseMode">Ποιο αντικείμενο χάνει;</string>
     <string name="TimeOut">Ο χρόνος του γύρου τελείωσε!</string>
 
 
     <!--SCALING GAME STRINGS-->
-    <string name="equal">=</string>
+    <string name="equal">ΙΣΗ</string>
     <string name="greater">Μεγαλύτερη</string>
     <string name="less">Μικρότερη</string>
 
@@ -100,9 +101,9 @@
 
     <!--STATISTICS-->
     <string name="gameName">Παιχνίδι</string>
-    <string name="hit">Νίκες</string>
-    <string name="miss">Ήττες</string>
-    <string name="playTotalTime">Συνολικός Χρόνος</string>
+    <string name="hit">Επιτυχίες</string>
+    <string name="miss">Αστοχίες</string>
+    <string name="playTotalTime">Διάρκεια</string>
     <string name="score">Πόντοι</string>
     <string name="days">Μέρες</string>
     <string name="responseTime">Χρόνος Απόκρισης</string>
@@ -117,7 +118,7 @@
     <string name="imageDesc">imageDesc</string>
 
 
-    <string name="ok">Συνέχισε</string>
+    <string name="ok">Συνέχεια</string>
 
     <string name="nextRound">Επόμενος \n Γύρος</string>
     <string name="timeFinish">Τέλος Χρόνου</string>
@@ -139,6 +140,7 @@
     <string name="agree">Συμφωνώ \n απολύτως</string>
     <string name="disagree">Διαφωνώ \n απολύτως</string>
     <string name="next">Επόμενη Ερώτηση</string>
+    <string name="complete">Oλοκλήρωση</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>

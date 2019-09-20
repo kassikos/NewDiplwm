@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -26,8 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class ScalingGame extends AppCompatActivity {
 
     MaterialButton startButton,leftButton,rightButton,equalButton;//na ginoyn material buttons
-    ImageView exit;
-
+    ImageView exit , replayTutorial;
+    private LinearLayout logoLinear;
     TextView leftText, rightText,textRounds;
 
     TextView textQuestion;
@@ -103,18 +104,19 @@ public class ScalingGame extends AppCompatActivity {
         startButton = findViewById(R.id.startButtonScalling);
 
         leftButton = findViewById(R.id.buttonLeft);
-        leftButton.setBackgroundColor(getResources().getColor(R.color.gray));
+        leftButton.setBackgroundColor(getResources().getColor(R.color.yellow));
         rightButton = findViewById(R.id.buttonRight);
-        rightButton.setBackgroundColor(getResources().getColor(R.color.gray));
+        rightButton.setBackgroundColor(getResources().getColor(R.color.yellow));
         equalButton = findViewById(R.id.buttonEqual);
-        equalButton.setBackgroundColor(getResources().getColor(R.color.gray));
+        equalButton.setBackgroundColor(getResources().getColor(R.color.yellow));
         exit = findViewById(R.id.ExitScalGame);
+        replayTutorial = findViewById(R.id.ReplayTutorialSCG);
 
         leftText = findViewById(R.id.textLeft);
 
         rightText = findViewById(R.id.textRight);
 
-
+        logoLinear = findViewById(R.id.imageLogoDisplaySCG);
 
         textRounds = findViewById(R.id.textRoundsScaling);
 
@@ -202,6 +204,12 @@ public class ScalingGame extends AppCompatActivity {
         //mia fora tha treksei auto
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                logoLinear.setVisibility(View.GONE);
+                rightButton.setVisibility(View.VISIBLE);
+                leftButton.setVisibility(View.VISIBLE);
+                equalButton.setVisibility(View.VISIBLE);
+                rightText.setVisibility(View.VISIBLE);
+                leftText.setVisibility(View.VISIBLE);
 
                 startTime = new Timestamp(System.currentTimeMillis());
 
@@ -231,7 +239,6 @@ public class ScalingGame extends AppCompatActivity {
 
                 if (RoundsCounter>TotalRounds)
                 {
-                    textRounds.setText("ξεκολλα τελος");
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
@@ -348,6 +355,13 @@ public class ScalingGame extends AppCompatActivity {
                     finish();
 
                 }
+            }
+        });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
     }
@@ -467,7 +481,7 @@ public class ScalingGame extends AppCompatActivity {
     public void createRound()
     {
 
-        textQuestion.setText("Η αριστερή πλευρά είναι __________ από την δεξία.");
+        textQuestion.setText("Η αριστερή πλευρά είναι __________ από την δεξιά.");
 
         boolean mediumLeft = false;
         boolean mediumRight = false;
@@ -812,13 +826,13 @@ public class ScalingGame extends AppCompatActivity {
         {
             res = -1;
 
-            rightResult = "Η αριστερή πλευρά είναι ΜΕΓΑΛΥΤΕΡΗ από την δεξία.";
+            rightResult = "Η αριστερή πλευρά είναι ΜΕΓΑΛΥΤΕΡΗ από την δεξιά.";
         }
         else if (rightNumber>leftNumber)
         {
             res = 1;
 
-            rightResult = "Η αριστερή πλευρά είναι ΜΙΚΡΟΤΕΡΗ από την δεξία.";
+            rightResult = "Η αριστερή πλευρά είναι ΜΙΚΡΟΤΕΡΗ από την δεξιά.";
         }
         else
         {

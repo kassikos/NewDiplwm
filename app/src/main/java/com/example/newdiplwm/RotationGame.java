@@ -41,7 +41,7 @@ public class RotationGame extends AppCompatActivity{
     private TextView rectToMatch;
     private TextView rectToCheck;
 
-    private ImageView buttonCheck,buttonrotate,exit;
+    private ImageView buttonCheck,buttonrotate,exit, replayTutorial;
     private MaterialButton startButton;
 
     private TextView rounds , animPointsText;
@@ -413,6 +413,13 @@ public class RotationGame extends AppCompatActivity{
                 onbackAndExitCode();
             }
         });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
+            }
+        });
     }
 
     @Override
@@ -614,6 +621,7 @@ public class RotationGame extends AppCompatActivity{
         buttonCheck = findViewById(R.id.RG_buttoncheck);
 
         exit = findViewById(R.id.ExitRG);
+        replayTutorial = findViewById(R.id.ReplayTutorialRotGame);
 
         LL = findViewById(R.id.RG_LL);
 

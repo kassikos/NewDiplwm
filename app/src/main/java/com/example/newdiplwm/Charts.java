@@ -73,6 +73,7 @@ public class Charts extends AppCompatActivity {
         PieDataSet pieDataSet = new PieDataSet(pieEntries, allstats.name);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(pieDataSet);
+        data.setValueTextSize(18f);
 
         pieChart = (PieChart) findViewById(R.id.chart);
 

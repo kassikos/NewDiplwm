@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -67,9 +68,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String PICKEDIMAGE= "PICKEDIMAGE";
     private static final String GAMEINIT= "GAMEINIT";
 
-    private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull ,exit;
+    private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull ,exit, replayTutorial;
     private MaterialButton startButton;
     private TextView textRounds,textTimer, animationTextPoints;
+    private LinearLayout logoLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -124,6 +126,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         if (savedInstanceState != null)
         {
 
+
             gameInit  =savedInstanceState.getBoolean(GAMEINIT);
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
@@ -160,6 +163,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
             if (gameInit)
             {
+                logoLinear.setVisibility(View.GONE);
                 imagebuttoncolorfull.setImageResource(pickedimg);
 
                 textRounds.setText(currentRound+ " / "+ TotalRounds);
@@ -182,6 +186,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             {
                 if (currentRound == 0)
                 {
+                    logoLinear.setVisibility(View.VISIBLE);
                     startButton.setVisibility(View.VISIBLE);
                     clearScreen();
                     unclickable();
@@ -189,6 +194,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 }
                 else
                 {
+                    logoLinear.setVisibility(View.GONE);
                     unclickable();
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
@@ -235,6 +241,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logoLinear.setVisibility(View.GONE);
                 fillListImageview();
                 initaliseSparceArray();
                 gameInit = true;
@@ -437,6 +444,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                     finish();
 
                 }
+            }
+        });
+
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
 
@@ -768,10 +783,12 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imagebuttoncolorfull = findViewById(R.id.picked);
 
         exit = findViewById(R.id.ExitSG);
+        replayTutorial = findViewById(R.id.ReplayTutorialSG);
         startButton = findViewById(R.id.startButtonSH);
         textRounds = findViewById(R.id.textRoundsSG);
         textTimer = findViewById(R.id.textTimerSG);
         animationTextPoints = findViewById(R.id.AnimTextPointsSHG);
+        logoLinear = findViewById(R.id.imageLogoDisplaySH);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);

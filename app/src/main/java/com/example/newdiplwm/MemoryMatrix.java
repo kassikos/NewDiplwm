@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
@@ -25,7 +26,8 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
     String menuDifficulty, currentDifficulty;
 
-    ImageView exit;
+    private ImageView exit ,replayTutorial;
+    private LinearLayout logoLinear;
 
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, RoundsCounter = 0, trueCounter=0, totalPoints=0;
 
@@ -101,6 +103,8 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         startbutton = findViewById(R.id.startButtonMatrix);
         textView = findViewById(R.id.textRoundsMatrix);
         exit = findViewById(R.id.ExitMMG);
+        replayTutorial = findViewById(R.id.ReplayTutorialMMG);
+        logoLinear = findViewById(R.id.imageLogoDisplayMMG);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -117,7 +121,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                logoLinear.setVisibility(View.GONE);
                 checkMode();
                 startbutton.setVisibility(View.INVISIBLE);
 
@@ -135,32 +139,14 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (memoryMatrixViewModel.getTimer()!=null)
-                {
-                    memoryMatrixViewModel.getTimer().cancel();
-                }
+                onbackAndExitCode();
+            }
+        });
 
-                if (RoundsCounter == 0)
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / RoundsCounter, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
     }
@@ -168,7 +154,9 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     @Override
     public void onBackPressed()
     {
-
+        onbackAndExitCode();
+    }
+    private void onbackAndExitCode(){
         if (memoryMatrixViewModel.getTimer()!=null)
         {
             memoryMatrixViewModel.getTimer().cancel();
@@ -194,7 +182,6 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             finish();
 
         }
-
     }
 
     public void checkMode()

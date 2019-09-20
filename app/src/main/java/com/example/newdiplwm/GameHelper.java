@@ -12,29 +12,29 @@ import java.util.HashMap;
 public class GameHelper {
 
 
-    private static final String  rockDesc = "Παίξε Πέτρα, Ψαλίδι, Χαρτί και επέλεξε σωστά ποίος κερδίζει ή χάνει!";
+    private static final String  rockDesc = "Επίλεξε κάθε φορά ποιο αντικείμενο (Πέτρα, Ψαλίδι, Χαρτί) νικά ή χάνει!";
 
-    private static final String  numericDesc = "Σύγκρινε την αριστερή πλευρά με την δεξία!";
+    private static final String  numericDesc = "Σύγκρινε την αριστερή πλευρά με την δεξιά!";
 
     private static final String  MemoryDesc = "Θυμήσου σωστά το μοτίβο αριθμών!";
 
-    private static final String  OsDesc = "Επέλεξε κάθε φορα καινούριο αντικείμενο!";
+    private static final String  OsDesc = "Επίλεξε κάθε φορά διαφορετικό αντικείμενο!";
 
     private static final String  OgDesc = "Θυμήσου τα αντικείμενα της παραγγελίας!";
 
-    private static final String  SuitcaseDesc = "Κλείσε τη βαλίτσα χωρίς να συγκρουστούν τα αντικέιμενα που είναι μέσα!";
+    private static final String  SuitcaseDesc = "Κλείσε τη βαλίτσα χωρίς να συγκρουστούν τα αντικείμενα που είναι μέσα!";
 
-    private static final String  ShadowDesc = "Βρες το σκιασμένο αντικείμενο!";
+    private static final String  ShadowDesc = "Βρες το αντίστοιχο σκιασμένο αντικείμενο!";
 
-    private static final String  PersonPickGameDesc = "Επέλεξε τον σωστό συνδυασμό ρούχων από το ηχητικό μήνυμα!";
+    private static final String  PersonPickGameDesc = "Επίλεξε το σωστό συνδυασμό ρούχων σύμφωνα με το ηχητικό μήνυμα!";
 
-    private static final String  SoundWordDesc = "Βρες τον σωστό φθόγγο που υπάρχει μέσα στις λέξεις!";
+    private static final String  SoundWordDesc = "Βρες το σωστό φθόγγο που ακούγεται στις λέξεις που εκφωνούνται!";
 
     private static final String  SoundimageDesc = "Βρες το σωστό αντικείμενο απο τον ήχο του!";
 
     private static final String  BucketDesc = "Τοποθέτησε τα αντικείμενα στα σωστά κουτιά!";
 
-    private static final String RotationGameDesc = "Περίστρεψε σωστά τα τρίγωνα για να αντιστοιχιστεί το σωστό χρώμα!";
+    private static final String RotationGameDesc = "Περίστρεψε σωστά τα αντικείμενα για να ταιριάξει το ζητούμενο σχήμα και χρώμα!";
 
     // private static final byte[] logoImageNumeric = GameHelper.getLogoImageToByteArray("/data/data/com.example.diplwm/images/numeric.png");//C:/Users/bill/AndroidStudioProjects/Diplwm/app
 
@@ -126,7 +126,6 @@ public class GameHelper {
                 new Game("RotationGame","memory",RotationGameDesc),
                 new Game("BOX","memory",BucketDesc),
         };
-
     }
 
 

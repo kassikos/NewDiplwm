@@ -38,7 +38,7 @@ public class StatisticsTable extends AppCompatActivity {
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.stattoolbar);
-        toolbar.setTitle(R.string.statistics);
+        toolbar.setTitle(getString(R.string.statistics,session.getUsernameSession()));
         setSupportActionBar(toolbar);
 
         // add back arrow to toolbar

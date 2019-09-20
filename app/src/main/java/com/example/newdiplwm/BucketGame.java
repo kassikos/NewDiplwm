@@ -94,8 +94,8 @@ public class BucketGame extends AppCompatActivity {
     private ArrayList<Integer> bucketsubFoods = new ArrayList<>(3);
 
 
-    private ImageView thing1, thing2, thing3, thing4, thing5, thing6, exit;
-    private LinearLayout bucket1Linear, bucket2Linear, bucket3Linear;
+    private ImageView thing1, thing2, thing3, thing4, thing5, thing6, exit , replayTutorial;
+    private LinearLayout bucket1Linear, bucket2Linear, bucket3Linear, logoLinear;
     private MaterialButton startButton;
     private TextView textRounds, animationTextPoints;
     private Vibrator vibe;
@@ -161,6 +161,7 @@ public class BucketGame extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logoLinear.setVisibility(View.GONE);
                 createRound();
             }
         });
@@ -177,6 +178,12 @@ public class BucketGame extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onbackAndExitCode();
+            }
+        });
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
 
@@ -840,6 +847,8 @@ public class BucketGame extends AppCompatActivity {
         thing6 = findViewById(R.id.imageView6Bucket);
         animationTextPoints = findViewById(R.id.AnimTextPointsBucket);
         exit = findViewById(R.id.ExitBucket);
+        replayTutorial = findViewById(R.id.ReplayTutorialBucket);
+        logoLinear = findViewById(R.id.imageLogoDisplayBucket);
 
         bucket1Linear = findViewById(R.id.Bucket1Linear);
         bucket2Linear = findViewById(R.id.Bucket2Linear);

@@ -63,6 +63,7 @@
             android:name=".OrderGame"
             android:launchMode="singleTop"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:parentActivityName=".GameList" />
         <activity
             android:name=".ObjectSelector"

@@ -6,41 +6,69 @@
     android:layout_height="match_parent"
     tools:context=".Suitcase">
 
-    <TextView
-        android:id="@+id/Suitcase_textRounds"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:fontFamily="@font/alfa_slab_one"
-        android:gravity="center"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@id/Suitcase_FragmentLayout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/ExitSuitcase"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/ExitSuitcase"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-        android:contentDescription="@string/imageDesc"
-        android:src="@drawable/exit_button"
-        app:layout_constraintBottom_toTopOf="@id/Suitcase_FragmentLayout"
-        app:layout_constraintLeft_toRightOf="@+id/Suitcase_textRounds"
+        android:id="@+id/topStripSuitcase"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Suitcase_FragmentLayout">
+
+        <TextView
+            android:id="@+id/Suitcase_textRounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/alfa_slab_one"
+            android:gravity="center"
+            android:textSize="40sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:id="@+id/imagesTopStrip"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ExitSuitcase"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/exit_button"
+                android:contentDescription="@string/imageDesc" />
 
 
 
+            <ImageView
+                android:id="@+id/ReplayTutorialSuitcase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/ExitSuitcase"
+                android:src="@drawable/baseline_live_help_black_48dp"
+                android:contentDescription="@string/imageDesc" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Suitcase_FragmentLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Suitcase_textRounds"
+        app:layout_constraintTop_toBottomOf="@id/topStripSuitcase"
         app:layout_constraintBottom_toTopOf="@id/Suitcase_startButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,6 +95,28 @@
             <!--android:textSize="80sp" />-->
 
     <!--</LinearLayout>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageLogoDisplaySuitcase"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/topStripSuitcase"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Suitcase_startButton">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/thelogoSuitcase"
+            android:src="@drawable/suitcase_game"
+            android:layout_gravity="center"
+            android:contentDescription="@string/imageDesc" />
+
+
+    </LinearLayout>
 
 
 

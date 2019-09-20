@@ -251,7 +251,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("ΕΞΟΔΟΣ");
         builder.setMessage("Έξοδος από την εφαρμογή;");
         builder.setPositiveButton("ΝΑΙ", new DialogInterface.OnClickListener() {
@@ -263,6 +263,12 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                     moveTaskToBack(true);
                 }
 
+            }
+        });
+        builder.setNegativeButton("OXI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
             }
         });
 
@@ -281,6 +287,11 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                 Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
                 btnPositive.setTextSize(22);
                 btnPositive.setTextColor(getResources().getColor(R.color.black));
+
+
+                Button btnNegative = dialog.getButton(Dialog.BUTTON_NEGATIVE);
+                btnNegative.setTextSize(22);
+                btnNegative.setTextColor(getResources().getColor(R.color.black));
 
                 TextView textView = (TextView) dialog.findViewById(android.R.id.message);
                 textView.setTextSize(28);

@@ -8,33 +8,62 @@
     tools:context=".OrderGame">
 
 
-    <TextView
-        android:id="@+id/textRoundsOG"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:fontFamily="@font/alfa_slab_one"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@id/textTimerOG"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/ExitOG"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <ImageView
-        android:id="@+id/ExitOG"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-        android:scaleType="fitEnd"
-        android:contentDescription="@string/imageDesc"
-        android:src="@drawable/exit_button"
-        app:layout_constraintBottom_toTopOf="@id/textTimerOG"
-        app:layout_constraintLeft_toRightOf="@+id/textRoundsOG"
+        android:id="@+id/topStripOG"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textTimerOG">
+
+        <TextView
+            android:id="@+id/textRoundsOG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/alfa_slab_one"
+            android:gravity="center"
+            android:textSize="40sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:id="@+id/imagesTopStrip"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ExitOG"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/exit_button"
+                android:contentDescription="@string/imageDesc" />
+
+
+
+            <ImageView
+                android:id="@+id/ReplayTutorialOG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toEndOf="@id/ExitOG"
+                android:src="@drawable/baseline_live_help_black_48dp"
+                android:contentDescription="@string/imageDesc" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 
     <TextView
@@ -47,7 +76,7 @@
         app:layout_constraintBottom_toTopOf="@id/gridLayoutOrderGame"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRoundsOG" />
+        app:layout_constraintTop_toBottomOf="@+id/topStripOG" />
 
 
 
@@ -170,6 +199,30 @@
         app:layout_constraintTop_toBottomOf="@+id/gridLayoutOrderGame"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageLogoDisplayOG"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/topStripOG"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/missingObjectsOG">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/thelogoOG"
+            android:src="@drawable/order_game"
+            android:layout_gravity="center"
+            android:contentDescription="@string/imageDesc" />
+
+
+    </LinearLayout>
 
 
     <com.google.android.material.button.MaterialButton
