@@ -25,7 +25,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -39,7 +39,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -53,7 +53,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -67,7 +67,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -81,7 +81,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -95,7 +95,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -109,7 +109,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -123,7 +123,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
 
@@ -137,7 +137,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="8dp" />
     </GridLayout>

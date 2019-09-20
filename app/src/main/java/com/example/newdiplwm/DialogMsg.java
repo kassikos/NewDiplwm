@@ -74,7 +74,7 @@ public class DialogMsg extends DialogFragment {
             public void onShow(DialogInterface dialogInterface) {
 
                 Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
-                btnPositive.setTextSize(22);
+                btnPositive.setTextSize(24);
                 btnPositive.setTextColor(getResources().getColor(R.color.black));
 
             }

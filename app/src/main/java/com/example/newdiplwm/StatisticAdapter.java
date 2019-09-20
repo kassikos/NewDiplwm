@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,8 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         return new StatisticHolder(itemView);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull final StatisticHolder gameHolder, int i) {
         UserGameStats currentStatistic = statistics.get(i);
@@ -54,10 +58,18 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         gameHolder.textViewTitle.setText(String.valueOf(GameHelper.getGreekName(currentStatistic.name)));
         gameHolder.textView.setText(String.valueOf(currentStatistic.statistic.getHit()));
         gameHolder.textView1.setText(String.valueOf(currentStatistic.statistic.getMiss()));
-        gameHolder.textView3.setText(String.valueOf(currentStatistic.statistic.getPlayTotalTime()) + " (Δευ/λεπτα)");
+
+        if (currentStatistic.statistic.getPlayTotalTime()<60)
+        {
+            gameHolder.textView3.setText(String.format("%.1f",(currentStatistic.statistic.getPlayTotalTime())) + " (secs)");
+        }
+        else
+        {
+            gameHolder.textView3.setText(String.format("%.1f",((currentStatistic.statistic.getPlayTotalTime()%3600)/60)) + " (mins)");
+        }
         gameHolder.textView2.setText(String.valueOf(currentStatistic.statistic.getScore()));
         gameHolder.textView4.setText(String.valueOf(currentStatistic.statistic.getDays()));
-        gameHolder.textView5.setText(String.format("%.2f", currentStatistic.statistic.getAccuracy()).toString());
+        gameHolder.textView5.setText(String.format("%.1f", (currentStatistic.statistic.getAccuracy()*100))+"%");
         gameHolder.textView6.setText(String.valueOf(currentStatistic.statistic.getQuits()));
 
 

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,9 +69,10 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private static final String ALLIMAGES = "ALLIMAGES";
     private static final String ALLIMAGESFOUR = "ALLIMAGESFOUR";
 
-    private ImageView imgv1, imgv2, imgv3, imgv4, playAudio ,exit;
+    private ImageView imgv1, imgv2, imgv3, imgv4, playAudio ,exit, replayTutorial;
     private MaterialButton startButton;
     private TextView textRounds, animPointsText;
+    private LinearLayout logoLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -149,6 +151,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             startButton.setVisibility(View.INVISIBLE);
 
             if (gameInit) {
+                logoLinear.setVisibility(View.GONE);
                 if (limit == 0)
                 {
                     playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
@@ -195,10 +198,12 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             } else {
 
                 if (currentRound == 0) {
+                    logoLinear.setVisibility(View.VISIBLE);
                     startButton.setVisibility(View.VISIBLE);
                     unclickable();
 
                 } else {
+                    logoLinear.setVisibility(View.GONE);
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
@@ -248,6 +253,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 gameInit = true;
+                logoLinear.setVisibility(View.GONE);
                 unclickable();
                 fillListImageview();
                 createRound();
@@ -317,40 +323,32 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
+                onbackAndExitCode();
+            }
+        });
 
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
 
-                }
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
 
     }
 
 
+
+
     @Override
     public void onBackPressed()
     {
+
+        onbackAndExitCode();
+    }
+
+
+    private void onbackAndExitCode(){
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -376,7 +374,6 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             finish();
 
         }
-
     }
 
     private void createRound() {
@@ -732,6 +729,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
     private void asignAllButtons() {
         exit = findViewById(R.id.ExitAPPG);
+        replayTutorial = findViewById(R.id.ReplayTutorialAPPG);
         startButton = findViewById(R.id.startButtonAPPG);
         imgv1 = findViewById(R.id.imageView1APPG);
         imgv2 = findViewById(R.id.imageView2APPG);
@@ -741,6 +739,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         playAudio = findViewById(R.id.imageViewPlayAudio);
         playAudio.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsAPPG);
+        logoLinear = findViewById(R.id.imageLogoDisplayAPPG);
 
         animPointsText = findViewById(R.id.AnimTextPointsAPPG);
 

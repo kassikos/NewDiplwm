@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +30,10 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     private static final String GAME_ID = "GAME_ID";
     private static final String DIFFICULTY = "DIFFICULTY";
 
-    private ImageView playAudio , exit;
+    private ImageView playAudio , exit, replayTutorial;
     private MaterialButton startButton;
     private TextView textRounds, textTimer, animPointsText;
+    private LinearLayout logoLinear;
 
     private CountDownTimer Timer;
     private GameEventViewModel gameEventViewModel;
@@ -116,6 +118,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logoLinear.setVisibility(View.GONE);
                 gameInit = true;
                 createRound();
 
@@ -230,6 +233,15 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
                 }
             }
         });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
+            }
+        });
+
+
 
     }
     @Override
@@ -361,10 +373,12 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     private void assignAllbuttons() {
         startButton = findViewById(R.id.startButtonSWG);
         exit = findViewById(R.id.Exit);
+        replayTutorial = findViewById(R.id.ReplayTutorialSWG);
         playAudio = findViewById(R.id.imageViewPlayAudioSWG);
         playAudio.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsSWG);
         animPointsText = findViewById(R.id.AnimTextPointsSWG);
+        logoLinear = findViewById(R.id.imageLogoDisplaySWG);
 
 
     }

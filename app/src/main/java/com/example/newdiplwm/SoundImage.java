@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -73,9 +74,10 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private static final String LIMIT = "LIMIT";
     private static final String ALLIMAGES = "ALLIMAGES";
 
-    private ImageView imgv1, imgv2, imgv3,imgv4,playAudio,exit;
+    private ImageView imgv1, imgv2, imgv3,imgv4,playAudio,exit,replayTutorial;
     private MaterialButton startButton;
     private TextView textRounds, animPointsText;
+    private LinearLayout logoLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -163,6 +165,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             startButton.setVisibility(View.INVISIBLE);
 
             if (gameInit) {
+                logoLinear.setVisibility(View.GONE);
                 if (limit == 0)
                 {
                     playAudio.setImageResource(R.drawable.play_circle_outline_black_48dp);
@@ -211,8 +214,10 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
                     unclickable();
+                    logoLinear.setVisibility(View.VISIBLE);
 
                 } else {
+                    logoLinear.setVisibility(View.GONE);
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
@@ -261,6 +266,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logoLinear.setVisibility(View.GONE);
                 gameInit = true;
                 unclickable();
                 fillListImageview();
@@ -355,6 +361,13 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     finish();
 
                 }
+            }
+        });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
 
@@ -699,6 +712,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
     private void asignAllButtons() {
         exit = findViewById(R.id.ExitSIG);
+        replayTutorial = findViewById(R.id.ReplayTutorialSIG);
         startButton = findViewById(R.id.startButtonSIG);
         imgv1 = findViewById(R.id.imageView1SIG);
         imgv2 = findViewById(R.id.imageView2SIG);
@@ -710,6 +724,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         textRounds = findViewById(R.id.textRoundsSIG);
 
         animPointsText = findViewById(R.id.AnimTextPointsSIG);
+        logoLinear = findViewById(R.id.imageLogoDisplaySIG);
 
         imgv1.setOnClickListener(this);
         imgv2.setOnClickListener(this);

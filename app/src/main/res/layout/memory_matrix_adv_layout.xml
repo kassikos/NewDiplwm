@@ -22,7 +22,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -36,7 +36,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -50,7 +50,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -64,7 +64,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -78,7 +78,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -92,7 +92,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -106,7 +106,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -120,7 +120,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -134,7 +134,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
     <com.google.android.material.button.MaterialButton
@@ -147,7 +147,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -161,7 +161,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 
@@ -175,7 +175,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
     <com.google.android.material.button.MaterialButton
@@ -188,7 +188,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
     <com.google.android.material.button.MaterialButton
@@ -201,7 +201,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
     <com.google.android.material.button.MaterialButton
@@ -214,7 +214,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
     <com.google.android.material.button.MaterialButton
@@ -227,7 +227,7 @@
         android:layout_gravity="fill_horizontal"
         app:strokeColor="@color/black"
         app:strokeWidth="3dp"
-        android:textSize="25sp"
+        android:textSize="35sp"
         android:fontFamily="@font/alfa_slab_one"
         android:layout_margin="4dp" />
 

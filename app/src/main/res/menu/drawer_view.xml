@@ -27,7 +27,7 @@
         <item
             android:id="@+id/nav_statistics"
             android:icon="@drawable/baseline_poll_black_18dp"
-            android:title="@string/statistics" />
+            android:title="@string/statisticsMenu" />
     </group>
 
     <group

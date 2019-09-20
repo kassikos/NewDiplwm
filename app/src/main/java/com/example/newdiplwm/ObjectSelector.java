@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
@@ -32,7 +33,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ObjectSelector extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit;
+    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit ,replayTutotrial;
+    private LinearLayout logoLinear;
     private MaterialButton startButton;
     private TextView rounds , animPointsText;
 
@@ -115,6 +117,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
             if (gameInit)
             {
+                logoLinear.setVisibility(View.GONE);
                 user_id = savedInstanceState.getInt(USER_ID);
                 game_id = savedInstanceState.getInt(GAME_ID);
                 imageIDS = (HashMap<Integer, Integer>) savedInstanceState.getSerializable(MATCH);
@@ -160,6 +163,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             }
             else
             {
+
                 startButton.setVisibility(View.VISIBLE);
                 user_id = savedInstanceState.getInt(USER_ID);
                 game_id = savedInstanceState.getInt(GAME_ID);
@@ -169,6 +173,10 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 picked = savedInstanceState.getIntegerArrayList(PICKED);
                 imageIDS = (HashMap<Integer, Integer>) savedInstanceState.getSerializable(MATCH);
                 unclick();
+            }
+            if (currentRound >0)
+            {
+                logoLinear.setVisibility(View.GONE);
             }
 
         }
@@ -208,6 +216,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 helper = 0;
+                logoLinear.setVisibility(View.GONE);
                 gameInit = true;
                 loseHelper = false;
                 initializeUnpickedList();
@@ -224,31 +233,14 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
+                onbackAndExitCode();
+            }
+        });
 
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+        replayTutotrial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
     }
@@ -256,6 +248,10 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed()
     {
+        onbackAndExitCode();
+    }
+
+    private void onbackAndExitCode(){
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -275,7 +271,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
@@ -752,7 +748,9 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         startButton = findViewById(R.id.startButtonOS);
         rounds = findViewById(R.id.textRoundsOS);
         animPointsText = findViewById(R.id.AnimTextPoints);
-        exit = findViewById(R.id.ExitSG);
+        exit = findViewById(R.id.ExitOS);
+        replayTutotrial = findViewById(R.id.ReplayTutorialOS);
+        logoLinear = findViewById(R.id.imageLogoDisplayOS);
 
 
 

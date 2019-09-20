@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import java.sql.Timestamp;
@@ -66,9 +67,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private static final String JANKFOODLIST = "JANKFOODLIST";
     private static final String CLOCK = "CLOCK";
 
-    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5 ,exit;
+    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5 ,exit ,replayTutorial;
     private MaterialButton startButton, missingObj;
     private TextView textRounds, textTimer, animPointsText;
+    private LinearLayout logoLinear;
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -135,6 +137,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         if (savedInstanceState != null)
         {
+
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
             startButton.setVisibility(View.INVISIBLE);
             user_id = savedInstanceState.getInt(USER_ID);
@@ -168,9 +171,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
             endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
             currentRound = savedInstanceState.getInt(CURRENTROUND);
-
             matchlists();
             if (gameInit){
+                logoLinear.setVisibility(View.GONE);
                 textRounds.setText(currentRound+"/"+TotalRounds);
                 Timer = userViewModel.getTimer();
                 if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
@@ -189,7 +192,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
                             }
 
                             @Override
@@ -240,7 +243,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
                             }
 
                             @Override
@@ -286,7 +289,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                             @Override
                             public void onTick(long l) {
                                 mTimeLeftInMillis=l;
-                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
                             }
 
                             @Override
@@ -316,6 +319,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             {
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
+                    logoLinear.setVisibility(View.VISIBLE);
                     unclickable();
                 }
                 else
@@ -370,6 +374,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 rightpick=0;
+                logoLinear.setVisibility(View.GONE);
                 gameInit = true;
                 createRound();
             }
@@ -383,35 +388,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Timer != null)
-                {
-                    Timer.cancel();
-                }
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
+                onbackAndExitCode();
+            }
+        });
 
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
 
@@ -420,6 +404,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onBackPressed()
     {
+        onbackAndExitCode();
+    }
+
+    private void onbackAndExitCode(){
         if (Timer != null)
         {
             Timer.cancel();
@@ -443,13 +431,12 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
         }
-
     }
 
     private void createRound(){
@@ -540,7 +527,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
             }
 
             @Override
@@ -591,7 +578,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
             }
 
             @Override
@@ -660,7 +647,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onTick(long l) {
                 mTimeLeftInMillis=l;
-                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" Δευτ/λεπτα");
+                textTimer.setText("Απομένουν "+ mTimeLeftInMillis/1000+" δευτερόλεπτα");
             }
 
             @Override
@@ -940,12 +927,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         imagebutton5 = findViewById(R.id.imageView5OG);
 
         exit = findViewById(R.id.ExitOG);
+        replayTutorial = findViewById(R.id.ReplayTutorialOG);
         startButton = findViewById(R.id.startButtonOG);
         missingObj = findViewById(R.id.missingObjectsOG);
         missingObj.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsOG);
         textTimer = findViewById(R.id.textTimerOG);
         animPointsText = findViewById(R.id.AnimTextPointsOG);
+        logoLinear = findViewById(R.id.imageLogoDisplayOG);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);

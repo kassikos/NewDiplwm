@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -66,7 +68,8 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
 
     private long mTimeLeftInMillis = 0;
-    private ImageView imageView1 , imageView2 , exit;
+    private ImageView imageView1 , imageView2 , exit , replayTutorial;
+    private LinearLayout logoLinear;
 
     private MaterialButton startButton;
 
@@ -154,6 +157,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             if (gameinit)
             {
+                logoLinear.setVisibility(View.GONE);
                 clickable();
                 textRounds.setText(currentRound + "/" + TotalRounds);
                 if (mode == 0)
@@ -220,6 +224,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
                 }
                     else {
+                    logoLinear.setVisibility(View.GONE);
                     startButton.setVisibility(View.VISIBLE);
                     startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
@@ -260,6 +265,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 gameinit = true;
+                logoLinear.setVisibility(View.GONE);
                 createRound();
 
             }
@@ -302,6 +308,18 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                     finish();
 
                 }
+            }
+        });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
+                if(Advancedtimer != null)
+                {
+                    Advancedtimer.cancel();
+                }
+
             }
         });
     }
@@ -506,11 +524,13 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         imageView1 = findViewById(R.id.imageButton1);
         imageView2 = findViewById(R.id.imageButton2);
         exit = findViewById(R.id.ExitRPSG);
+        replayTutorial = findViewById(R.id.ReplayTutorialRps);
         textRounds = findViewById(R.id.textRounds);
         textQuestion = findViewById(R.id.textQuestion);
         advancedTextTimer = findViewById(R.id.textTimer);
         startButton = findViewById(R.id.startButton);
         animPointsText = (TextView) findViewById(R.id.myImageViewTextAnim);
+        logoLinear = findViewById(R.id.imageLogoDisplay);
 
         imageView1.setOnClickListener(this);
         imageView2.setOnClickListener(this);

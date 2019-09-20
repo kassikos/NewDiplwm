@@ -48,10 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/aboutText"
+            android:textColor="@color/black"
             android:layout_margin="16dp"
             android:layout_gravity="center"
-            android:text="Η εφαρμογή αυτή αποτελεί προίον Διπλωματικής Εργασίας των φοιτητών του ΜΠΕΣ: Βασίλη Κασσικού και Αντώνη Αντωνόπουλου.\n\nΕπικοινωνία :     bill.kassikos@gmail.com"
-            style="@style/MenuItems"
+            android:text="Η εφαρμογή αυτή αποτελεί αποτέλεσμα Διπλωματικής Εργασίας των φοιτητών του τμήματος Μηχανικών Πληροφοριακών και Επικοινωνιακών Συστημάτων του Πανεπιστημίου Αιγαίου: Βασίλη Κασσικού και Αντώνη Αντωνόπουλου.\n\nΕπικοινωνία :     bill.kassikos@gmail.com"            style="@style/MenuItems"
             android:textSize="16sp"/>
 
 

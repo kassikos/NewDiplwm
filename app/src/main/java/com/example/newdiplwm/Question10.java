@@ -47,13 +47,13 @@ public class Question10 extends Fragment implements View.OnClickListener, Dialog
         context = getContext();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("ΕΞΟΔΟΣ");
-        builder.setMessage("Τέλος αξιολόγησης");
+        builder.setTitle("ΤΕΛΟΣ  ΑΞΙΟΛΟΓΗΣΗΣ");
+        builder.setMessage("\nΕυχαριστούμε για τη συμμετοχή σας στην αξιολόγηση της εφαρμογής");
 
         builder.setOnDismissListener(this);
 
 
-        builder.setPositiveButton("Συνέχεια", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.dismiss();
@@ -65,12 +65,13 @@ public class Question10 extends Fragment implements View.OnClickListener, Dialog
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
-                btnPositive.setTextSize(22);
+                btnPositive.setTextSize(24);
                 btnPositive.setTextColor(getResources().getColor(R.color.black));
 
                 TextView textView = (TextView) dialog.findViewById(android.R.id.message);
                 textView.setTextSize(28);
                 textView.setTextColor(getResources().getColor(R.color.black));
+
 
 
 //                int titleId = getResources().getIdentifier( "alertTitle", "id", "android" );

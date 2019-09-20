@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/Qround"
                 android:text="8 / 10 "
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_margin="24dp"
                 android:gravity="center"
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/Qquestion"
                 android:text="@string/question_eight"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_margin="24dp"
                 android:gravity="center"
@@ -146,6 +148,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="@string/disagree"
+                    android:textColor="@color/black"
                     android:textSize="20sp"/>
 
                 <TextView
@@ -155,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@string/agree"
+                    android:textColor="@color/black"
                     android:textSize="20sp"/>
 
 

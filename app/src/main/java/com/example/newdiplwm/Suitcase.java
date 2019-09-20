@@ -1,13 +1,11 @@
 package com.example.newdiplwm;
 
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +26,8 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
     MaterialButton startbutton;
-    private ImageView exit;
+    private ImageView exit , replayTutorial;
+    private LinearLayout logoLinear;
 
     private String menuDifficulty, currentDifficulty;
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, trueCounter=0, totalPoints=0,RoundsCounter = 0;
@@ -38,18 +37,6 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
 
-
-    private static final String GAME_ID = "GAME_ID";
-    private static final String USER_ID = "USER_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-    private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
-    private static final String HIT = "HIT";
-    private static final String MISS = "MISS";
-    private static final String ROUNDS = "ROUNDS";
-    private static final String SPEED = "SPEED";
-    private static final String TRUECOUNTER = "TRUECOUNTER";
-    private static final String TOTALPOINTS = "TOTALPOINTS";
-    private static final String MISSPOINTS = "MISSPOINTS";
     int user_id = -1;
     int game_id = -1;
 
@@ -105,6 +92,8 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         startbutton = findViewById(R.id.Suitcase_startButton);
         textView = findViewById(R.id.Suitcase_textRounds);
         exit = findViewById(R.id.ExitSuitcase);
+        replayTutorial = findViewById(R.id.ReplayTutorialSuitcase);
+        logoLinear = findViewById(R.id.imageLogoDisplaySuitcase);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -117,6 +106,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logoLinear.setVisibility(View.GONE);
 
                 checkMode();
                 startbutton.setVisibility(View.INVISIBLE);
@@ -156,6 +146,13 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                     finish();
 
                 }
+            }
+        });
+
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorialPopUp();
             }
         });
     }
