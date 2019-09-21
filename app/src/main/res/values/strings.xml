@@ -73,6 +73,13 @@
     <string name="advancedValue" translatable="false">ADVANCED</string>
     <string name="easymediumValue" translatable="false">EASYtoMEDIUM</string>
 
+    <!--General Messages-->
+    <string name="win">Σωστά!</string>
+    <string name="win1">Μπράβο!</string>
+    <string name="win2">Εξαιρετικά!</string>
+    <string name="lose">Δεν πειράζει, συνέχισε την προσπάθεια!</string>
+
+
     <!--RockPaperScissors Activity -->
 
     <string name="Time">Χρόνος</string>

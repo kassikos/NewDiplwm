@@ -629,7 +629,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
 
-        nextRoundTimer = new CountDownTimer(4000,1000) {
+        nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
                 timeLeftInMillisNextRound = l;
@@ -795,20 +795,20 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-            textMsg.setText("Σωστά!");
+            textMsg.setText(R.string.win);
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-            textMsg.setText("Mpravo!");
+            textMsg.setText(R.string.win1);
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-            textMsg.setText("Εξαιρετικά!");
+            textMsg.setText(R.string.win2);
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
-            textMsg.setText("Δεν πειράζει, συνέχισε την προσπάθεια!");
+            textMsg.setText(R.string.lose);
         }
         msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
