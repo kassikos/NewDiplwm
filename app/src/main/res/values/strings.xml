@@ -108,7 +108,7 @@
     <string name="days">Μέρες</string>
     <string name="responseTime">Χρόνος Απόκρισης</string>
     <string name="accuracy">Ευστοχία</string>
-    <string name="quits">Εξοδοι</string>
+    <string name="quits">Έξοδοι</string>
 
     <string name="open">open</string>
     <string name="close">close</string>
@@ -137,8 +137,8 @@
     <string name="SecPerGame">Δευτερόλπεπτα / Παιχνίδι</string>
 
     <!-- questionnaire-->
-    <string name="agree">Συμφωνώ \n απολύτως</string>
-    <string name="disagree">Διαφωνώ \n απολύτως</string>
+    <string name="agree">Συμφωνώ \nαπολύτως</string>
+    <string name="disagree">Διαφωνώ \nαπολύτως</string>
     <string name="next">Επόμενη Ερώτηση</string>
     <string name="complete">Oλοκλήρωση</string>
     <string name="one">1</string>

@@ -15,6 +15,7 @@ public class UserViewModel extends AndroidViewModel {
     private UserRepository userRepository;
     private LiveData<List<User>> allusers;
     private CountDownTimer timer;
+    private CountDownTimer nextRoundTimer;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
@@ -53,5 +54,14 @@ public class UserViewModel extends AndroidViewModel {
     public CountDownTimer getTimer()
     {
         return timer;
+    }
+
+
+    public CountDownTimer getNextRoundTimer() {
+        return nextRoundTimer;
+    }
+
+    public void setNextRoundTimer(CountDownTimer nextRoundTimer) {
+        this.nextRoundTimer = nextRoundTimer;
     }
 }
