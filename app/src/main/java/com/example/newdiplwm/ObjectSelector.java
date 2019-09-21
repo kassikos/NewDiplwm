@@ -34,9 +34,10 @@ import java.util.concurrent.TimeUnit;
 public class ObjectSelector extends AppCompatActivity implements View.OnClickListener{
 
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit ,replayTutotrial;
-    private LinearLayout logoLinear;
+    private LinearLayout logoLinear, textsLinear;
     private MaterialButton startButton;
-    private TextView rounds , animPointsText;
+    private TextView rounds , animPointsText, textMsg , textMsgTime;
+    private String msgHelper;
 
     private static final String GAME_ID = "GAME_ID";
     private static final String USER_ID = "USER_ID";
@@ -66,6 +67,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private static final String GAMEINIT = "GAMEINIT";
     private static final String LOSEHELPER = "LOSEHELPER";
     private static final String CLOCK = "CLOCK";
+    private static final String NEXTROUND = "NEXTROUND";
+    private static final String MSGHELPER = "MSGHELPER";
 
     private int game_id, user_id;
     private int TotalRounds=0 , currentRound=0, counter=0 ,click=0;
@@ -87,9 +90,9 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private int helper=0, vibeduration = 1000;
     private boolean gameInit = false , loseHelper = false;
     private Vibrator vibe;
-    private CountDownTimer Timer;
+    private CountDownTimer Timer, nextRoundTimer;
     private static final long START_TIME_IN_MILLIS = 1000;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private long mTimeLeftInMillis = START_TIME_IN_MILLIS, timeLeftInMillisNextRound = 0;
 
 
 
@@ -99,6 +102,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Integer> imageviews = new ArrayList<Integer>();
 
     private Session session;
+
 
 
     @Override
@@ -113,10 +117,14 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
+        gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
         if (savedInstanceState != null) {
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
             if (gameInit)
             {
+                startButton.setVisibility(View.INVISIBLE);
                 logoLinear.setVisibility(View.GONE);
                 user_id = savedInstanceState.getInt(USER_ID);
                 game_id = savedInstanceState.getInt(GAME_ID);
@@ -151,11 +159,60 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 loseHelper = savedInstanceState.getBoolean(LOSEHELPER);
                 mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
                 rounds.setText((currentRound ) + " / "+TotalRounds);
+                timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUND);
+                msgHelper = savedInstanceState.getString(MSGHELPER);
                 if ((helper == 3 && currentDifficulty.equals(getResources().getString(R.string.easyValue))) || (helper == 4 && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (helper == 5 &&currentDifficulty.equals(getResources().getString(R.string.advancedValue))) || loseHelper)
                 {
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
+//                    startButton.setVisibility(View.VISIBLE);
+//                    startButton.setText(getResources().getString(R.string.nextRound));
 
+                    if (timeLeftInMillisNextRound > 1000)
+                    {
+                        textMsg.setText(msgHelper);
+                        textsLinear.setVisibility(View.VISIBLE);
+                        nextRoundTimer = userViewModel.getNextRoundTimer();
+                        nextRoundTimer.cancel();
+                        nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
+                            @Override
+                            public void onTick(long l) {
+                                timeLeftInMillisNextRound = l;
+
+                                if (currentRound == TotalRounds)
+                                {
+                                    textMsgTime.setText("");
+                                }
+                                else
+                                {
+                                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                                timeLeftInMillisNextRound = 0;
+
+                                if (currentRound == TotalRounds)
+                                {
+                                    textsLinear.setVisibility(View.INVISIBLE);
+                                }
+                                else
+                                {
+                                    textMsgTime.setText("");
+                                    textsLinear.setVisibility(View.INVISIBLE);
+                                    helper = 0;
+                                    gameInit = true;
+                                    loseHelper = false;
+                                    initializeUnpickedList();
+                                    createRound();
+                                }
+
+                            }
+                        }.start();
+                        userViewModel.setNextRoundTimer(nextRoundTimer);
+                    }
                 }
                 else{
                     startButton.setVisibility(View.INVISIBLE);}
@@ -164,7 +221,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             else
             {
 
-                startButton.setVisibility(View.VISIBLE);
+         //       startButton.setVisibility(View.VISIBLE);
                 user_id = savedInstanceState.getInt(USER_ID);
                 game_id = savedInstanceState.getInt(GAME_ID);
                 currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
@@ -189,11 +246,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             fillListImageview();
             unclick();
         }
-
-
-
-        gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
@@ -525,8 +577,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
 
                 }
-                startButton.setText(getResources().getString(R.string.nextRound));
-                startButton.setVisibility(View.VISIBLE);
+//                startButton.setText(getResources().getString(R.string.nextRound));
+//                startButton.setVisibility(View.VISIBLE);
 
                 picked.clear();
                 unpicked.clear();
@@ -570,6 +622,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 missPoints =true;
                 countPoints();
                 Timer.start();
+                nextRound();
 
             }
             else {
@@ -603,6 +656,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     countPoints();
 
                     Timer.start();
+                  nextRound();
                 }
                 else if (currentDifficulty.equals(getResources().getString(R.string.easyValue)))
                 {
@@ -617,6 +671,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     trueCounter++;
                     countPoints();
                     Timer.start();
+                    nextRound();
                 }
                 else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
                 {
@@ -631,6 +686,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     trueCounter++;
                     countPoints();
                     Timer.start();
+                    nextRound();
                 }
                 else if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
                 {
@@ -653,40 +709,87 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         newFragment.show(getSupportFragmentManager(), "ObjectSelector");
     }
 
-    private void countPoints()
-    {
 
-        int currentPoints=0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+    private void countPoints() {
+
+        int currentPoints = 0;
+
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+        msgHelper = textMsg.getText().toString();
+        //msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
-        animPointsText.setText("+ " +String.valueOf(currentPoints));
-        if (currentPoints == 0)
-        {
+        animPointsText.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
             animPointsText.setTextColor(Color.RED);
-        }
-        else
+        } else
             animPointsText.setTextColor(Color.GREEN);
     }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    helper = 0;
+                    gameInit = true;
+                    loseHelper = false;
+                    initializeUnpickedList();
+                    createRound();
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -718,6 +821,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         outState.putBoolean(GAMEINIT,gameInit);
         outState.putBoolean(LOSEHELPER,loseHelper);
         outState.putLong(CLOCK,mTimeLeftInMillis);
+        outState.putLong(NEXTROUND,timeLeftInMillisNextRound);
+        outState.putString(MSGHELPER,msgHelper);
 
     }
 
@@ -735,14 +840,12 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
     private void assignAllButtons() {
         imagebutton1 = findViewById(R.id.imageView1OS);
-
         imagebutton2 = findViewById(R.id.imageView2OS);
-
         imagebutton3 = findViewById(R.id.imageView3OS);
-
         imagebutton4 = findViewById(R.id.imageView4OS);
-
         imagebutton5 = findViewById(R.id.imageView5OS);
+
+
 
         imagebutton6 = findViewById(R.id.imageView6OS);
         startButton = findViewById(R.id.startButtonOS);
@@ -751,6 +854,9 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         exit = findViewById(R.id.ExitOS);
         replayTutotrial = findViewById(R.id.ReplayTutorialOS);
         logoLinear = findViewById(R.id.imageLogoDisplayOS);
+        textsLinear = findViewById(R.id.textsOS);
+        textMsg = findViewById(R.id.msgOS);
+        textMsgTime = findViewById(R.id.msgOS1);
 
 
 
