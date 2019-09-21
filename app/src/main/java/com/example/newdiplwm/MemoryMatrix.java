@@ -1,6 +1,8 @@
 package com.example.newdiplwm;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,9 +28,10 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     MaterialButton startbutton;
 
     String menuDifficulty, currentDifficulty;
+    private CountDownTimer nextRoundTimer;
 
     private ImageView exit ,replayTutorial;
-    private LinearLayout logoLinear;
+    private LinearLayout logoLinear, textsLinear;
 
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, RoundsCounter = 0, trueCounter=0, totalPoints=0;
 
@@ -48,7 +52,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     private Timestamp startTime;
     private Timestamp endTime;
 
-    private TextView textView;
+    private TextView textView, textMsg, textMsgTime;
     private MemoryMatrixEz memoryMatrixEz;
     private MemoryMatrixAdv memoryMatrixAdv;
     private Session session;
@@ -105,6 +109,9 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         exit = findViewById(R.id.ExitMMG);
         replayTutorial = findViewById(R.id.ReplayTutorialMMG);
         logoLinear = findViewById(R.id.imageLogoDisplayMMG);
+        textsLinear = findViewById(R.id.textsMMG);
+        textMsg = findViewById(R.id.msgMMG);
+        textMsgTime = findViewById(R.id.msgMMG1);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -156,6 +163,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     {
         onbackAndExitCode();
     }
+
     private void onbackAndExitCode(){
         if (memoryMatrixViewModel.getTimer()!=null)
         {
@@ -266,32 +274,78 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     }
 
 
-    private void countPoints()
-    {
+    private void countPoints() {
 
-        int currentPoints=0;
+        int currentPoints = 0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
+            missPoints = false;
+            textMsg.setText(R.string.lose);
         }
         totalPoints += currentPoints;
+//        animPointsText.setText("+ " + currentPoints);
+//        if (currentPoints == 0) {
+//            animPointsText.setTextColor(Color.RED);
+//        } else
+//            animPointsText.setTextColor(Color.GREEN);
     }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+
+
+                if (RoundsCounter == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+
+                if (RoundsCounter == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    checkMode();
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
+
 
 
     private void loadFragment(Fragment fragment) {
@@ -317,10 +371,11 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
     }
     private void checkIfEnds()
     {
-        startbutton.setVisibility(View.VISIBLE);
+       // startbutton.setVisibility(View.VISIBLE);
 
         if (RoundsCounter >= TotalRounds)
         {
+            textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -329,6 +384,10 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
             userViewModel.updatestatsTest(user_id,game_id);
             startbutton.setVisibility(View.INVISIBLE);
             shopPopUp();
+        }
+        else
+        {
+            nextRound();
         }
     }
 
@@ -345,20 +404,5 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
     }
 
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putString(DIFFICULTY,menuDifficulty);
-//        outState.putString(CURRENTDIFFICULTY,currentDifficulty);
-//        outState.putInt(GAME_ID,game_id);
-//        outState.putInt(USER_ID,user_id);
-//        outState.putInt(HIT,totalhit);
-//        outState.putInt(MISS,totalmiss);
-//        outState.putInt(ROUNDS,RoundsCounter);
-//        outState.putDouble(SPEED,totalspeed);
-//        outState.putInt(TRUECOUNTER,trueCounter);
-//        outState.putInt(TOTALPOINTS,totalPoints);
-//        outState.putBoolean(MISSPOINTS,missPoints);
-//    }
 }
 
