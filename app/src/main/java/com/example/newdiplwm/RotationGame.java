@@ -566,11 +566,11 @@ public class RotationGame extends AppCompatActivity{
     {
         unclick();
 
-        rectToMatch.setText("●");
-        rect1.setText("●");
-        rect2.setText("●");
-        rect3.setText("●");
-        rect4.setText("●");
+        rectToMatch.setText("⬤");
+        rect1.setText("⬤");
+        rect2.setText("⬤");
+        rect3.setText("⬤");
+        rect4.setText("⬤");
 
         //⬤
 

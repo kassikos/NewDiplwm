@@ -64,16 +64,19 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private static final String SPARSEARRAY = "SPARSEARRAY";
     private static final String MODE = "MODE";
     private static final String CURRENTROUND = "CURRENTROUND";
+    private static final String MSGHELPER = "MSGHELPER";
+    private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
 
 
-    private long mTimeLeftInMillis = 0;
+    private long mTimeLeftInMillis = 0 , timeLeftInMillisNextRound = 0;
     private ImageView imageView1 , imageView2 , exit , replayTutorial;
-    private LinearLayout logoLinear;
+    private LinearLayout logoLinear , textsLinear;
 
     private MaterialButton startButton;
 
-    private TextView textRounds, textQuestion, advancedTextTimer, animPointsText;
+    private TextView textRounds, textQuestion, advancedTextTimer, animPointsText , textMsg , textMsgTime;
+    private String msgHelper;
     private ArrayList<Integer> images = new ArrayList<>();
     private int currentRound=0 , mode = -1,TotalRounds = 0;
 
@@ -81,7 +84,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private String currentDifficulty, menuDifficulty;
 
     HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
-    private CountDownTimer Timer, Advancedtimer;
+    private CountDownTimer Timer, Advancedtimer , nextRoundTimer;
 
     int vibeduration = 1000, click = 0;
 
@@ -151,6 +154,8 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             imageViewImage = (SparseIntArray) savedInstanceState.getParcelable(SPARSEARRAY);
             images = savedInstanceState.getIntegerArrayList(IMAGES);
             click = savedInstanceState.getInt(CLICK);
+            msgHelper = savedInstanceState.getString(MSGHELPER);
+            timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
             assignAllbuttons();
             unclickable();
             startButton.setVisibility(View.INVISIBLE);
@@ -221,13 +226,60 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
-
                 }
+
                     else {
+                        if (timeLeftInMillisNextRound > 1000)
+                        {
+                            textsLinear.setVisibility(View.VISIBLE);
+                            nextRoundTimer = userViewModel.getNextRoundTimer();
+                            nextRoundTimer.cancel();
+                            nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
+                                @Override
+                                public void onTick(long l) {
+                                    timeLeftInMillisNextRound = l;
+
+                                    if (currentRound == TotalRounds)
+                                    {
+                                        textMsgTime.setText("");
+                                    }
+                                    else
+                                    {
+                                        textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+
+                                    timeLeftInMillisNextRound = 0;
+
+                                    if (currentRound == TotalRounds)
+                                    {
+                                        textsLinear.setVisibility(View.INVISIBLE);
+                                    }
+                                    else
+                                    {
+                                        textMsgTime.setText("");
+                                        textsLinear.setVisibility(View.INVISIBLE);
+                                        gameinit = true;
+                                        createRound();
+                                    }
+
+                                }
+                            }.start();
+                            userViewModel.setNextRoundTimer(nextRoundTimer);
+                        }
+
                     logoLinear.setVisibility(View.GONE);
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
+                    startButton.setVisibility(View.INVISIBLE);
+                    textMsg.setText(msgHelper);
+                    //startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
+                    //textsLinear.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -531,6 +583,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         startButton = findViewById(R.id.startButton);
         animPointsText = (TextView) findViewById(R.id.myImageViewTextAnim);
         logoLinear = findViewById(R.id.imageLogoDisplay);
+        textMsg = findViewById(R.id.msgRps);
+        textMsgTime = findViewById(R.id.msgRps1);
+        textsLinear = findViewById(R.id.textsRps);
 
         imageView1.setOnClickListener(this);
         imageView2.setOnClickListener(this);
@@ -555,16 +610,62 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 textQuestion.setText("");
                 imageView1.setImageResource(0);
                 imageView2.setImageResource(0);
-                startButton.setText(getResources().getString(R.string.nextRound));
-                startButton.setVisibility(View.VISIBLE);
+//                startButton.setText(getResources().getString(R.string.nextRound));
+//                startButton.setVisibility(View.VISIBLE);
+
                 unclickable();
+
+//                if (currentRound == TotalRounds)
+//                {
+//                    startButton.setVisibility(View.INVISIBLE);
+//                }
+            }
+        }.start();
+        nextRound();
+
+
+
+    }
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(4000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
 
                 if (currentRound == TotalRounds)
                 {
-                    startButton.setVisibility(View.INVISIBLE);
+                    textMsgTime.setText("");
                 }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    gameinit = true;
+                    createRound();
+                }
+
             }
         }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
 
@@ -694,17 +795,22 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText("Σωστά!");
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText("Mpravo!");
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText("Εξαιρετικά!");
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText("Δεν πειράζει, συνέχισε την προσπάθεια!");
         }
+        msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
         animPointsText.setText("+ " + currentPoints);
         if (currentPoints == 0) {
@@ -752,6 +858,8 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         outState.putInt(CURRENTROUND,currentRound);
         outState.putInt(USER_ID,user_id);
         outState.putInt(GAME_ID,game_id);
+        outState.putString(MSGHELPER,msgHelper);
+        outState.putLong(NEXTROUNDTIMER,timeLeftInMillisNextRound);
     }
 
 

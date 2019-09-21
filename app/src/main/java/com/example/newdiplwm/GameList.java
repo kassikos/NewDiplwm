@@ -285,12 +285,12 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
             public void onShow(DialogInterface dialogInterface) {
 
                 Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
-                btnPositive.setTextSize(22);
+                btnPositive.setTextSize(24);
                 btnPositive.setTextColor(getResources().getColor(R.color.black));
 
 
                 Button btnNegative = dialog.getButton(Dialog.BUTTON_NEGATIVE);
-                btnNegative.setTextSize(22);
+                btnNegative.setTextSize(24);
                 btnNegative.setTextColor(getResources().getColor(R.color.black));
 
                 TextView textView = (TextView) dialog.findViewById(android.R.id.message);
