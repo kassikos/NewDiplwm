@@ -367,10 +367,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 showTutorialPopUp();
-                if(Advancedtimer != null)
-                {
-                    Advancedtimer.cancel();
-                }
+//                if(Advancedtimer != null)
+//                {
+//                    Advancedtimer.cancel();
+//                }
 
             }
         });
