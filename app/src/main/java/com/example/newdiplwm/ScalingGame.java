@@ -28,8 +28,8 @@ public class ScalingGame extends AppCompatActivity {
 
     MaterialButton startButton,leftButton,rightButton,equalButton;//na ginoyn material buttons
     ImageView exit , replayTutorial;
-    private LinearLayout logoLinear;
-    TextView leftText, rightText,textRounds;
+    private LinearLayout logoLinear, textsLinear;
+    TextView leftText, rightText,textRounds , textMsg , textMsgTime;
 
     TextView textQuestion;
 
@@ -111,6 +111,9 @@ public class ScalingGame extends AppCompatActivity {
         equalButton.setBackgroundColor(getResources().getColor(R.color.yellow));
         exit = findViewById(R.id.ExitScalGame);
         replayTutorial = findViewById(R.id.ReplayTutorialSCG);
+        textMsgTime = findViewById(R.id.msgScaling1);
+        textMsg = findViewById(R.id.msgScaling);
+        textsLinear = findViewById(R.id.textsScaling);
 
         leftText = findViewById(R.id.textLeft);
 
@@ -183,7 +186,7 @@ public class ScalingGame extends AppCompatActivity {
         RoundTimer = new CountDownTimer(6000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                textRounds.setText("Επόμενος Γύρος σε: " + millisUntilFinished / 1000);
+                textMsgTime.setText("Επόμενος Γύρος σε: " + millisUntilFinished / 1000);
                 //roundTimerIsOn =true;
             }
 
@@ -191,11 +194,12 @@ public class ScalingGame extends AppCompatActivity {
 
                 //roundTimerIsOn =false;
 
-                textRounds.setText("-");
+                textMsgTime.setText("-");
 
                 createRound();
 
                 enableButtons();
+                hideMsgDisplayButtons();
 
             }
 
@@ -246,10 +250,14 @@ public class ScalingGame extends AppCompatActivity {
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
                     shopPopUp();
+
                 }
                 else {
+
                     RoundTimer.start();
+
                 }
+                hidebuttonsdisplayMsgs();
             }
         });
 
@@ -271,7 +279,6 @@ public class ScalingGame extends AppCompatActivity {
 
                 if (RoundsCounter>TotalRounds)
                 {
-                    textRounds.setText("ξεκολλα τελος");
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
@@ -281,8 +288,10 @@ public class ScalingGame extends AppCompatActivity {
                     shopPopUp();
                 }
                 else {
+
                     RoundTimer.start();
                 }
+                hidebuttonsdisplayMsgs();
             }
         });
 
@@ -305,7 +314,6 @@ public class ScalingGame extends AppCompatActivity {
 
                 if (RoundsCounter>TotalRounds)
                 {
-                    textRounds.setText("ξεκολλα τελος");
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
@@ -315,8 +323,10 @@ public class ScalingGame extends AppCompatActivity {
                     shopPopUp();
                 }
                 else {
+
                     RoundTimer.start();
                 }
+                hidebuttonsdisplayMsgs();
             }
         });
 
@@ -489,7 +499,7 @@ public class ScalingGame extends AppCompatActivity {
         if (RoundsCounter>TotalRounds)
         {
             textRounds.setText("Τέλος");
-            //fyge alliws krasarei
+
         }
         else
         {
@@ -870,31 +880,54 @@ public class ScalingGame extends AppCompatActivity {
         countPoints();
     }
 
-    public void countPoints()
-    {
 
-        int currentPoints=0;
 
-        if (missPoints == false && trueCounter == 1)
-        {
+    private void countPoints() {
+
+        int currentPoints = 0;
+
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(missPoints == false && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints == false && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints == true)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
+            missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+
         totalPoints += currentPoints;
+//        animPointsText.setText("+ " + currentPoints);
+//        if (currentPoints == 0) {
+//            animPointsText.setTextColor(Color.RED);
+//        } else
+//            animPointsText.setTextColor(Color.GREEN);
+    }
+
+    private void hidebuttonsdisplayMsgs(){
+        if (RoundsCounter>TotalRounds)
+        {
+            textMsgTime.setText("");
+        }
+        textsLinear.setVisibility(View.VISIBLE);
+        leftButton.setVisibility(View.INVISIBLE);
+        rightButton.setVisibility(View.INVISIBLE);
+        equalButton.setVisibility(View.INVISIBLE);
+    }
+    private void hideMsgDisplayButtons(){
+        textsLinear.setVisibility(View.INVISIBLE);
+        leftButton.setVisibility(View.VISIBLE);
+        rightButton.setVisibility(View.VISIBLE);
+        equalButton.setVisibility(View.VISIBLE);
     }
 
     private void showTutorialPopUp(){
