@@ -69,8 +69,8 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5 ,exit ,replayTutorial;
     private MaterialButton startButton, missingObj;
-    private TextView textRounds, textTimer, animPointsText;
-    private LinearLayout logoLinear;
+    private TextView textRounds, textTimer, animPointsText, textMsg, textMsgTime;
+    private LinearLayout logoLinear, textsLinear;
 
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -88,9 +88,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private ArrayList<Integer> pickedImages = new ArrayList<>();
 
     private SparseArray listselection = new SparseArray(5);
-    private CountDownTimer Timer;
+    private CountDownTimer Timer , nextRoundTimer;
     private static final long START_TIME_IN_MILLIS = 2000;
-    private long mTimeLeftInMillis = 0;
+    private long mTimeLeftInMillis = 0, timeLeftInMillisNextRound =0;
 
     private SparseIntArray imageIDS =new SparseIntArray(5);
     private ArrayList<Integer> imageviews = new ArrayList<Integer>();
@@ -703,10 +703,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 helperwhenRotate.clear();
                 imageIDS.clear();
                 pickedImages.clear();
-                startButton.setText(getResources().getString(R.string.nextRound));
-                startButton.setVisibility(View.VISIBLE);
+//                startButton.setText(getResources().getString(R.string.nextRound));
+//                startButton.setVisibility(View.VISIBLE);
                 missingObj.setVisibility(View.INVISIBLE);
                 missingObj.setText(getResources().getString(R.string.MissingObjects));
+
 
                 if (currentRound == TotalRounds)
                 {
@@ -741,6 +742,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             trueCounter++;
             countPoints();
             Timer.start();
+            nextRound();
         }
         else if (!(imageIDS.indexOfKey(view.getId())<0))
         {
@@ -768,6 +770,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 trueCounter++;
                 countPoints();
                 Timer.start();
+                nextRound();
             }
             else if (falsepick)
             {
@@ -782,6 +785,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 missPoints = true;
                 countPoints();
                 Timer.start();
+                nextRound();
             }
 
         }
@@ -798,8 +802,54 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             missPoints = true;
             countPoints();
             Timer.start();
+            nextRound();
 
         }
+    }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    rightpick=0;
+                    gameInit = true;
+                    createRound();
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
     }
 
     private void showTutorialPopUp(){
@@ -813,40 +863,37 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         newFragment.show(getSupportFragmentManager(), "OrderGame");
     }
 
-    private void countPoints()
-    {
+    private void countPoints() {
 
-        int currentPoints=0;
+        int currentPoints = 0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+ //       msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
-        animPointsText.setText("+ " +currentPoints);
-        if (currentPoints == 0)
-        {
+        animPointsText.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
             animPointsText.setTextColor(Color.RED);
-        }
-        else
+        } else
             animPointsText.setTextColor(Color.GREEN);
     }
+
 
     private void startAnimation(){
         long duration = 2000;
@@ -935,6 +982,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         textTimer = findViewById(R.id.textTimerOG);
         animPointsText = findViewById(R.id.AnimTextPointsOG);
         logoLinear = findViewById(R.id.imageLogoDisplayOG);
+        textsLinear = findViewById(R.id.textsOG);
+        textMsg = findViewById(R.id.msgOG);
+        textMsgTime = findViewById(R.id.msgOG1);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);
