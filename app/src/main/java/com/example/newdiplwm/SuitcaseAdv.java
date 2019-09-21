@@ -124,8 +124,8 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
                 openBase();
 
 
-                View view = getActivity().findViewById(R.id.Suitcase_startButton);
-                view.setVisibility(View.VISIBLE);
+//                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+//                view.setVisibility(View.VISIBLE);
             }
 
         };
@@ -140,9 +140,9 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
 
                 openLid();
 
-
-                View view = getActivity().findViewById(R.id.Suitcase_startButton);
-                view.setVisibility(View.VISIBLE);
+//
+//                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+//                view.setVisibility(View.VISIBLE);
             }
 
         };

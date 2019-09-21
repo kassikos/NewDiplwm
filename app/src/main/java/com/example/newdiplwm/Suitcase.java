@@ -27,7 +27,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     MaterialButton startbutton;
     private ImageView exit , replayTutorial;
-    private LinearLayout logoLinear;
+    private LinearLayout logoLinear, textsLinear;
 
     private String menuDifficulty, currentDifficulty;
     private int totalhit = 0, totalmiss = 0, TotalRounds =0, trueCounter=0, totalPoints=0,RoundsCounter = 0;
@@ -49,13 +49,13 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     private Timestamp startTime;
     private Timestamp endTime;
 
-    private TextView textView;
+    private TextView textView, textMsg , textMsgTime;
 
     SuitcaseEz suitcaseEz;
     SuitcaseAdv suitcaseMed;
     SuitcaseAdv suitcaseAdv;
 
-    private CountDownTimer shopPopUpTimer;
+    private CountDownTimer shopPopUpTimer, nextRoundTimer;
     private Session session;
 
 
@@ -94,6 +94,9 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         exit = findViewById(R.id.ExitSuitcase);
         replayTutorial = findViewById(R.id.ReplayTutorialSuitcase);
         logoLinear = findViewById(R.id.imageLogoDisplaySuitcase);
+        textsLinear = findViewById(R.id.textsSuitcase);
+        textMsg = findViewById(R.id.msgSuitcase);
+        textMsgTime = findViewById(R.id.msgSuitcase1);
 
         gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -186,6 +189,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     public void checkMode()
     {
+       // startbutton.setVisibility(View.INVISIBLE);
         if (RoundsCounter == 0)
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -271,31 +275,30 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
 
 
-    private void countPoints()
-    {
+    private void countPoints() {
 
-        int currentPoints=0;
+        int currentPoints = 0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
+            missPoints = false;
+            textMsg.setText(R.string.lose);
         }
         totalPoints += currentPoints;
+
     }
 
 
@@ -314,8 +317,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
         if (RoundsCounter >= TotalRounds)
         {
-
-
+            textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -340,8 +342,54 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 }
             }.start();
         }
+        else
+        {
+            nextRound();
+        }
+
     }
 
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+
+
+                if (RoundsCounter == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+
+                if (RoundsCounter == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    checkMode();
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
 
     @Override
     public void onDataPass(int hit, int miss, double speedInSeconds, boolean misspoints, int truecounter) {

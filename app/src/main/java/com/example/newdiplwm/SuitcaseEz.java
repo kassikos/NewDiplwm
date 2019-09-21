@@ -117,8 +117,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
                 openBase();
 
-                View view = getActivity().findViewById(R.id.Suitcase_startButton);
-                view.setVisibility(View.VISIBLE);
+//                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+//                view.setVisibility(View.VISIBLE);
 
             }
 
@@ -134,8 +134,8 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
                 openLid();
 
-                View view = getActivity().findViewById(R.id.Suitcase_startButton);
-                view.setVisibility(View.VISIBLE);
+//                View view = getActivity().findViewById(R.id.Suitcase_startButton);
+//                view.setVisibility(View.VISIBLE);
 
             }
 
