@@ -42,7 +42,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
     private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
 
-    private int user_id, game_id, currentRound = 0, TotalRounds = 0;
+    private int user_id, game_id, currentRound = 0, TotalRounds = 0 , audioposition = 0;
     private int totalhit = 0, totalmiss = 0, totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false;
     private String menuDifficulty, currentDifficulty = "";
@@ -145,6 +145,66 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     @Override
     protected void onResume() {
         super.onResume();
+
+
+        if (soundPlayed) {
+            playAudio.setVisibility(View.INVISIBLE);
+            disableReplayTut();
+
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(SoundWord.this, soundWordViewModel.getPickedSound());
+                mediaPlayer.seekTo(audioposition);
+                mediaPlayer.start();
+                if (currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                {
+                    soundWordEz.unclickable();
+                }
+                else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+                {
+                    soundWordMed.unclickable();
+                }
+                else if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+                {
+                    soundWordAdv.unclickable();
+                }
+
+
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        enableReplayTut();
+                        soundPlayed = false;
+                        playAudio.setImageResource(R.drawable.replay_black_48dp);
+                        playAudio.setVisibility(View.VISIBLE);
+                        if (currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                        {
+                            soundWordEz.clickable();
+                        }
+                        else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+                        {
+                            soundWordMed.clickable();
+                        }
+                        else if (currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
+                        {
+                            soundWordAdv.clickable();
+                        }
+
+                        if (limit == 1) {
+                            startspeed = new Timestamp(System.currentTimeMillis());
+                        }
+
+                        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+                            playAudio.setImageResource(R.drawable.limit_black_48dp);
+                            playAudio.setClickable(false);
+
+                        }
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+                    }
+                });
+            }
+        }
+
 
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +331,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         super.onPause();
 
         if (mediaPlayer != null){
+            audioposition = mediaPlayer.getCurrentPosition();
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
