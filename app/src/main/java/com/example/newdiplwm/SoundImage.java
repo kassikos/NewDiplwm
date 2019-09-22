@@ -183,40 +183,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     iv.setImageResource(imageviewImage.valueAt(i));
                 }
                 textRounds.setText(currentRound + " / " + TotalRounds);
-                if (soundPlayed) {
-                    playAudio.setVisibility(View.INVISIBLE);
-                    disableReplayTut();
-
-                    if (mediaPlayer == null) {
-                        mediaPlayer = MediaPlayer.create(SoundImage.this, pickedSound);
-                        mediaPlayer.seekTo(audioposition);
-                        mediaPlayer.start();
-                        unclickable();
-
-                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                soundPlayed = false;
-                                playAudio.setImageResource(R.drawable.replay_black_48dp);
-                                playAudio.setVisibility(View.VISIBLE);
-                                clickable();
-                                enableReplayTut();
-
-                                if (limit == 1) {
-                                    startspeed = new Timestamp(System.currentTimeMillis());
-                                }
-
-                                if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
-                                    playAudio.setImageResource(R.drawable.limit_black_48dp);
-                                    playAudio.setClickable(false);
-
-                                }
-                                mediaPlayer.release();
-                                mediaPlayer = null;
-                            }
-                        });
-                    }
-                }
+                ResumePlayerAfterPause();
             } else {
                 unclickable();
 
@@ -357,9 +324,49 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    private void ResumePlayerAfterPause(){
+        if (soundPlayed) {
+            playAudio.setVisibility(View.INVISIBLE);
+            disableReplayTut();
+
+            if (mediaPlayer == null) {
+                mediaPlayer = MediaPlayer.create(SoundImage.this, pickedSound);
+                mediaPlayer.seekTo(audioposition);
+                mediaPlayer.start();
+                unclickable();
+
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        soundPlayed = false;
+                        playAudio.setImageResource(R.drawable.replay_black_48dp);
+                        playAudio.setVisibility(View.VISIBLE);
+                        clickable();
+                        enableReplayTut();
+
+                        if (limit == 1) {
+                            startspeed = new Timestamp(System.currentTimeMillis());
+                        }
+
+                        if ((limitReplay == limit && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (limit == limitReplay && currentDifficulty.equals(getResources().getString(R.string.advancedValue)))) {
+                            playAudio.setImageResource(R.drawable.limit_black_48dp);
+                            playAudio.setClickable(false);
+
+                        }
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+                    }
+                });
+            }
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+
+        ResumePlayerAfterPause();
 
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
