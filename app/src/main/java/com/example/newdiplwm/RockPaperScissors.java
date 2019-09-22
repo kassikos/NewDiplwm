@@ -181,6 +181,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 }
                 if (mTimeLeftInMillis > 1000)
                 {
+                    disableReplayTut();
                     Advancedtimer = userViewModel.getTimer();
                     Advancedtimer.cancel();
 
@@ -195,6 +196,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onFinish() {
 
+                            mTimeLeftInMillis = 0;
+                            Advancedtimer = null;
+                            gameinit = false;
                             advancedTextTimer.setText(R.string.TimeOut);
                             missPoints = true;
                             startAnimation();
@@ -220,6 +224,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
                         }
                     }.start();
+
                     userViewModel.saveTimer(Advancedtimer);
                 }
 
@@ -232,6 +237,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                     else {
                         if (timeLeftInMillisNextRound > 1000)
                         {
+                            disableReplayTut();
                             textsLinear.setVisibility(View.VISIBLE);
                             nextRoundTimer = userViewModel.getNextRoundTimer();
                             nextRoundTimer.cancel();
@@ -260,9 +266,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                                     if (currentRound == TotalRounds)
                                     {
                                         textsLinear.setVisibility(View.INVISIBLE);
+                                        disableReplayTut();
                                     }
                                     else
                                     {
+                                        enableReplayTut();
                                         nextRoundTimer = null;
                                         textMsgTime.setText("");
                                         textsLinear.setVisibility(View.INVISIBLE);
@@ -272,6 +280,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
                                 }
                             }.start();
+
                             userViewModel.setNextRoundTimer(nextRoundTimer);
                         }
 
@@ -535,6 +544,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         }
     }
     private void displayGameAdv(){
+        disableReplayTut();
         Random rand = new Random();
         mode = rand.nextInt(2);
         imageView1.setImageResource(images.get(0));
@@ -562,6 +572,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             @Override
             public void onFinish() {
+                Advancedtimer = null;
+                gameinit = false;
+                mTimeLeftInMillis = 0;
                 advancedTextTimer.setText(R.string.TimeOut);
                 missPoints = true;
                 startAnimation();
@@ -570,6 +583,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 vibe.vibrate(vibeduration);
 
                 if (currentRound == TotalRounds) {
+                    disableReplayTut();
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -655,6 +669,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     }
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
+        disableReplayTut();
 
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
@@ -681,9 +696,11 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -694,6 +711,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             }
         }.start();
+
         userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
@@ -767,6 +785,15 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private void unclickable(){
         imageView1.setClickable(false);
         imageView2.setClickable(false);
+    }
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
     }
     private int result(int picked , int nonpicked){
         if (mode == 0)

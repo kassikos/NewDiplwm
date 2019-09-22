@@ -94,6 +94,7 @@ public class ScalingGame extends AppCompatActivity {
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
+            fm.popBackStack();
             //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
 
@@ -193,7 +194,7 @@ public class ScalingGame extends AppCompatActivity {
             public void onFinish() {
 
                 //roundTimerIsOn =false;
-                RoundTimer = null;
+
 
                 textMsgTime.setText("-");
 
@@ -201,10 +202,14 @@ public class ScalingGame extends AppCompatActivity {
 
                 enableButtons();
                 hideMsgDisplayButtons();
+                replayTutorial.setClickable(true);
+                replayTutorial.setAlpha(1f);
+
 
             }
 
         };
+
 
         //mia fora tha treksei auto
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -268,6 +273,8 @@ public class ScalingGame extends AppCompatActivity {
                 else {
 
                     RoundTimer.start();
+                    replayTutorial.setClickable(false);
+                    replayTutorial.setAlpha(0.5f);
 
                 }
                 hidebuttonsdisplayMsgs();
@@ -303,6 +310,8 @@ public class ScalingGame extends AppCompatActivity {
                 else {
 
                     RoundTimer.start();
+                    replayTutorial.setClickable(false);
+                    replayTutorial.setAlpha(0.5f);
                 }
                 hidebuttonsdisplayMsgs();
             }
@@ -338,6 +347,8 @@ public class ScalingGame extends AppCompatActivity {
                 else {
 
                     RoundTimer.start();
+                    replayTutorial.setClickable(false);
+                    replayTutorial.setAlpha(0.5f);
                 }
                 hidebuttonsdisplayMsgs();
             }

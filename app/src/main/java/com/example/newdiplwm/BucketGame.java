@@ -470,6 +470,7 @@ public class BucketGame extends AppCompatActivity {
         @Override
         public boolean onDrag(View v, DragEvent event) {
 
+
             LinearLayout container = (LinearLayout) v;
 
             int kadakiId = bucketLinearImageBucket.get(container.getId());
@@ -481,6 +482,7 @@ public class BucketGame extends AppCompatActivity {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
                     Log.d("ACTION_DRAG_STARTED", "ACTION_DRAG_STARTED");
+                    disableReplayTut();
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
                     Log.d("ACTION_DRAG_ENTERED", "ACTION_DRAG_ENTERED");
@@ -534,6 +536,7 @@ public class BucketGame extends AppCompatActivity {
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
                     Log.d("ACTION_DRAG_ENDED", "ACTION_DRAG_ENDED");
+                    enableReplayTut();
                     v.setBackgroundDrawable(normalShape);
                 default:
                     break;
@@ -695,11 +698,12 @@ public class BucketGame extends AppCompatActivity {
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
 
+
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
 
-
+                disableReplayTut();
                 if (currentRound == TotalRounds)
                 {
                     textMsgTime.setText("");
@@ -718,11 +722,12 @@ public class BucketGame extends AppCompatActivity {
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
                     nextRoundTimer = null;
-
+                    enableReplayTut();
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     createRound();
@@ -938,6 +943,15 @@ public class BucketGame extends AppCompatActivity {
         imageviews.add(R.id.imageView4Bucket);
         imageviews.add(R.id.imageView5Bucket);
         imageviews.add(R.id.imageView6Bucket);
+    }
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
     }
 
     private void countPoints() {

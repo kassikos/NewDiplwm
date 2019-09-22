@@ -196,6 +196,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 }
                 else
                 {
+                    disableReplayTut();
                     textMsg.setText(msgHelper);
                     nextRoundTimer = userViewModel.getNextRoundTimer();
                     nextRoundTimer.cancel();
@@ -226,9 +227,11 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                             if (currentRound == TotalRounds)
                             {
                                 textsLinear.setVisibility(View.INVISIBLE);
+                                disableReplayTut();
                             }
                             else
                             {
+                                enableReplayTut();
                                 nextRoundTimer = null;
                                 textMsgTime.setText("");
                                 textsLinear.setVisibility(View.INVISIBLE);
@@ -599,7 +602,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
-
+        disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
@@ -625,9 +628,11 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -708,6 +713,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     }
 
     private void setTimer(long mTimeLeftInMillisfun){
+        disableReplayTut();
 
         Timer = new CountDownTimer(mTimeLeftInMillisfun,1000) {
             @Override
@@ -720,6 +726,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
             @Override
             public void onFinish() {
+                enableReplayTut();
                 unclickable();
                 miss++;
                 missPoints =true;
@@ -897,6 +904,15 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         imagebutton2.setClickable(false);
         imagebutton3.setClickable(false);
         imagebutton4.setClickable(false);
+    }
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
     }
 
 

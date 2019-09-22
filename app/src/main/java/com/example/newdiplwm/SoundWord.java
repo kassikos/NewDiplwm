@@ -150,6 +150,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             @Override
             public void onClick(View view) {
                 limit++;
+                disableReplayTut();
                 soundPlayed = true;
                 playAudio.setVisibility(View.INVISIBLE);
                 if (mediaPlayer == null) {
@@ -173,6 +174,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             soundPlayed = false;
+                            enableReplayTut();
                             playAudio.setVisibility(View.VISIBLE);
                             playAudio.setImageResource(R.drawable.replay_black_48dp);
                             playAudio.setClickable(true);
@@ -368,6 +370,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
 
+        disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
@@ -393,9 +396,11 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -427,6 +432,15 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
     }
 
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
+    }
 
     private void showTutorialPopUp(){
         DialogFragment dialogFragment = new Tutorial(SoundWord.this,R.raw.tutorial_soundword,getPackageName());

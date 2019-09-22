@@ -185,6 +185,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 textRounds.setText(currentRound + " / " + TotalRounds);
                 if (soundPlayed) {
                     playAudio.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
 
                     if (mediaPlayer == null) {
                         mediaPlayer = MediaPlayer.create(SoundImage.this, pickedSound);
@@ -199,6 +200,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                                 playAudio.setImageResource(R.drawable.replay_black_48dp);
                                 playAudio.setVisibility(View.VISIBLE);
                                 clickable();
+                                enableReplayTut();
 
                                 if (limit == 1) {
                                     startspeed = new Timestamp(System.currentTimeMillis());
@@ -223,6 +225,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     logoLinear.setVisibility(View.VISIBLE);
 
                 } else {
+                    disableReplayTut();
                     logoLinear.setVisibility(View.GONE);
                     textMsg.setText(msgHelper);
                     nextRoundTimer = userViewModel.getNextRoundTimer();
@@ -254,9 +257,11 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                             if (currentRound == TotalRounds)
                             {
                                 textsLinear.setVisibility(View.INVISIBLE);
+                                disableReplayTut();
                             }
                             else
                             {
+                                enableReplayTut();
                                 nextRoundTimer = null;
                                 textMsgTime.setText("");
                                 textsLinear.setVisibility(View.INVISIBLE);
@@ -359,6 +364,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                disableReplayTut();
                 limit++;
                 soundPlayed = true;
                 playAudio.setVisibility(View.INVISIBLE);
@@ -370,6 +376,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
+                            enableReplayTut();
                             soundPlayed = false;
                             playAudio.setVisibility(View.VISIBLE);
                             playAudio.setImageResource(R.drawable.replay_black_48dp);
@@ -904,6 +911,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
+        disableReplayTut();
 
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
@@ -930,9 +938,11 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -947,6 +957,15 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         }.start();
         userViewModel.setNextRoundTimer(nextRoundTimer);
 
+    }
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
     }
 
     private void showTutorialPopUp(){
