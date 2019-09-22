@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class Tutorial extends DialogFragment implements SharedPreferences.OnSharedPreferenceChangeListener, MediaPlayer.OnCompletionListener {
 
@@ -61,16 +65,15 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
 
         final AlertDialog dialog = builder.create();
 
-//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//            @Override
-//            public void onShow(DialogInterface dialogInterface) {
-//
-//                Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
-//                btnPositive.setTextSize(22);
-//                btnPositive.setTextColor(getResources().getColor(R.color.black));
-//
-//            }
-//        });
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button btnPositive = dialog.getButton(Dialog.BUTTON_POSITIVE);
+                btnPositive.setTextSize(22);
+                btnPositive.setTextColor(Color.parseColor("#000000"));
+            }
+        });
         return dialog;
     }
 
@@ -82,6 +85,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
         position = videoView.getCurrentPosition();
         videoView.stopPlayback();
 
+
     }
 
     @Override
@@ -90,6 +94,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
         Log.d("onResume","onResume");
         //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
 //       // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+ //       getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         videoView.setOnCompletionListener(this);
 
@@ -97,13 +102,27 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
+        Log.d("ONDismis","ONDismis");
         boolean y = checkBox.isChecked();
         session.setPlayAgainVideo(y);
         videoView.stopPlayback();
+
+//        FragmentManager fm = getActivity().getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//
+//        Fragment prev = fm.findFragmentByTag("Tutorial");
+//        if (prev != null) {
+//            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+//            fragmentTransaction.remove(prev);
+//            fragmentTransaction.commit();
+//            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+//        }
+
+
     }
-
-
-
+//
+//
+//
 //    @Override
 //    public void onDestroyView() {
 //        super.onDestroyView();
@@ -111,20 +130,20 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
 //
 //
 //    }
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.d("ONDESTROYT","ONDESTROY");
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        Log.d("ONDTACHHHHH","ONDTACHHHHH");
-//
-//
-//    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("ONDESTROYT","ONDESTROY");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("ONDTACHHHHH","ONDTACHHHHH");
+
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -151,6 +170,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
+     //   getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         getDialog().dismiss();
 
     }

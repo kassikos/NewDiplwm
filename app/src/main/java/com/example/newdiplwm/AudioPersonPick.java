@@ -306,6 +306,17 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 gameInit = true;
                 logoLinear.setVisibility(View.GONE);
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialAudioPersonPick");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
                 unclickable();
                 fillListImageview();
                 createRound();

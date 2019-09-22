@@ -95,9 +95,9 @@ public class BucketGame extends AppCompatActivity {
 
 
     private ImageView thing1, thing2, thing3, thing4, thing5, thing6, exit , replayTutorial;
-    private LinearLayout bucket1Linear, bucket2Linear, bucket3Linear, logoLinear;
+    private LinearLayout bucket1Linear, bucket2Linear, bucket3Linear, logoLinear, textsLinear;
     private MaterialButton startButton;
-    private TextView textRounds, animationTextPoints;
+    private TextView textRounds, animationTextPoints, textMsg , textMsgTime;;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
@@ -111,7 +111,7 @@ public class BucketGame extends AppCompatActivity {
     private Timestamp endspeed;
     private double totalspeed = 0;
 
-    private CountDownTimer cleanTimer;
+    private CountDownTimer cleanTimer , nextRoundTimer;
     private Session session;
     private int limitEz = 3, limitAdv = 6, limitMed = 4, limitcounter = 0;
     private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
@@ -162,6 +162,17 @@ public class BucketGame extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 logoLinear.setVisibility(View.GONE);
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialBucketGame");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
                 createRound();
             }
         });
@@ -196,6 +207,10 @@ public class BucketGame extends AppCompatActivity {
     }
 
     private void onbackAndExitCode() {
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
             endTime = new Timestamp(System.currentTimeMillis());
@@ -564,8 +579,8 @@ public class BucketGame extends AppCompatActivity {
         bucket1Linear.setBackground(null);
         bucket2Linear.setBackground(null);
         bucket3Linear.setBackground(null);
-        startButton.setText(getResources().getString(R.string.nextRound));
-        startButton.setVisibility(View.VISIBLE);
+//        startButton.setText(getResources().getString(R.string.nextRound));
+//        startButton.setVisibility(View.VISIBLE);
 
         if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
@@ -660,6 +675,7 @@ public class BucketGame extends AppCompatActivity {
 
         if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
+            textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -668,6 +684,54 @@ public class BucketGame extends AppCompatActivity {
             userViewModel.updatestatsTest(user_id, game_id);
             shopPopUp();
         }
+        else
+        {
+            nextRound();
+        }
+
+    }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nextRoundTimer = null;
+
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    createRound();
+
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
 
@@ -849,6 +913,9 @@ public class BucketGame extends AppCompatActivity {
         exit = findViewById(R.id.ExitBucket);
         replayTutorial = findViewById(R.id.ReplayTutorialBucket);
         logoLinear = findViewById(R.id.imageLogoDisplayBucket);
+        textsLinear = findViewById(R.id.textsBucket);
+        textMsg = findViewById(R.id.msgBucket);
+        textMsgTime = findViewById(R.id.msgBucket1);
 
         bucket1Linear = findViewById(R.id.Bucket1Linear);
         bucket2Linear = findViewById(R.id.Bucket2Linear);
@@ -873,7 +940,6 @@ public class BucketGame extends AppCompatActivity {
         imageviews.add(R.id.imageView6Bucket);
     }
 
-
     private void countPoints() {
 
         int currentPoints = 0;
@@ -881,16 +947,20 @@ public class BucketGame extends AppCompatActivity {
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win);
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win1);
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win2);
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
         totalPoints += currentPoints;
         animationTextPoints.setText("+ " + currentPoints);
@@ -899,6 +969,7 @@ public class BucketGame extends AppCompatActivity {
         } else
             animationTextPoints.setTextColor(Color.GREEN);
     }
+
 
     private void showTutorialPopUp() {
         DialogFragment dialogFragment = new Tutorial(BucketGame.this, R.raw.tutorial_boxgame, getPackageName());
