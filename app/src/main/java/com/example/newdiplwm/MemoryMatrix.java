@@ -79,6 +79,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
+            fm.popBackStack();
             //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
 
