@@ -547,12 +547,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onFinish() {
+                enableReplayTut();
                 textTimer.setText(getResources().getString(R.string.textQuestionOG));
                 mTimeLeftInMillis=0;
                 setTimerobjez(randomPickedList);
 
             }
         }.start();
+        disableReplayTut();
         userViewModel.saveTimer(Timer);
 
     }
@@ -598,12 +600,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onFinish() {
+                enableReplayTut();
                 mTimeLeftInMillis=0;
 
                 textTimer.setText(getResources().getString(R.string.textQuestionOG));
                 setTimerobjmed(randomPickedList);
             }
         }.start();
+        disableReplayTut();
         userViewModel.saveTimer(Timer);
     }
 
@@ -667,6 +671,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onFinish() {
+                enableReplayTut();
                 mTimeLeftInMillis=0;
                 textTimer.setText(getResources().getString(R.string.textQuestionOG));
 
@@ -674,6 +679,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
             }
         }.start();
+        disableReplayTut();
         userViewModel.saveTimer(Timer);
 
     }
@@ -825,6 +831,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
+        disableReplayTut();
 
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
@@ -851,9 +858,11 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -866,6 +875,15 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         }.start();
         userViewModel.setNextRoundTimer(nextRoundTimer);
 
+    }
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
     }
 
     private void showTutorialPopUp(){

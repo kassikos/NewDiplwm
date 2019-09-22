@@ -374,6 +374,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
 
+        disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
@@ -398,9 +399,11 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 if (RoundsCounter == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     nextRoundTimer = null;
@@ -413,6 +416,14 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     }
 
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
+    }
     @Override
     public void onDataPass(int hit, int miss, double speedInSeconds, boolean misspoints, int truecounter) {
 

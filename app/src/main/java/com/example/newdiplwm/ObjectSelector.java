@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ObjectSelector extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit ,replayTutotrial;
+    private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit ,replayTutorial;
     private LinearLayout logoLinear, textsLinear;
     private MaterialButton startButton;
     private TextView rounds , animPointsText, textMsg , textMsgTime;
@@ -168,6 +168,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
                     if (timeLeftInMillisNextRound > 1000)
                     {
+                        disableReplayTut();
                         textMsg.setText(msgHelper);
                         textsLinear.setVisibility(View.VISIBLE);
                         nextRoundTimer = userViewModel.getNextRoundTimer();
@@ -197,10 +198,11 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                                 if (currentRound == TotalRounds)
                                 {
                                     textsLinear.setVisibility(View.INVISIBLE);
+                                    disableReplayTut();
                                 }
                                 else
                                 {
-
+                                    enableReplayTut();
                                     textMsgTime.setText("");
                                     textsLinear.setVisibility(View.INVISIBLE);
                                     helper = 0;
@@ -302,7 +304,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        replayTutotrial.setOnClickListener(new View.OnClickListener() {
+        replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showTutorialPopUp();
@@ -717,6 +719,15 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
+    }
+
     private void showTutorialPopUp(){
         DialogFragment dialogFragment = new Tutorial(ObjectSelector.this,R.raw.tutorial_objectselector,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialObjectSelector");
@@ -765,6 +776,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
 
+        disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {
             @Override
             public void onTick(long l) {
@@ -790,9 +802,11 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 if (currentRound == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     helper = 0;
@@ -871,7 +885,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         rounds = findViewById(R.id.textRoundsOS);
         animPointsText = findViewById(R.id.AnimTextPoints);
         exit = findViewById(R.id.ExitOS);
-        replayTutotrial = findViewById(R.id.ReplayTutorialOS);
+        replayTutorial = findViewById(R.id.ReplayTutorialOS);
         logoLinear = findViewById(R.id.imageLogoDisplayOS);
         textsLinear = findViewById(R.id.textsOS);
         textMsg = findViewById(R.id.msgOS);

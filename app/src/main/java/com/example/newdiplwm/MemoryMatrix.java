@@ -25,9 +25,9 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
 
 
-    MaterialButton startbutton;
+    private MaterialButton startbutton;
 
-    String menuDifficulty, currentDifficulty;
+    private String menuDifficulty, currentDifficulty;
     private CountDownTimer nextRoundTimer;
 
     private ImageView exit ,replayTutorial;
@@ -349,9 +349,11 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
                 if (RoundsCounter == TotalRounds)
                 {
                     textsLinear.setVisibility(View.INVISIBLE);
+                    disableReplayTut();
                 }
                 else
                 {
+                    enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
@@ -360,10 +362,20 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
             }
         }.start();
+        disableReplayTut();
         userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
 
+
+    private void enableReplayTut(){
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+    private void disableReplayTut(){
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
+    }
 
 
     private void loadFragment(Fragment fragment) {
