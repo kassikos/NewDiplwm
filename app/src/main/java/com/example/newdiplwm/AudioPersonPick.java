@@ -201,11 +201,11 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                     }
                 }
             } else {
+                unclickable();
 
                 if (currentRound == 0) {
                     logoLinear.setVisibility(View.VISIBLE);
                     startButton.setVisibility(View.VISIBLE);
-                    unclickable();
 
                 } else {
                     textMsg.setText(msgHelper);
