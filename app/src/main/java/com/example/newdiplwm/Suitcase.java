@@ -386,7 +386,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

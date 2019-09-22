@@ -210,7 +210,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                             }
                             else
                             {
-                                textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                             }
 
 
@@ -931,7 +931,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

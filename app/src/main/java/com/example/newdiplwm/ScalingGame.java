@@ -187,7 +187,7 @@ public class ScalingGame extends AppCompatActivity {
         RoundTimer = new CountDownTimer(6000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                textMsgTime.setText("Επόμενος Γύρος σε: " + millisUntilFinished / 1000);
+                textMsgTime.setText(getResources().getString(R.string.nextRound)+millisUntilFinished/1000);
                 //roundTimerIsOn =true;
             }
 

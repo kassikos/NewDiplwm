@@ -213,7 +213,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                             }
                             else
                             {
-                                textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                             }
 
 
@@ -614,7 +614,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 
@@ -720,7 +720,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onTick(long l) {
 
                 mTimeLeftInMillis=l;
-                textTimer.setText("Απομένουν "+ l/1000+" Δευτ/λεπτα");
+                textTimer.setText("Απομένουν "+ l/1000+" Δευτερόλεπτα");
 
             }
 

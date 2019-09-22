@@ -78,6 +78,8 @@
     <string name="win1">Μπράβο!</string>
     <string name="win2">Εξαιρετικά!</string>
     <string name="lose">Δεν πειράζει, συνέχισε την προσπάθεια!</string>
+    <string name="nextRound">Επόμενος γύρος σε:  </string>
+    <string name="timeFinish">Τέλος Χρόνου</string>
 
 
     <!--RockPaperScissors Activity -->
@@ -127,8 +129,7 @@
 
     <string name="ok">Συνέχεια</string>
 
-    <string name="nextRound">Επόμενος \n Γύρος</string>
-    <string name="timeFinish">Τέλος Χρόνου</string>
+
 
     <!--OG-->
     <string name="MissingObjects">Λείπουν Αντικείμενα</string>

@@ -844,7 +844,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText("getResources().getString(R.string.nextRound)"+l/1000);
                 }
 
 

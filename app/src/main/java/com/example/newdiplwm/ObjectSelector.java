@@ -184,7 +184,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                                 }
                                 else
                                 {
-                                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                                 }
 
 
@@ -788,7 +788,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

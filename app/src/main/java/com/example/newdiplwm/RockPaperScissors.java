@@ -252,7 +252,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                                     }
                                     else
                                     {
-                                        textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                        textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                                     }
 
 
@@ -682,7 +682,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 
