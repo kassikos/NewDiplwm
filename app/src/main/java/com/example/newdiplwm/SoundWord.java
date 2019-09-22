@@ -32,10 +32,10 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
     private ImageView playAudio , exit, replayTutorial;
     private MaterialButton startButton;
-    private TextView textRounds, textTimer, animPointsText;
-    private LinearLayout logoLinear;
+    private TextView textRounds, textTimer, animPointsText ,  textMsg , textMsgTime;;
+    private LinearLayout logoLinear, textsLinear;
 
-    private CountDownTimer Timer;
+    private CountDownTimer Timer , nextRoundTimer;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
     private SoundWordViewModel soundWordViewModel;
@@ -122,7 +122,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
                 gameInit = true;
                 createRound();
 
-                startButton.setText(R.string.nextRound);
+              //  startButton.setText(R.string.nextRound);
             }
         });
 
@@ -199,38 +199,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mediaPlayer != null)
-                {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+                onbackAndExitCode();
             }
         });
 
@@ -244,21 +213,19 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
 
     }
-    @Override
-    protected void onPause() {
-        super.onPause();
 
-        if (mediaPlayer != null){
+    private void onbackAndExitCode(){
+        if (mediaPlayer != null)
+        {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
 
-    }
-
-    @Override
-    public void onBackPressed()
-    {
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -278,13 +245,29 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 0, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
 
+        if (mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        onbackAndExitCode();
     }
 
 
@@ -370,6 +353,52 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
 
 
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nextRoundTimer = null;
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    gameInit = true;
+                    createRound();
+
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
+
+
     private void assignAllbuttons() {
         startButton = findViewById(R.id.startButtonSWG);
         exit = findViewById(R.id.Exit);
@@ -379,6 +408,9 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         textRounds = findViewById(R.id.textRoundsSWG);
         animPointsText = findViewById(R.id.AnimTextPointsSWG);
         logoLinear = findViewById(R.id.imageLogoDisplaySWG);
+        textsLinear = findViewById(R.id.textsSWG);
+        textMsg = findViewById(R.id.msgSWG);
+        textMsgTime = findViewById(R.id.msgSWG1);
 
 
     }
@@ -401,16 +433,20 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win);
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win1);
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win2);
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
         totalPoints += currentPoints;
         animPointsText.setText("+ " + currentPoints);
@@ -419,6 +455,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
         } else
             animPointsText.setTextColor(Color.GREEN);
     }
+
 
     private void startAnimation() {
         long duration = 2000;
@@ -434,10 +471,11 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
     private void checkIfEnds()
     {
-        startButton.setVisibility(View.VISIBLE);
+        //startButton.setVisibility(View.VISIBLE);
 
         if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
+            textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
@@ -445,6 +483,10 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             shopPopUp();
+        }
+        else
+        {
+            nextRound();
         }
     }
 
