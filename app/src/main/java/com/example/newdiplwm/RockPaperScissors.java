@@ -4,6 +4,7 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -303,6 +304,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             showTutorialPopUp();
 
         }
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
 
@@ -311,8 +313,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
+            fm.popBackStack();
             //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,14 +325,28 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 logoLinear.setVisibility(View.GONE);
                 createRound();
 
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("Tutorial");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
+
             }
         });
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

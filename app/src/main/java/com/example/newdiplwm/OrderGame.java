@@ -374,6 +374,17 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             @Override
             public void onClick(View view) {
                 rightpick=0;
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialOrderGame");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
                 logoLinear.setVisibility(View.GONE);
                 gameInit = true;
                 createRound();

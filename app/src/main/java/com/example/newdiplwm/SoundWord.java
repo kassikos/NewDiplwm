@@ -119,6 +119,18 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             @Override
             public void onClick(View view) {
                 logoLinear.setVisibility(View.GONE);
+
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialSoundWord");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
                 gameInit = true;
                 createRound();
 

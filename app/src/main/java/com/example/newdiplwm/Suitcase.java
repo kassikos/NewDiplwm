@@ -111,6 +111,17 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             public void onClick(View v) {
                 logoLinear.setVisibility(View.GONE);
 
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialSuitcase");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                    //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+                }
                 checkMode();
                 startbutton.setVisibility(View.INVISIBLE);
                 startbutton.setText(R.string.nextRound);
