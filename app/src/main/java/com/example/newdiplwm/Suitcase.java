@@ -127,6 +127,11 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             @Override
             public void onClick(View view) {
 
+                if (nextRoundTimer != null)
+                {
+                    nextRoundTimer.cancel();
+                }
+
                 if (RoundsCounter == 0 || click ==0 )
                 {
                     startTime = new Timestamp(System.currentTimeMillis());
@@ -162,6 +167,11 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
 
     @Override
     public void onBackPressed() {
+
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (RoundsCounter == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -382,6 +392,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 {
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
+                    nextRoundTimer = null;
                     checkMode();
                 }
 

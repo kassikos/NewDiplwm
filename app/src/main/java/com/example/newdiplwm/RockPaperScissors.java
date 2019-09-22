@@ -262,6 +262,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                                     }
                                     else
                                     {
+                                        nextRoundTimer = null;
                                         textMsgTime.setText("");
                                         textsLinear.setVisibility(View.INVISIBLE);
                                         gameinit = true;
@@ -335,6 +336,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 {
                     Advancedtimer.cancel();
                 }
+                if (nextRoundTimer != null)
+                {
+                    nextRoundTimer.cancel();
+                }
                 if (currentRound == 0 || click ==0 )
                 {
                     startTime = new Timestamp(System.currentTimeMillis());
@@ -385,6 +390,10 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             Advancedtimer.cancel();
         }
 
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -657,10 +666,12 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 }
                 else
                 {
+                    nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     gameinit = true;
                     createRound();
+
                 }
 
             }

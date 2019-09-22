@@ -67,18 +67,20 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String CLICK = "CLICK";
     private static final String PICKEDIMAGE= "PICKEDIMAGE";
     private static final String GAMEINIT= "GAMEINIT";
+    private static final String MSGHELPER = "MSGHELPER";
+    private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull ,exit, replayTutorial;
     private MaterialButton startButton;
-    private TextView textRounds,textTimer, animationTextPoints;
-    private LinearLayout logoLinear;
+    private TextView textRounds,textTimer, animationTextPoints ,textMsg , textMsgTime;;
+    private LinearLayout logoLinear, textsLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private CountDownTimer Timer , cleanTimer;
-    private long mTimeLeftInMillis;
+    private CountDownTimer Timer , cleanTimer, nextRoundTimer;
+    private long mTimeLeftInMillis, timeLeftInMillisNextRound = 0;
 
-    private String menuDifficulty , currentDifficulty;
+    private String menuDifficulty , currentDifficulty, msgHelper;
 
     private ArrayList<Integer> imageviews  = new ArrayList<>();
     private ArrayList<Integer> displayedImageview  = new ArrayList<>();
@@ -125,8 +127,6 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         if (savedInstanceState != null)
         {
-
-
             gameInit  =savedInstanceState.getBoolean(GAMEINIT);
             user_id = savedInstanceState.getInt(USER_ID);
             game_id = savedInstanceState.getInt(GAME_ID);
@@ -158,6 +158,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             displayedimages = (SparseIntArray) savedInstanceState.getParcelable(DISPLAYEDIMAGES);
             displayedimagesShadows = (SparseIntArray) savedInstanceState.getParcelable(DISPLAYEDIMAGESSHADOWS);
             pickedimg = savedInstanceState.getInt(PICKEDIMAGE);
+            msgHelper = savedInstanceState.getString(MSGHELPER);
+            timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
 
             startButton.setVisibility(View.INVISIBLE);
 
@@ -194,10 +196,55 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 }
                 else
                 {
+                    textMsg.setText(msgHelper);
+                    nextRoundTimer = userViewModel.getNextRoundTimer();
+                    nextRoundTimer.cancel();
+                    textsLinear.setVisibility(View.VISIBLE);
+
+                    nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
+                        @Override
+                        public void onTick(long l) {
+                            timeLeftInMillisNextRound = l;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textMsgTime.setText("");
+                            }
+                            else
+                            {
+                                textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                            timeLeftInMillisNextRound = 0;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textsLinear.setVisibility(View.INVISIBLE);
+                            }
+                            else
+                            {
+                                nextRoundTimer = null;
+                                textMsgTime.setText("");
+                                textsLinear.setVisibility(View.INVISIBLE);
+                                fillListImageview();
+                                initaliseSparceArray();
+                                gameInit = true;
+                                createRound();
+                            }
+
+                        }
+                    }.start();
+                    userViewModel.setNextRoundTimer(nextRoundTimer);
                     logoLinear.setVisibility(View.GONE);
                     unclickable();
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
+//                    startButton.setVisibility(View.VISIBLE);
+//                    startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound+ " / "+ TotalRounds);
                 }
 
@@ -415,35 +462,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Timer != null)
-                {
-                    Timer.cancel();
-                }
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+                onbackAndExitCode();
             }
         });
 
@@ -457,12 +476,15 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
-    @Override
-    public void onBackPressed()
-    {
+
+    private void onbackAndExitCode(){
         if (Timer != null)
         {
             Timer.cancel();
+        }
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
         }
         if (currentRound == 0 || click ==0 )
         {
@@ -483,13 +505,19 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        onbackAndExitCode();
     }
 
 
@@ -558,32 +586,76 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     }
 
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
 
-    private void countPoints()
-    {
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
 
-        int currentPoints=0;
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
 
-        if (!missPoints && trueCounter == 1)
-        {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nextRoundTimer = null;
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    fillListImageview();
+                    initaliseSparceArray();
+                    gameInit = true;
+                    createRound();
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
+
+
+    private void countPoints() {
+
+        int currentPoints = 0;
+
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+         msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
         animationTextPoints.setText("+ " +currentPoints);
         if (currentPoints == 0)
@@ -648,7 +720,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                 gameInit = false;
                 displayedImageview.clear();
                 displayedimages.clear();
-                startButton.setVisibility(View.VISIBLE);
+ //               startButton.setVisibility(View.VISIBLE);
                 if (currentRound == TotalRounds)
                 {
                     startButton.setVisibility(View.INVISIBLE);
@@ -705,6 +777,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
         outState.putBoolean(MISSPOINTS,missPoints);
         outState.putBoolean(GAMEINIT,gameInit);
+
+
+        outState.putLong(NEXTROUNDTIMER , timeLeftInMillisNextRound);
+        outState.putString(MSGHELPER,msgHelper);
     }
 
     private void matchlists(){
@@ -789,6 +865,9 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         textTimer = findViewById(R.id.textTimerSG);
         animationTextPoints = findViewById(R.id.AnimTextPointsSHG);
         logoLinear = findViewById(R.id.imageLogoDisplaySH);
+        textsLinear = findViewById(R.id.textsSH);
+        textMsg = findViewById(R.id.msgSH);
+        textMsgTime = findViewById(R.id.msgSH1);
 
         imagebutton1.setOnClickListener(this);
         imagebutton2.setOnClickListener(this);
@@ -812,7 +891,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        startButton.setText(getResources().getString(R.string.nextRound));
+  //      startButton.setText(getResources().getString(R.string.nextRound));
 
 
         if (currentDifficulty.equals(getResources().getString(R.string.mediumValue))|| currentDifficulty.equals(getResources().getString(R.string.advancedValue)))
@@ -849,7 +928,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         }
 
 
-        startButton.setVisibility(View.VISIBLE);
+        //startButton.setVisibility(View.VISIBLE);
         setCleanTimer();
         unclickable();
         countPoints();
@@ -874,6 +953,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
 
     private void setCleanTimer(){
+
         cleanTimer = new CountDownTimer(1500,1000) {
             @Override
             public void onTick(long l) {
@@ -884,8 +964,10 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             public void onFinish() {
 
                 clearScreen();
+
             }
         }.start();
+        nextRound();
     }
 
     public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {

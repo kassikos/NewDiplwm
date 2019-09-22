@@ -169,6 +169,11 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
         {
             memoryMatrixViewModel.getTimer().cancel();
         }
+
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (RoundsCounter == 0)
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -335,6 +340,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
                 }
                 else
                 {
+                    nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     checkMode();

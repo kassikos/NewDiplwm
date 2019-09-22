@@ -193,6 +193,7 @@ public class ScalingGame extends AppCompatActivity {
             public void onFinish() {
 
                 //roundTimerIsOn =false;
+                RoundTimer = null;
 
                 textMsgTime.setText("-");
 
@@ -342,6 +343,11 @@ public class ScalingGame extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (RoundTimer != null)
+                {
+                    RoundTimer.cancel();
+                }
 
 
                 if (RoundsCounter == 1)
