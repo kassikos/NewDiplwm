@@ -73,15 +73,18 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private static final String LIMITREPLAY = "LIMITREPLAY";
     private static final String LIMIT = "LIMIT";
     private static final String ALLIMAGES = "ALLIMAGES";
+    private static final String MSGHELPER = "MSGHELPER";
+    private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
     private ImageView imgv1, imgv2, imgv3,imgv4,playAudio,exit,replayTutorial;
     private MaterialButton startButton;
-    private TextView textRounds, animPointsText;
-    private LinearLayout logoLinear;
+    private TextView textRounds, animPointsText, textMsg , textMsgTime;;
+    private LinearLayout logoLinear, textsLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private CountDownTimer Timer;
+    private CountDownTimer Timer, nextRoundTimer;
+    private long timeLeftInMillisNextRound = 0;
 
     private SparseIntArray imageSoundDevices = new SparseIntArray();
     private SparseIntArray imageSoundAnimals = new SparseIntArray();
@@ -105,7 +108,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
     private int user_id, game_id, currentRound = 0, TotalRounds = 0;
     private int hit = 0, miss = 0, totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false , soundPlayed = false;
-    private String menuDifficulty, currentDifficulty = "";
+    private String menuDifficulty, currentDifficulty = "", msgHelper;
     private int pickedSound;
 
     private Timestamp startTime;
@@ -161,6 +164,9 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             imageSoundDevices = (SparseIntArray) savedInstanceState.getParcelable(DEVICES);
             imageSoundInstruments = (SparseIntArray) savedInstanceState.getParcelable(INSTRUMENTS);
 
+            msgHelper = savedInstanceState.getString(MSGHELPER);
+            timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
+
             asignAllButtons();
             startButton.setVisibility(View.INVISIBLE);
 
@@ -210,16 +216,63 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     }
                 }
             } else {
+                unclickable();
 
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
-                    unclickable();
                     logoLinear.setVisibility(View.VISIBLE);
 
                 } else {
                     logoLinear.setVisibility(View.GONE);
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
+                    textMsg.setText(msgHelper);
+                    nextRoundTimer = userViewModel.getNextRoundTimer();
+                    nextRoundTimer.cancel();
+                    textsLinear.setVisibility(View.VISIBLE);
+
+                    nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
+                        @Override
+                        public void onTick(long l) {
+                            timeLeftInMillisNextRound = l;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textMsgTime.setText("");
+                            }
+                            else
+                            {
+                                textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                            timeLeftInMillisNextRound = 0;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textsLinear.setVisibility(View.INVISIBLE);
+                            }
+                            else
+                            {
+                                nextRoundTimer = null;
+                                textMsgTime.setText("");
+                                textsLinear.setVisibility(View.INVISIBLE);
+                                gameInit = true;
+                                unclickable();
+                                fillListImageview();
+                                createRound();
+
+                            }
+
+                        }
+                    }.start();
+                    userViewModel.setNextRoundTimer(nextRoundTimer);
+
+//                    startButton.setVisibility(View.VISIBLE);
+//                    startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
                 }
             }
@@ -725,6 +778,9 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
         animPointsText = findViewById(R.id.AnimTextPointsSIG);
         logoLinear = findViewById(R.id.imageLogoDisplaySIG);
+        textsLinear = findViewById(R.id.textsSIG);
+        textMsg = findViewById(R.id.msgSIG);
+        textMsgTime = findViewById(R.id.msgSIG1);
 
         imgv1.setOnClickListener(this);
         imgv2.setOnClickListener(this);
@@ -780,8 +836,8 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                 }
                 imageviewImage.clear();
                 pickedImage.clear();
-                startButton.setText(getResources().getString(R.string.nextRound));
-                startButton.setVisibility(View.VISIBLE);
+//                startButton.setText(getResources().getString(R.string.nextRound));
+//                startButton.setVisibility(View.VISIBLE);
                 if (currentRound == TotalRounds)
                 {
                     startButton.setVisibility(View.INVISIBLE);
@@ -828,8 +884,57 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
             shopPopUp();
         }
         Timer.start();
+        nextRound();
 
 
+
+    }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nextRoundTimer = null;
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    gameInit = true;
+                    unclickable();
+                    fillListImageview();
+                    createRound();
+
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
 
@@ -852,17 +957,22 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win);
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win1);
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win2);
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+        msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
         animPointsText.setText("+ " + currentPoints);
         if (currentPoints == 0) {
@@ -921,6 +1031,8 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         outState.putIntegerArrayList(IMAGEVIEWS, imageviews);
         outState.putIntegerArrayList(PICKEDIMAGES, pickedImage);
         outState.putIntegerArrayList(ALLIMAGES, allimages);
+        outState.putString(MSGHELPER, msgHelper);
+        outState.putLong(NEXTROUNDTIMER,timeLeftInMillisNextRound);
 
     }
 

@@ -200,6 +200,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                                 }
                                 else
                                 {
+
                                     textMsgTime.setText("");
                                     textsLinear.setVisibility(View.INVISIBLE);
                                     helper = 0;
@@ -207,6 +208,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                                     loseHelper = false;
                                     initializeUnpickedList();
                                     createRound();
+                                    nextRoundTimer = null;
                                 }
 
                             }
@@ -304,6 +306,11 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
     }
 
     private void onbackAndExitCode(){
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
+
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -782,6 +789,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     loseHelper = false;
                     initializeUnpickedList();
                     createRound();
+                    nextRoundTimer = null;
                 }
 
             }

@@ -412,6 +412,10 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
         {
             Timer.cancel();
         }
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -839,6 +843,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
                 else
                 {
+                    nextRoundTimer = null;
                     textMsgTime.setText("");
                     textsLinear.setVisibility(View.INVISIBLE);
                     rightpick=0;

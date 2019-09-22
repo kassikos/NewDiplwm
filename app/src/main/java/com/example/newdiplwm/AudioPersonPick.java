@@ -68,15 +68,18 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private static final String PERSONSOUNDFOURCOLOURS = "PERSONSOUNDFOURCOLOURS";
     private static final String ALLIMAGES = "ALLIMAGES";
     private static final String ALLIMAGESFOUR = "ALLIMAGESFOUR";
+    private static final String MSGHELPER = "MSGHELPER";
+    private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
     private ImageView imgv1, imgv2, imgv3, imgv4, playAudio ,exit, replayTutorial;
     private MaterialButton startButton;
-    private TextView textRounds, animPointsText;
-    private LinearLayout logoLinear;
+    private TextView textRounds, animPointsText, textMsg , textMsgTime;
+    private LinearLayout logoLinear , textsLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private CountDownTimer Timer;
+    private CountDownTimer Timer, nextRoundTimer;
+    private long timeLeftInMillisNextRound = 0;
 
     private SparseIntArray personSound = new SparseIntArray(5);
     private SparseIntArray personSoundfourColors = new SparseIntArray(10);
@@ -91,7 +94,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private int user_id, game_id, currentRound = 0, TotalRounds = 0;
     private int hit = 0, miss = 0, totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false;
-    private String menuDifficulty, currentDifficulty = "";
+    private String menuDifficulty, currentDifficulty = "", msgHelper;
 
 
     private int click = 0, audioposition = 0, pickedSound = 0, limit = 0, limitReplay = 0;
@@ -147,6 +150,8 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             personSound = (SparseIntArray) savedInstanceState.getParcelable(MATCH);
             imageviewImage = (SparseIntArray) savedInstanceState.getParcelable(IMAGEVIEWIMAGE);
             personSoundfourColors = (SparseIntArray) savedInstanceState.getParcelable(PERSONSOUNDFOURCOLOURS);
+            msgHelper = savedInstanceState.getString(MSGHELPER);
+            timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
             asignAllButtons();
             startButton.setVisibility(View.INVISIBLE);
 
@@ -196,16 +201,63 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                     }
                 }
             } else {
+                unclickable();
 
                 if (currentRound == 0) {
                     logoLinear.setVisibility(View.VISIBLE);
                     startButton.setVisibility(View.VISIBLE);
-                    unclickable();
 
                 } else {
+                    textMsg.setText(msgHelper);
                     logoLinear.setVisibility(View.GONE);
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
+                    nextRoundTimer = userViewModel.getNextRoundTimer();
+                    nextRoundTimer.cancel();
+
+                    textsLinear.setVisibility(View.VISIBLE);
+
+                    nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
+                        @Override
+                        public void onTick(long l) {
+                            timeLeftInMillisNextRound = l;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textMsgTime.setText("");
+                            }
+                            else
+                            {
+                                textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onFinish() {
+
+                            timeLeftInMillisNextRound = 0;
+
+                            if (currentRound == TotalRounds)
+                            {
+                                textsLinear.setVisibility(View.INVISIBLE);
+                            }
+                            else
+                            {
+                                nextRoundTimer = null;
+                                textMsgTime.setText("");
+                                textsLinear.setVisibility(View.INVISIBLE);
+                                gameInit = true;
+                                unclickable();
+                                fillListImageview();
+                                createRound();
+
+                            }
+
+                        }
+                    }.start();
+                    userViewModel.setNextRoundTimer(nextRoundTimer);
+//                    startButton.setVisibility(View.VISIBLE);
+//                    startButton.setText(getResources().getString(R.string.nextRound));
                     textRounds.setText(currentRound + " / " + TotalRounds);
                 }
             }
@@ -349,6 +401,11 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
 
     private void onbackAndExitCode(){
+
+        if (nextRoundTimer != null)
+        {
+            nextRoundTimer.cancel();
+        }
         if (currentRound == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -568,8 +625,8 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                 }
                 imageviewImage.clear();
                 pickedImage.clear();
-                startButton.setText(getResources().getString(R.string.nextRound));
-                startButton.setVisibility(View.VISIBLE);
+//                startButton.setText(getResources().getString(R.string.nextRound));
+//                startButton.setVisibility(View.VISIBLE);
             }
         };
         limit = 0;
@@ -614,7 +671,56 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             shopPopUp();
         }
         Timer.start();
+        nextRound();
 
+
+    }
+
+
+    private void nextRound(){
+        textsLinear.setVisibility(View.VISIBLE);
+
+        nextRoundTimer = new CountDownTimer(5000,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
+
+                if (currentRound == TotalRounds)
+                {
+                    textMsgTime.setText("");
+                }
+                else
+                {
+                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                }
+
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds)
+                {
+                    textsLinear.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    nextRoundTimer = null;
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    gameInit = true;
+                    unclickable();
+                    fillListImageview();
+                    createRound();
+
+                }
+
+            }
+        }.start();
+        userViewModel.setNextRoundTimer(nextRoundTimer);
 
     }
 
@@ -635,17 +741,22 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win);
         } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win1);
         } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
+            textMsg.setText(R.string.win2);
         } else if (missPoints) {
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+            textMsg.setText(R.string.lose);
         }
+        msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
         animPointsText.setText("+ " + currentPoints);
         if (currentPoints == 0) {
@@ -740,6 +851,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         playAudio.setVisibility(View.INVISIBLE);
         textRounds = findViewById(R.id.textRoundsAPPG);
         logoLinear = findViewById(R.id.imageLogoDisplayAPPG);
+        textsLinear = findViewById(R.id.textsAPPG);
+        textMsg = findViewById(R.id.msgAPPG);
+        textMsgTime = findViewById(R.id.msgAPPG1);
 
         animPointsText = findViewById(R.id.AnimTextPointsAPPG);
 
@@ -824,6 +938,8 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         outState.putIntegerArrayList(PICKEDIMAGES, pickedImage);
         outState.putIntegerArrayList(ALLIMAGES, allimages);
         outState.putIntegerArrayList(ALLIMAGESFOUR, allimagesfour);
+        outState.putString(MSGHELPER , msgHelper);
+        outState.putLong(NEXTROUNDTIMER , timeLeftInMillisNextRound);
     }
 
 
