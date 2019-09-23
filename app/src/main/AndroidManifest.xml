@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RotationGame"></activity>
+        <activity
+            android:name=".RotationGame"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:parentActivityName=".GameList" />
         <activity
             android:name=".AboutActivity"
             android:launchMode="singleTop"

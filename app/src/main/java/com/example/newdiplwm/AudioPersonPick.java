@@ -1000,7 +1000,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    public class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
+    public static class SparseIntArrayParcelable extends SparseIntArray implements Parcelable {
         public Creator<AudioPersonPick.SparseIntArrayParcelable> CREATOR = new Creator<AudioPersonPick.SparseIntArrayParcelable>() {
             @Override
             public AudioPersonPick.SparseIntArrayParcelable createFromParcel(Parcel source) {
