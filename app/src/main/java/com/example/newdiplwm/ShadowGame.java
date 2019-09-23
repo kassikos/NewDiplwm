@@ -3,6 +3,7 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -267,8 +268,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_shadowgame_landscape);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_shadowgame_portrait);
+            }
 
         }
         FragmentManager fm = getSupportFragmentManager();
@@ -487,7 +494,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_shadowgame_landscape);
+
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_shadowgame_portrait);
+                }
             }
         });
 
@@ -694,8 +708,8 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             animationTextPoints.setTextColor(Color.GREEN);
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(ShadowGame.this,R.raw.tutorial_shadowgame,getPackageName());
+    private void showTutorialPopUp(int res){
+        DialogFragment dialogFragment = new Tutorial(ShadowGame.this,res,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialShadowGame");
     }
 
