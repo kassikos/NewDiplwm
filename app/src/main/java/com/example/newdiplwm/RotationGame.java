@@ -199,8 +199,8 @@ public class RotationGame extends AppCompatActivity {
                 if (currentRound == 0) {
                     startButton.setVisibility(View.VISIBLE);
                 } else {
-                    buttonrotate.setVisibility(View.VISIBLE);
-                    buttonCheck.setVisibility(View.VISIBLE);
+                    buttonrotate.setVisibility(View.INVISIBLE);
+                    buttonCheck.setVisibility(View.INVISIBLE);
                     if (currentDifficulty.equals(getResources().getString(R.string.easyValue))){
                         rectToMatch.setText("▼");
                         rect1.setText("▲");
@@ -262,6 +262,8 @@ public class RotationGame extends AppCompatActivity {
                                     textsLinear.setVisibility(View.INVISIBLE);
                                     disableReplayTut();
                                 } else {
+                                    buttonrotate.setVisibility(View.VISIBLE);
+                                    buttonCheck.setVisibility(View.VISIBLE);
                                     enableReplayTut();
                                     nextRoundTimer = null;
                                     textMsgTime.setText("");
@@ -409,6 +411,8 @@ public class RotationGame extends AppCompatActivity {
     private void nextRound() {
         textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
+        buttonrotate.setVisibility(View.INVISIBLE);
+        buttonCheck.setVisibility(View.INVISIBLE);
         disableReplayTut();
         unclick();
         rectToMatch.setTextColor(getResources().getColor(R.color.statisticColor));
@@ -439,6 +443,8 @@ public class RotationGame extends AppCompatActivity {
 
                     disableReplayTut();
                 } else {
+                    buttonrotate.setVisibility(View.VISIBLE);
+                    buttonCheck.setVisibility(View.VISIBLE);
                     enableReplayTut();
                     nextRoundTimer = null;
                     textMsgTime.setText("");
