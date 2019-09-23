@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,31 +33,24 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class RotationGame extends AppCompatActivity{
+public class RotationGame extends AppCompatActivity {
 
-    private TextView rect1,rect2,rect3,rect4;
+    private TextView rect1, rect2, rect3, rect4;
     private TextView rectToMatch;
     private TextView rectToCheck;
-
-    private ImageView buttonCheck,buttonrotate,exit, replayTutorial;
+    private ImageView buttonCheck, buttonrotate, exit, replayTutorial;
     private MaterialButton startButton;
-
-    private TextView rounds , animPointsText;
+    private TextView rounds, animPointsText, textMsg, textMsgTime;
+    private LinearLayout textsLinear;
 
 
     private static final String GAME_ID = "GAME_ID";
     private static final String USER_ID = "USER_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
-    private static final String MATCH = "MATCH";
-    private static final String PICKED = "PICKED";
-    private static final String UNPICKED = "UNPICKED";
-    private static final String IMAGEVIEWS = "IMAGEVIEWS";
+    private static final String ALLRECTS = "ALLRECTS";
     private static final String CURRENTDIFFICULTY = "CURRENTDIFFICULTY";
     private static final String TOTALROUNDS = "TOTALROUNDS";
-    private static final String COUNTER = "COUNTER";
     private static final String CLICK = "CLICK";
     private static final String MENUDIFFICULTY = "MENUDIFFICULTY";
-    private static final String PALIO = "PALIO";
     private static final String MISSPOINTS = "MISSPOINTS";
     private static final String HIT = "HIT";
     private static final String MISS = "MISS";
@@ -68,20 +62,22 @@ public class RotationGame extends AppCompatActivity{
     private static final String STARTSPEED = "STARTSPEED";
     private static final String ENDSPEED = "ENDSPEED";
     private static final String CURRENTROUND = "CURRENTROUND";
-    private static final String HELPER = "HELPER";
     private static final String GAMEINIT = "GAMEINIT";
-    private static final String LOSEHELPER = "LOSEHELPER";
-    private static final String CLOCK = "CLOCK";
+    private static final String RECTCOLOR = "RECTCOLOR";
+    private static final String MSGHELPER = "MSGHELPER";
+    private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
+
+
+    private SparseIntArray rectColor = new SparseIntArray(4);
 
     private int game_id, user_id;
-    private int TotalRounds=0 , currentRound=0, counter=0 ,click=0;
-    private String menuDifficulty, currentDifficulty;
-    private boolean palio =true;
+    private int TotalRounds = 0, currentRound = 0, click = 0;
+    private String menuDifficulty, currentDifficulty, msgHelper;
 
-    private HashMap<String,Integer> pointsHashMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> pointsHashMap = new HashMap<String, Integer>();
     private GameEventViewModel gameEventViewModel;
     private UserViewModel userViewModel;
-    private int hit = 0 , miss = 0 , totalPoints = 0, trueCounter = 0;
+    private int hit = 0, miss = 0, totalPoints = 0, trueCounter = 0;
     private boolean missPoints = false;
 
     private Timestamp startTime;
@@ -90,19 +86,16 @@ public class RotationGame extends AppCompatActivity{
     private Timestamp endspeed;
     private double totalspeed = 0;
 
-    private int helper=0, vibeduration = 1000;
-    private boolean gameInit = false , loseHelper = false;
+    private int vibeduration = 1000;
+    private boolean gameInit = false;
     private Vibrator vibe;
-    private CountDownTimer Timer;
-    private static final long START_TIME_IN_MILLIS = 1000;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
+    private CountDownTimer nextRoundTimer;
+    private long timeLeftInMillisNextRound = 0;
 
-
-    private Context context;
 
     private int rotations = 0;
-    private LinearLayout LL;
-    private Float fromDegrees, toDegrees;
+    private LinearLayout LL, logoLinear;
+    private Float fromDegrees = 0f, toDegrees = 90f;
 
     private ArrayList<Integer> easyColors = new ArrayList<>(4);
 
@@ -131,10 +124,11 @@ public class RotationGame extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rotation_game);
         assignAllButtons();
-        rectToCheck = rect1;
-
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         session = new Session(getApplicationContext());
+        gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
 
         pointsHashMap.put(getResources().getString(R.string.easyValue), 0);
         pointsHashMap.put(getResources().getString(R.string.mediumValue), 5);
@@ -142,108 +136,182 @@ public class RotationGame extends AppCompatActivity{
 
         if (savedInstanceState != null) {
             gameInit = savedInstanceState.getBoolean(GAMEINIT);
-            if (gameInit)
-            {
-                user_id = savedInstanceState.getInt(USER_ID);
-                game_id = savedInstanceState.getInt(GAME_ID);
-                currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
-                menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
-                TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
-                counter =savedInstanceState.getInt(COUNTER);
-                click =savedInstanceState.getInt(CLICK);
-                hit =savedInstanceState.getInt(HIT);
-                miss =savedInstanceState.getInt(MISS);
-                totalPoints = savedInstanceState.getInt(TOTALPOINTS);
-                trueCounter = savedInstanceState.getInt(TRUECOUNTER);
-                totalspeed = savedInstanceState.getDouble(TOTALSPEED);
-                palio = savedInstanceState.getBoolean(PALIO);
-                missPoints = savedInstanceState.getBoolean(MISSPOINTS);
-                startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
-                endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
-                startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
-                endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
-                helper = savedInstanceState.getInt(HELPER);
-                currentRound = savedInstanceState.getInt(CURRENTROUND);
-                loseHelper = savedInstanceState.getBoolean(LOSEHELPER);
-                mTimeLeftInMillis = savedInstanceState.getLong(CLOCK);
-                rounds.setText((currentRound ) + " / "+TotalRounds);
-                if ((helper == 3 && currentDifficulty.equals(getResources().getString(R.string.easyValue))) || (helper == 4 && currentDifficulty.equals(getResources().getString(R.string.mediumValue))) || (helper == 5 &&currentDifficulty.equals(getResources().getString(R.string.advancedValue))) || loseHelper)
+            allrects = savedInstanceState.getIntegerArrayList(ALLRECTS);
+            user_id = savedInstanceState.getInt(USER_ID);
+            game_id = savedInstanceState.getInt(GAME_ID);
+            currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
+            menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
+            initializeColorLists();
+            TotalRounds = savedInstanceState.getInt(TOTALROUNDS);
+            click = savedInstanceState.getInt(CLICK);
+            hit = savedInstanceState.getInt(HIT);
+            miss = savedInstanceState.getInt(MISS);
+            totalPoints = savedInstanceState.getInt(TOTALPOINTS);
+            trueCounter = savedInstanceState.getInt(TRUECOUNTER);
+            totalspeed = savedInstanceState.getDouble(TOTALSPEED);
+            missPoints = savedInstanceState.getBoolean(MISSPOINTS);
+            startTime = (Timestamp) savedInstanceState.getSerializable(STARTTIME);
+            endTime = (Timestamp) savedInstanceState.getSerializable(ENDTIME);
+            startspeed = (Timestamp) savedInstanceState.getSerializable(STARTSPEED);
+            endspeed = (Timestamp) savedInstanceState.getSerializable(ENDSPEED);
+            currentRound = savedInstanceState.getInt(CURRENTROUND);
+            msgHelper = savedInstanceState.getString(MSGHELPER);
+            timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
+            if (gameInit) {
+                click();
+                logoLinear.setVisibility(View.GONE);
+                buttonrotate.setVisibility(View.VISIBLE);
+                buttonCheck.setVisibility(View.VISIBLE);
+                startButton.setVisibility(View.INVISIBLE);
+                if (currentDifficulty.equals(getResources().getString(R.string.easyValue))){
+                rectToMatch.setText("▼");
+                rect1.setText("▲");
+                rect2.setText("◀");
+                rect3.setText("▼");
+                rect4.setText("▶");
+                }
+                else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
                 {
-                    startButton.setVisibility(View.VISIBLE);
-                    startButton.setText(getResources().getString(R.string.nextRound));
-
+                    rectToMatch.setText("■");
+                    rect1.setText("■");
+                    rect2.setText("■");
+                    rect3.setText("■");
+                    rect4.setText("■");
                 }
                 else{
-                    startButton.setVisibility(View.INVISIBLE);}
+                    rectToMatch.setText("⬤");
+                    rect1.setText("⬤");
+                    rect2.setText("⬤");
+                    rect3.setText("⬤");
+                    rect4.setText("⬤");
+                }
 
-            }
-            else
-            {
-                startButton.setVisibility(View.VISIBLE);
-                user_id = savedInstanceState.getInt(USER_ID);
-                game_id = savedInstanceState.getInt(GAME_ID);
-                currentDifficulty = savedInstanceState.getString(CURRENTDIFFICULTY);
-                menuDifficulty = savedInstanceState.getString(MENUDIFFICULTY);
-                unclick();
+                rectColor = (SparseIntArray) savedInstanceState.getParcelable(RECTCOLOR);
+                rounds.setText((currentRound) + " / " + TotalRounds);
+                rectToMatch.setTextColor(rectColor.get(rectToMatch.getId()));
+                for (int i = 0; i < rectColor.size(); i++) {
+                    TextView textView = findViewById(rectColor.keyAt(i));
+                    textView.setTextColor(rectColor.valueAt(i));
+                }
+
+            } else {
+
+                if (currentRound == 0) {
+                    startButton.setVisibility(View.VISIBLE);
+                } else {
+                    buttonrotate.setVisibility(View.VISIBLE);
+                    buttonCheck.setVisibility(View.VISIBLE);
+                    if (currentDifficulty.equals(getResources().getString(R.string.easyValue))){
+                        rectToMatch.setText("▼");
+                        rect1.setText("▲");
+                        rect2.setText("◀");
+                        rect3.setText("▼");
+                        rect4.setText("▶");
+                    }
+                    else if (currentDifficulty.equals(getResources().getString(R.string.mediumValue)))
+                    {
+                        rectToMatch.setText("■");
+                        rect1.setText("■");
+                        rect2.setText("■");
+                        rect3.setText("■");
+                        rect4.setText("■");
+                    }
+                    else{
+                        rectToMatch.setText("⬤");
+                        rect1.setText("⬤");
+                        rect2.setText("⬤");
+                        rect3.setText("⬤");
+                        rect4.setText("⬤");
+                    }
+                    logoLinear.setVisibility(View.GONE);
+                    startButton.setVisibility(View.INVISIBLE);
+                    unclick();
+                    rectToMatch.setTextColor(getResources().getColor(R.color.statisticColor));
+                    for (int rect : allrects) {
+                        TextView textView = findViewById(rect);
+                        textView.setTextColor(getResources().getColor(R.color.statisticColor));
+                    }
+
+                    if (timeLeftInMillisNextRound > 1000) {
+                        textMsg.setText(msgHelper);
+                        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
+                        disableReplayTut();
+                        textsLinear.setVisibility(View.VISIBLE);
+                        nextRoundTimer = userViewModel.getNextRoundTimer();
+                        nextRoundTimer.cancel();
+                        nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound, 1000) {
+                            @Override
+                            public void onTick(long l) {
+                                timeLeftInMillisNextRound = l;
+
+                                if (currentRound == TotalRounds) {
+                                    textMsgTime.setText(" ");
+                                } else {
+                                    textMsgTime.setText(getResources().getString(R.string.nextRound) + l / 1000);
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                click();
+                                timeLeftInMillisNextRound = 0;
+
+                                if (currentRound == TotalRounds) {
+                                    textsLinear.setVisibility(View.INVISIBLE);
+                                    disableReplayTut();
+                                } else {
+                                    enableReplayTut();
+                                    nextRoundTimer = null;
+                                    textMsgTime.setText("");
+                                    textsLinear.setVisibility(View.INVISIBLE);
+                                    gameInit = true;
+                                    createRound();
+                                }
+                            }
+                        }.start();
+
+                        userViewModel.setNextRoundTimer(nextRoundTimer);
+                    }
+
+                }
             }
 
-        }
-        else
-        {
+        } else {
 
             loadRects();
             user_id = session.getUserIdSession();
             game_id = session.getGameIdSession();
             menuDifficulty = session.getModeSession();
             unclick();
-        }
+            initializeColorLists();
 
-        gameEventViewModel = ViewModelProviders.of(this).get(GameEventViewModel.class);
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        }
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             showTutorialPopUp();
 
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
         Fragment prev = fm.findFragmentByTag("TutorialRotationGame");
         if (prev != null) {
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
+            fm.popBackStack();
         }
 
-
-        buttonCheck.setEnabled(false);
-        buttonrotate.setEnabled(false);
-
-        context = RotationGame.this;
-
-        initializeColorLists();
-
-        fromDegrees = 0f;
-        toDegrees = 90f;
 
         buttonrotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 rotations++;
-
-//                if (rotations>3)
-//                {
-//                    rotations=0;
-//                }
-
                 ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
-                rotate.setDuration(1000);
+                rotate.setDuration(500);
                 rotate.start();
-
                 fromDegrees += 90;
                 toDegrees += 90;
 
@@ -254,122 +322,66 @@ public class RotationGame extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                Timer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-                    @Override
-                    public void onTick(long l) {
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        startButton.setText(getResources().getString(R.string.nextRound));
-                        startButton.setVisibility(View.VISIBLE);
-
-
-                        if (currentRound == TotalRounds)
-                        {
-                            startButton.setVisibility(View.INVISIBLE);
-                            endTime = new Timestamp(System.currentTimeMillis());
-                            long longTime = endTime.getTime() - startTime.getTime();
-                            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                            GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
-                            gameEventViewModel.insertGameEvent(gameEvent);
-                            userViewModel.updatestatsTest(user_id,game_id);
-                            shopPopUp();
-                        }
-                    }
-                };
-
+                unclick();
                 click++;
-
+                gameInit = false;
                 endspeed = new Timestamp(System.currentTimeMillis());
                 long diffspeed = endspeed.getTime() - startspeed.getTime();
                 double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
                 totalspeed += speedseconds;
 
-                if (rotations%4==0)
-                {
+                if (rotations % 4 == 0) {
                     rectToCheck = rect1;
-                }
-                else if (rotations%4==1)
-                {
+                } else if (rotations % 4 == 1) {
                     rectToCheck = rect2;
-                }
-                else if (rotations%4==2)
-                {
+                } else if (rotations % 4 == 2) {
                     rectToCheck = rect3;
-                }
-                else if (rotations%4==3)
-                {
+                } else if (rotations % 4 == 3) {
                     rectToCheck = rect4;
                 }
-//                else
-//                {
-//                    rotations =0;
-//                }
 
 
-                if (rectToCheck.getCurrentTextColor()==rectToMatch.getCurrentTextColor())
-                {
-                    buttonCheck.setColorFilter(Color.GREEN, PorterDuff.Mode.OVERLAY);
-
-                    unclick();
+                if (rectToCheck.getCurrentTextColor() == rectToMatch.getCurrentTextColor()) {
+                    //buttonCheck.setColor(Color.GREEN, PorterDuff.Mode.OVERLAY);
                     startAnimation();
-
-//                    helper = picked.size();
-//                    totalspeed = totalspeed/picked.size();
-
                     hit++;
                     trueCounter++;
-                    //edw nikise
-                    countPoints();
 
-                    Timer.start();
 
-                }
-                else
-                {
-                    buttonCheck.setColorFilter(Color.RED,PorterDuff.Mode.OVERLAY);
-
-                    unclick();
-
+                } else {
+                    //buttonCheck.setColorFilter(Color.RED,PorterDuff.Mode.OVERLAY);
                     startAnimation();
-                    Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+                    Animation animShake = AnimationUtils.loadAnimation(RotationGame.this, R.anim.shake);
                     rectToCheck.startAnimation(animShake);
-
-
                     vibe.vibrate(vibeduration);
-                    //edw xanei
-                    loseHelper = true;
                     miss++;
-                    missPoints =true;
-                    countPoints();
-                    Timer.start();
-
+                    missPoints = true;
                 }
-
-                startButton.setVisibility(View.VISIBLE);
+                countPoints();
+                checkifEnds();
 
             }
         });
 
-        startButton.setOnClickListener(new View.OnClickListener(){
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                buttonCheck.setEnabled(true);
-                buttonrotate.setEnabled(true);
-
-                buttonCheck.clearColorFilter();
-
-//                rotations = 0;
-//
-//                fromDegrees = 0f;
-//                toDegrees = 90f;
-
-                helper = 0;
+                logoLinear.setVisibility(View.GONE);
+                buttonrotate.setVisibility(View.VISIBLE);
+                buttonCheck.setVisibility(View.VISIBLE);
+                click();
                 gameInit = true;
-                loseHelper = false;
                 createRound();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+                Fragment prev = fm.findFragmentByTag("TutorialRotationGame");
+                if (prev != null) {
+
+                    fragmentTransaction.remove(prev);
+                    fragmentTransaction.commit();
+                    fm.popBackStack();
+                }
                 startButton.setVisibility(View.INVISIBLE);
 
             }
@@ -378,9 +390,74 @@ public class RotationGame extends AppCompatActivity{
 
     }
 
+    private void checkifEnds() {
+        if (currentRound == TotalRounds) {
+            startButton.setVisibility(View.INVISIBLE);
+            textsLinear.setVisibility(View.VISIBLE);
+            endTime = new Timestamp(System.currentTimeMillis());
+            long longTime = endTime.getTime() - startTime.getTime();
+            float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            gameEventViewModel.insertGameEvent(gameEvent);
+            userViewModel.updatestatsTest(user_id, game_id);
+            shopPopUp();
+        } else {
+            nextRound();
+        }
+    }
+
+    private void nextRound() {
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
+        textsLinear.setVisibility(View.VISIBLE);
+        disableReplayTut();
+        unclick();
+        rectToMatch.setTextColor(getResources().getColor(R.color.statisticColor));
+        for (int rect : allrects) {
+            TextView textView = findViewById(rect);
+            textView.setTextColor(getResources().getColor(R.color.statisticColor));
+        }
+
+        nextRoundTimer = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMillisNextRound = l;
+
+                if (currentRound == TotalRounds) {
+                    textMsgTime.setText("");
+                } else {
+                    textMsgTime.setText(getResources().getString(R.string.nextRound) + l / 1000);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                click();
+                timeLeftInMillisNextRound = 0;
+
+                if (currentRound == TotalRounds) {
+                    textsLinear.setVisibility(View.INVISIBLE);
+
+                    disableReplayTut();
+                } else {
+                    enableReplayTut();
+                    nextRoundTimer = null;
+                    textMsgTime.setText("");
+                    textsLinear.setVisibility(View.INVISIBLE);
+                    gameInit = true;
+                    createRound();
+                }
+            }
+        }.start();
+
+        userViewModel.setNextRoundTimer(nextRoundTimer);
+
+    }
+
     private void onbackAndExitCode() {
-        if (currentRound == 0 || click ==0 )
-        {
+        if (nextRoundTimer != null) {
+            nextRoundTimer.cancel();
+        }
+        if (currentRound == 0 || click == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
             endTime = new Timestamp(System.currentTimeMillis());
             GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
@@ -388,17 +465,14 @@ public class RotationGame extends AppCompatActivity{
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
-        }
-        else
-        {
-            if (startspeed == null || endspeed==null)
-            {
-                totalspeed +=0;
+        } else {
+            if (startspeed == null || endspeed == null) {
+                totalspeed += 0;
             }
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
@@ -426,76 +500,59 @@ public class RotationGame extends AppCompatActivity{
     }
 
     @Override
-    public void onBackPressed()
-    { onbackAndExitCode(); }
+    public void onBackPressed() {
+        onbackAndExitCode();
+    }
 
 
-    private void createRound(){
+    private void createRound() {
 
-        if (currentRound == 0)
-        {
+        if (currentRound == 0) {
             startTime = new Timestamp(System.currentTimeMillis());
         }
 
-        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))){
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameEz();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue))) {
             currentDifficulty = menuDifficulty;
             TotalRounds = 3;
             displayGameMedium();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue))) {
             currentDifficulty = menuDifficulty;
-            TotalRounds=3;
+            TotalRounds = 3;
             displayGameAdv();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue))) {
             TotalRounds = 4;
 
-            if (currentRound<=1){
+            if (currentRound <= 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMedium();
             }
-        }
-        else
-        {
-            TotalRounds =5;
-            if (currentRound<1)
-            {
+        } else {
+            TotalRounds = 5;
+            if (currentRound < 1) {
                 currentDifficulty = getResources().getString(R.string.easyValue);
                 displayGameEz();
-            }
-            else if (currentRound>=1 && currentRound<=2)
-            {
+            } else if (currentRound >= 1 && currentRound <= 2) {
                 currentDifficulty = getResources().getString(R.string.mediumValue);
                 displayGameMedium();
-            }
-            else
-            {
+            } else {
                 currentDifficulty = getResources().getString(R.string.advancedValue);
                 displayGameAdv();
             }
         }
         currentRound++;
-        rounds.setText((currentRound ) +" / "+TotalRounds);
+        rounds.setText((currentRound) + " / " + TotalRounds);
 
     }
 
-    private void displayGameEz(){
+    private void displayGameEz() {
         unclick();
-
-
         rectToMatch.setText("▼");
         rect1.setText("▲");
         rect2.setText("◀");
@@ -505,38 +562,33 @@ public class RotationGame extends AppCompatActivity{
         Collections.shuffle(easyColors);
 
         rectToMatch.setTextColor(easyColors.get(0));
+        rectColor.put(rectToMatch.getId(), easyColors.get(0));
 
-        rectToCheck.setTextColor(easyColors.get(0));
-        while (rectToMatch.getCurrentTextColor() == rectToCheck.getCurrentTextColor())
-        {
-            Collections.shuffle(easyColors);
-            rectToCheck.setTextColor(easyColors.get(0));
-
-        }
-
-
-
-        do
-        {
-            Collections.shuffle(easyColors);
-
-            int i=0;
-            for (int rect: allrects)
-            {
+        int i = 0;
+        for (int rect : allrects) {
+            if (rect == rectToCheck.getId() && i == 0) {
                 TextView textView = findViewById(rect);
                 textView.setTextColor(easyColors.get(i));
-                i++;
+                while (textView.getCurrentTextColor() == rectToMatch.getCurrentTextColor()) {
+                    Collections.shuffle(easyColors);
+                    textView.setTextColor(easyColors.get(i));
+                }
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
+            } else {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(easyColors.get(i));
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
 
             }
-        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
+            i++;
+        }
 
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
 
     }
 
-    private void displayGameMedium()
-    {
+    private void displayGameMedium() {
         unclick();
 
         rectToMatch.setText("■");
@@ -548,32 +600,36 @@ public class RotationGame extends AppCompatActivity{
         Random rand = new Random();
 
         randomList = mediumColors.get(rand.nextInt(mediumColors.size()));
-
         Collections.shuffle(randomList);
-
         rectToMatch.setTextColor(randomList.get(0));
+        rectColor.put(rectToMatch.getId(), randomList.get(0));
 
-        do
-        {
-            Collections.shuffle(randomList);
-
-            int i=0;
-            for (int rect: allrects)
-            {
+        int i = 0;
+        for (int rect : allrects) {
+            if (rect == rectToCheck.getId() && i == 0) {
                 TextView textView = findViewById(rect);
                 textView.setTextColor(randomList.get(i));
-                i++;
+                while (textView.getCurrentTextColor() == rectToMatch.getCurrentTextColor()) {
+                    Collections.shuffle(randomList);
+                    textView.setTextColor(randomList.get(i));
+                    rectColor.put(textView.getId(), textView.getCurrentTextColor());
+                }
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
+            } else {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(randomList.get(i));
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
 
             }
-        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
+            i++;
+        }
 
 
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
     }
 
-    private void displayGameAdv()
-    {
+    private void displayGameAdv() {
         unclick();
 
         rectToMatch.setText("⬤");
@@ -587,24 +643,28 @@ public class RotationGame extends AppCompatActivity{
         Random rand = new Random();
 
         randomList = advancedColors.get(rand.nextInt(advancedColors.size()));
-
         Collections.shuffle(randomList);
-
         rectToMatch.setTextColor(randomList.get(0));
+        rectColor.put(rectToMatch.getId(), randomList.get(0));
 
-        do
-        {
-            Collections.shuffle(randomList);
-
-            int i=0;
-            for (int rect: allrects)
-            {
+        int i = 0;
+        for (int rect : allrects) {
+            if (rect == rectToCheck.getId() && i == 0) {
                 TextView textView = findViewById(rect);
                 textView.setTextColor(randomList.get(i));
-                i++;
+                while (textView.getCurrentTextColor() == rectToMatch.getCurrentTextColor()) {
+                    Collections.shuffle(randomList);
+                    textView.setTextColor(randomList.get(i));
+                }
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
+            } else {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(randomList.get(i));
+                rectColor.put(textView.getId(), textView.getCurrentTextColor());
 
             }
-        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
+            i++;
+        }
 
 
         startspeed = new Timestamp(System.currentTimeMillis());
@@ -613,7 +673,7 @@ public class RotationGame extends AppCompatActivity{
 
     }
 
-    private void loadRects(){
+    private void loadRects() {
         allrects.add(R.id.RG_rect1);
         allrects.add(R.id.RG_rect2);
         allrects.add(R.id.RG_rect3);
@@ -622,18 +682,18 @@ public class RotationGame extends AppCompatActivity{
     }
 
 
-    private void assignAllButtons()
-    {
+    private void assignAllButtons() {
         startButton = findViewById(R.id.startButtonRG);
-
         buttonrotate = findViewById(R.id.RG_buttonrotate);
-
         buttonCheck = findViewById(R.id.RG_buttoncheck);
-
         exit = findViewById(R.id.ExitRG);
         replayTutorial = findViewById(R.id.ReplayTutorialRotGame);
+        textsLinear = findViewById(R.id.textsRotation);
+        textMsg = findViewById(R.id.msgRotation);
+        textMsgTime = findViewById(R.id.msgRotation1);
 
         LL = findViewById(R.id.RG_LL);
+        logoLinear = findViewById(R.id.imageLogoDisplayRotaion);
 
         rect1 = findViewById(R.id.RG_rect1);
         rect2 = findViewById(R.id.RG_rect2);
@@ -642,36 +702,24 @@ public class RotationGame extends AppCompatActivity{
         rectToCheck = rect1;
 
         rectToMatch = findViewById(R.id.RG_rectToMatch);
-
         rounds = findViewById(R.id.RG_textRounds);
-
         animPointsText = findViewById(R.id.AnimTextPointsRG);
 
         unclick();
     }
 
-    private void initializeColorLists()
-    {
+    private void initializeColorLists() {
 
-        if (menuDifficulty.equals(getResources().getString(R.string.easyValue)))
-        {
+        if (menuDifficulty.equals(getResources().getString(R.string.easyValue))) {
             initializeEasyColors();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.mediumValue))) {
             initializeMediumColors();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.advancedValue))) {
             initializeAdvancedColors();
-        }
-        else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue)))
-        {
+        } else if (menuDifficulty.equals(getResources().getString(R.string.easymediumValue))) {
             initializeEasyColors();
             initializeMediumColors();
-        }
-        else
-        {
+        } else {
             initializeEasyColors();
             initializeMediumColors();
             initializeAdvancedColors();
@@ -679,16 +727,14 @@ public class RotationGame extends AppCompatActivity{
 
     }
 
-    private void initializeEasyColors()
-    {
+    private void initializeEasyColors() {
         easyColors.add(Color.rgb(255, 0, 0));
         easyColors.add(Color.rgb(0, 102, 255));
-        easyColors.add(Color.rgb(0,153,51));
+        easyColors.add(Color.rgb(0, 153, 51));
         easyColors.add(Color.rgb(255, 204, 0));
     }
 
-    private void initializeMediumColors()
-    {
+    private void initializeMediumColors() {
         mediumColors.add(mediumList1);
         mediumList1.add(Color.rgb(204, 0, 102));
         mediumList1.add(Color.rgb(204, 0, 0));
@@ -714,8 +760,7 @@ public class RotationGame extends AppCompatActivity{
         mediumList4.add(Color.rgb(102, 153, 0));
     }
 
-    private void initializeAdvancedColors()
-    {
+    private void initializeAdvancedColors() {
         advancedColors.add(advancedList1);
         advancedList1.add(Color.rgb(204, 0, 0));
         advancedList1.add(Color.rgb(255, 0, 0));
@@ -742,105 +787,107 @@ public class RotationGame extends AppCompatActivity{
     }
 
 
-
-    private void startAnimation(){
+    private void startAnimation() {
         long duration = 2000;
-        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText,"y",500f,-500f);
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(animPointsText, "y", 500f, -500f);
         objectAnimatorY.setDuration(duration);
 
-        ObjectAnimator alpha =  ObjectAnimator.ofFloat(animPointsText,View.ALPHA,1.0f,0.0f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(animPointsText, View.ALPHA, 1.0f, 0.0f);
         alpha.setDuration(duration);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(objectAnimatorY,alpha);
+        animatorSet.playTogether(objectAnimatorY, alpha);
         animatorSet.start();
     }
 
-    private void unclick(){
+    private void unclick() {
 
-        buttonrotate.setClickable(false);
-        buttonCheck.setClickable(false);
+        buttonrotate.setEnabled(false);
+        buttonCheck.setEnabled(false);
 
     }
-    private void click(){
-        buttonrotate.setClickable(true);
-        buttonCheck.setClickable(true);
+
+    private void click() {
+        buttonrotate.setEnabled(true);
+        buttonCheck.setEnabled(true);
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(RotationGame.this,R.raw.tutorial_rotationgame,getPackageName());
-        dialogFragment.show(getSupportFragmentManager(),"TutorialRotationGame");
+    private void enableReplayTut() {
+        replayTutorial.setEnabled(true);
+        replayTutorial.setAlpha(1f);
+    }
+
+    private void disableReplayTut() {
+        replayTutorial.setEnabled(false);
+        replayTutorial.setAlpha(0.5f);
+    }
+
+    private void showTutorialPopUp() {
+        DialogFragment dialogFragment = new Tutorial(RotationGame.this, R.raw.tutorial_rotationgame, getPackageName());
+        dialogFragment.show(getSupportFragmentManager(), "TutorialRotationGame");
     }
 
     private void shopPopUp() {
-        DialogFragment newFragment = new DialogMsg(user_id,RotationGame.this,hit,totalPoints);
+        DialogFragment newFragment = new DialogMsg(user_id, RotationGame.this, hit, totalPoints);
         newFragment.show(getSupportFragmentManager(), "RotationGame");
     }
 
-    private void countPoints()
-    {
+    private void countPoints() {
 
-        int currentPoints=0;
+        int currentPoints = 0;
 
-        if (!missPoints && trueCounter == 1)
-        {
+        if (!missPoints && trueCounter == 1) {
             currentPoints += 10;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if(!missPoints && trueCounter == 2){
+            textMsg.setText(R.string.win);
+        } else if (!missPoints && trueCounter == 2) {
             currentPoints += 20;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (!missPoints && trueCounter >= 3)
-        {
+            textMsg.setText(R.string.win1);
+        } else if (!missPoints && trueCounter >= 3) {
             currentPoints += 30;
             currentPoints += pointsHashMap.get(currentDifficulty);
-        }
-        else if (missPoints)
-        {
-            currentPoints +=0;
+            textMsg.setText(R.string.win2);
+        } else if (missPoints) {
+            currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+
+            textMsg.setText(R.string.lose);
         }
+        msgHelper = textMsg.getText().toString();
         totalPoints += currentPoints;
-        animPointsText.setText("+ " +String.valueOf(currentPoints));
-        if (currentPoints == 0)
-        {
+        animPointsText.setText("+ " + currentPoints);
+        if (currentPoints == 0) {
             animPointsText.setTextColor(Color.RED);
-        }
-        else
+        } else
             animPointsText.setTextColor(Color.GREEN);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putSerializable(MATCH,imageIDS);
-//        outState.putIntegerArrayList(PICKED,picked);
-//        //outState.putIntegerArrayList(UNPICKED,unpicked);
-//        outState.putIntegerArrayList(IMAGEVIEWS,imageviews);
-        outState.putString(CURRENTDIFFICULTY,currentDifficulty);
-        outState.putInt(GAME_ID,game_id);
-        outState.putInt(USER_ID,user_id);
-        outState.putInt(TOTALROUNDS,TotalRounds);
-        outState.putInt(COUNTER,counter);
-        outState.putInt(CLICK,click);
-        outState.putString(MENUDIFFICULTY,menuDifficulty);
-        outState.putBoolean(PALIO,palio);
-        outState.putBoolean(MISSPOINTS,missPoints);
-        outState.putInt(HIT,hit);
-        outState.putInt(MISS,miss);
-        outState.putInt(TOTALPOINTS,totalPoints);
-        outState.putInt(TRUECOUNTER,trueCounter);
-        outState.putDouble(TOTALSPEED,totalspeed);
-        outState.putSerializable(STARTTIME,startTime);
-        outState.putSerializable(ENDTIME,endTime);
-        outState.putSerializable(STARTSPEED,startspeed);
-        outState.putSerializable(ENDSPEED,endspeed);
-        outState.putInt(CURRENTROUND,currentRound);
-        outState.putInt(HELPER,helper);
-        outState.putBoolean(GAMEINIT,gameInit);
-        outState.putBoolean(LOSEHELPER,loseHelper);
-        outState.putLong(CLOCK,mTimeLeftInMillis);
+        outState.putParcelable(RECTCOLOR, new AudioPersonPick.SparseIntArrayParcelable(rectColor));
+        outState.putIntegerArrayList(ALLRECTS, allrects);
+        outState.putString(CURRENTDIFFICULTY, currentDifficulty);
+        outState.putInt(GAME_ID, game_id);
+        outState.putInt(USER_ID, user_id);
+        outState.putInt(TOTALROUNDS, TotalRounds);
+        outState.putInt(CLICK, click);
+        outState.putString(MENUDIFFICULTY, menuDifficulty);
+        outState.putBoolean(MISSPOINTS, missPoints);
+        outState.putInt(HIT, hit);
+        outState.putInt(MISS, miss);
+        outState.putInt(TOTALPOINTS, totalPoints);
+        outState.putInt(TRUECOUNTER, trueCounter);
+        outState.putDouble(TOTALSPEED, totalspeed);
+        outState.putSerializable(STARTTIME, startTime);
+        outState.putSerializable(ENDTIME, endTime);
+        outState.putSerializable(STARTSPEED, startspeed);
+        outState.putSerializable(ENDSPEED, endspeed);
+        outState.putInt(CURRENTROUND, currentRound);
+        outState.putBoolean(GAMEINIT, gameInit);
+        outState.putString(MSGHELPER, msgHelper);
+        outState.putLong(NEXTROUNDTIMER, timeLeftInMillisNextRound);
 
     }
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.content.Intent;
@@ -257,8 +258,15 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
+
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_objectselector_landscape);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_objectselector_portrait);
+            }
 
         }
         FragmentManager fm = getSupportFragmentManager();
@@ -269,7 +277,6 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
             fragmentTransaction.remove(prev);
             fragmentTransaction.commit();
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
 
         startButton.setOnClickListener(new View.OnClickListener(){
@@ -311,7 +318,14 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_objectselector_landscape);
+
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_objectselector_portrait);
+                }
             }
         });
     }
@@ -748,8 +762,8 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
         replayTutorial.setAlpha(0.5f);
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(ObjectSelector.this,R.raw.tutorial_objectselector,getPackageName());
+    private void showTutorialPopUp(int res){
+        DialogFragment dialogFragment = new Tutorial(ObjectSelector.this,res,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialObjectSelector");
     }
 

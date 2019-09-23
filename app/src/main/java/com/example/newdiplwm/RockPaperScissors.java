@@ -325,12 +325,12 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                showTutorialPopUp(R.raw.tutorial_scalinggame);
+                showTutorialPopUp(R.raw.tutorial_rps_landscape);
 
             }
             else
             {
-                showTutorialPopUp(R.raw.tutorial_rps);
+                showTutorialPopUp(R.raw.tutorial_rps_portrait);
             }
 
         }
@@ -388,11 +388,12 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    showTutorialPopUp(R.raw.tutorial_scalinggame);
+                    showTutorialPopUp(R.raw.tutorial_rps_landscape);
+
                 }
                 else
                 {
-                    showTutorialPopUp(R.raw.tutorial_rps);
+                    showTutorialPopUp(R.raw.tutorial_rps_portrait);
                 }
 
             }
