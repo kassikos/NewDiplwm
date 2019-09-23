@@ -131,6 +131,8 @@ public class RotationGame extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rotation_game);
         assignAllButtons();
+        rectToCheck = rect1;
+
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         session = new Session(getApplicationContext());
 
@@ -503,6 +505,7 @@ public class RotationGame extends AppCompatActivity{
         Collections.shuffle(easyColors);
 
         rectToMatch.setTextColor(easyColors.get(0));
+
         rectToCheck.setTextColor(easyColors.get(0));
         while (rectToMatch.getCurrentTextColor() == rectToCheck.getCurrentTextColor())
         {
@@ -512,15 +515,20 @@ public class RotationGame extends AppCompatActivity{
         }
 
 
-        int i=0;
-        for (int rect: allrects)
+
+        do
         {
-            TextView textView = findViewById(rect);
-            textView.setTextColor(easyColors.get(i));
-            i++;
+            Collections.shuffle(easyColors);
 
-        }
+            int i=0;
+            for (int rect: allrects)
+            {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(easyColors.get(i));
+                i++;
 
+            }
+        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
 
         startspeed = new Timestamp(System.currentTimeMillis());
         click();
@@ -548,17 +556,16 @@ public class RotationGame extends AppCompatActivity{
         do
         {
             Collections.shuffle(randomList);
-        }while (randomList.get(0)==rectToMatch.getCurrentTextColor());
 
+            int i=0;
+            for (int rect: allrects)
+            {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(randomList.get(i));
+                i++;
 
-        int i=0;
-        for (int rect: allrects)
-        {
-            TextView textView = findViewById(rect);
-            textView.setTextColor(randomList.get(i));
-            i++;
-
-        }
+            }
+        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
 
 
         startspeed = new Timestamp(System.currentTimeMillis());
@@ -588,16 +595,16 @@ public class RotationGame extends AppCompatActivity{
         do
         {
             Collections.shuffle(randomList);
-        }while (randomList.get(0)==rectToMatch.getCurrentTextColor());
 
-        int i=0;
-        for (int rect: allrects)
-        {
-            TextView textView = findViewById(rect);
-            textView.setTextColor(randomList.get(i));
-            i++;
+            int i=0;
+            for (int rect: allrects)
+            {
+                TextView textView = findViewById(rect);
+                textView.setTextColor(randomList.get(i));
+                i++;
 
-        }
+            }
+        }while (rectToMatch.getCurrentTextColor()==rectToCheck.getCurrentTextColor());
 
 
         startspeed = new Timestamp(System.currentTimeMillis());

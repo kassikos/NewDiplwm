@@ -107,7 +107,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         vibe = (Vibrator) getContext().getSystemService(VIBRATOR_SERVICE);
 
 
-        openBaseTimer = new CountDownTimer(4000, 1000) {
+        openBaseTimer = new CountDownTimer(3000, 1000) {
 
 
             @Override
@@ -124,7 +124,7 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
 
         };
 
-        openLidTimer = new CountDownTimer(4000, 1000) {
+        openLidTimer = new CountDownTimer(3000, 1000) {
 
 
             @Override
@@ -463,11 +463,11 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         //Base.bringToFront();
 
         ObjectAnimator flip = ObjectAnimator.ofFloat(Lid, "rotationY", 180, 360);
-        flip.setDuration(2000);
+        flip.setDuration(1500);
         flip.start();
 
         ObjectAnimator slide = ObjectAnimator.ofFloat(Lid, "x", 385f);
-        slide.setDuration(2000);
+        slide.setDuration(1500);
         slide.start();
 
         AnimatorSet close = new AnimatorSet();
@@ -498,11 +498,11 @@ public class SuitcaseEz extends Fragment implements View.OnClickListener{
         //Base.bringToFront();
 
         ObjectAnimator flip = ObjectAnimator.ofFloat(Base, "rotationY", -180, -360);
-        flip.setDuration(2000);
+        flip.setDuration(1500);
         flip.start();
 
         ObjectAnimator slide = ObjectAnimator.ofFloat(Base, "x", 25f);
-        slide.setDuration(2000);
+        slide.setDuration(1500);
         slide.start();
 
         AnimatorSet close = new AnimatorSet();
