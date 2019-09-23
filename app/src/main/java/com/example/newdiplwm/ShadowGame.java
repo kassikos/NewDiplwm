@@ -202,6 +202,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                     textMsg.setText(msgHelper);
                     nextRoundTimer = userViewModel.getNextRoundTimer();
                     nextRoundTimer.cancel();
+                    textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
                     textsLinear.setVisibility(View.VISIBLE);
 
                     nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
@@ -611,6 +612,7 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     }
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
         disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {

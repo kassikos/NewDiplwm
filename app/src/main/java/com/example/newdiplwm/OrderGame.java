@@ -850,6 +850,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
 
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         disableReplayTut();
 
         nextRoundTimer = new CountDownTimer(5000,1000) {

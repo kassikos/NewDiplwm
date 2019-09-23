@@ -4,6 +4,7 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -25,6 +26,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -162,6 +166,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             unclickable();
             startButton.setVisibility(View.INVISIBLE);
 
+
             if (gameinit)
             {
                 logoLinear.setVisibility(View.GONE);
@@ -246,6 +251,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                     else {
                         if (timeLeftInMillisNextRound > 1000)
                         {
+                            textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
                             disableReplayTut();
                             textsLinear.setVisibility(View.VISIBLE);
                             nextRoundTimer = userViewModel.getNextRoundTimer();
@@ -318,8 +324,14 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_scalinggame);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_rps);
+            }
 
         }
 
@@ -375,7 +387,13 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_scalinggame);
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_rps);
+                }
 
             }
         });
@@ -660,6 +678,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
 
     }
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
         disableReplayTut();
 
@@ -839,8 +858,8 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         newFragment.show(getSupportFragmentManager(), "RockPaperScissors");
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(RockPaperScissors.this,R.raw.tutorial_rps,getPackageName());
+    private void showTutorialPopUp(int resTut){
+        DialogFragment dialogFragment = new Tutorial(RockPaperScissors.this,resTut,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"Tutorial");
     }
 
@@ -864,6 +883,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             currentPoints += 0;
             trueCounter = 0;
             missPoints = false;
+
             textMsg.setText(R.string.lose);
         }
         msgHelper = textMsg.getText().toString();

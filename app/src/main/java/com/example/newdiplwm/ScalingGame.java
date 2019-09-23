@@ -186,7 +186,9 @@ public class ScalingGame extends AppCompatActivity {
             currentDifficulty = "EASY";
         }
 
+
         RoundTimer = new CountDownTimer(6000, 1000) {
+
 
             public void onTick(long millisUntilFinished) {
                 textMsgTime.setText(getResources().getString(R.string.nextRound)+millisUntilFinished/1000);
@@ -961,6 +963,7 @@ public class ScalingGame extends AppCompatActivity {
         {
             textMsgTime.setText("");
         }
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
         leftButton.setVisibility(View.INVISIBLE);
         rightButton.setVisibility(View.INVISIBLE);

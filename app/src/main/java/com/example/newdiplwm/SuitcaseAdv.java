@@ -216,6 +216,7 @@ public class SuitcaseAdv extends Fragment implements View.OnClickListener{
             sideToCheck = baseIDS;
         }
 
+        hintText.setTextColor(getResources().getColor(R.color.coral));
         hintText.setText("Βάλε το αντικείμενο στην"+hintSide+"πλευρά της βαλίτσας.");
 
         for (int i = 0; i <= 2; i++)

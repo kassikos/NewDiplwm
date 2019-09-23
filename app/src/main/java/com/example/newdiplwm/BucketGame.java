@@ -715,6 +715,7 @@ public class BucketGame extends AppCompatActivity {
 
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
 
 

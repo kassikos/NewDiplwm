@@ -186,6 +186,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
                     nextRoundTimer = userViewModel.getNextRoundTimer();
                     nextRoundTimer.cancel();
 
+                    textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
                     textsLinear.setVisibility(View.VISIBLE);
 
                     nextRoundTimer = new CountDownTimer(timeLeftInMillisNextRound,1000) {
@@ -721,6 +722,7 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
         disableReplayTut();
 

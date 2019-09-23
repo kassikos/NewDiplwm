@@ -197,6 +197,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
                     disableReplayTut();
                     logoLinear.setVisibility(View.GONE);
                     textMsg.setText(msgHelper);
+                    textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
                     nextRoundTimer = userViewModel.getNextRoundTimer();
                     nextRoundTimer.cancel();
                     textsLinear.setVisibility(View.VISIBLE);
@@ -918,6 +919,7 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
         disableReplayTut();
 

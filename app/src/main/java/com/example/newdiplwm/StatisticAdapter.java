@@ -59,14 +59,14 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         gameHolder.textView.setText(String.valueOf(currentStatistic.statistic.getHit()));
         gameHolder.textView1.setText(String.valueOf(currentStatistic.statistic.getMiss()));
 
-        if (currentStatistic.statistic.getPlayTotalTime()<60)
-        {
-            gameHolder.textView3.setText(String.format("%.1f",(currentStatistic.statistic.getPlayTotalTime())) + " (secs)");
-        }
-        else
-        {
+//        if (currentStatistic.statistic.getPlayTotalTime()<60)
+//        {
+//            gameHolder.textView3.setText(String.format("%.1f",(currentStatistic.statistic.getPlayTotalTime())) + " (secs)");
+//        }
+       // else
+        //{
             gameHolder.textView3.setText(String.format("%.1f",((currentStatistic.statistic.getPlayTotalTime()%3600)/60)) + " (mins)");
-        }
+        //}
         gameHolder.textView2.setText(String.valueOf(currentStatistic.statistic.getScore()));
         gameHolder.textView4.setText(String.valueOf(currentStatistic.statistic.getDays()));
         gameHolder.textView5.setText(String.format("%.1f", (currentStatistic.statistic.getAccuracy()*100))+"%");

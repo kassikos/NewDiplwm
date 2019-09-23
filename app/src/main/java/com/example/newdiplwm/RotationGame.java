@@ -1,13 +1,5 @@
 package com.example.newdiplwm;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -16,15 +8,20 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -236,10 +233,10 @@ public class RotationGame extends AppCompatActivity{
 
                 rotations++;
 
-                if (rotations>3)
-                {
-                    rotations=0;
-                }
+//                if (rotations>3)
+//                {
+//                    rotations=0;
+//                }
 
                 ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
                 rotate.setDuration(1000);
@@ -287,22 +284,26 @@ public class RotationGame extends AppCompatActivity{
                 double speedseconds = TimeUnit.MILLISECONDS.toSeconds(diffspeed);
                 totalspeed += speedseconds;
 
-                if (rotations==0)
+                if (rotations%4==0)
                 {
                     rectToCheck = rect1;
                 }
-                else if (rotations==1)
+                else if (rotations%4==1)
                 {
                     rectToCheck = rect2;
                 }
-                else if (rotations==2)
+                else if (rotations%4==2)
                 {
                     rectToCheck = rect3;
                 }
-                else if (rotations==3)
+                else if (rotations%4==3)
                 {
                     rectToCheck = rect4;
                 }
+//                else
+//                {
+//                    rotations =0;
+//                }
 
 
                 if (rectToCheck.getCurrentTextColor()==rectToMatch.getCurrentTextColor())
@@ -502,11 +503,13 @@ public class RotationGame extends AppCompatActivity{
         Collections.shuffle(easyColors);
 
         rectToMatch.setTextColor(easyColors.get(0));
-
-        do
+        rectToCheck.setTextColor(easyColors.get(0));
+        while (rectToMatch.getCurrentTextColor() == rectToCheck.getCurrentTextColor())
         {
             Collections.shuffle(easyColors);
-        }while (easyColors.get(0)==rectToMatch.getCurrentTextColor());
+            rectToCheck.setTextColor(easyColors.get(0));
+
+        }
 
 
         int i=0;
@@ -629,6 +632,7 @@ public class RotationGame extends AppCompatActivity{
         rect2 = findViewById(R.id.RG_rect2);
         rect3 = findViewById(R.id.RG_rect3);
         rect4 = findViewById(R.id.RG_rect4);
+        rectToCheck = rect1;
 
         rectToMatch = findViewById(R.id.RG_rectToMatch);
 

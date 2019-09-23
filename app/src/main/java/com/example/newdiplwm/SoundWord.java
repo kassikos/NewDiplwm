@@ -438,6 +438,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
 
         disableReplayTut();
