@@ -1,17 +1,8 @@
 package com.example.newdiplwm;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -26,6 +17,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -70,9 +69,12 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
     private static final String MSGHELPER = "MSGHELPER";
     private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
+
     private ImageView imagebutton1,imagebutton2,imagebutton3,imagebutton4,imagebuttoncolorfull ,exit, replayTutorial;
     private MaterialButton startButton;
-    private TextView textRounds,textTimer, animationTextPoints ,textMsg , textMsgTime;;
+    private TextView textRounds,textTimer, animationTextPoints ,textMsg , textMsgTime;
     private LinearLayout logoLinear, textsLinear;
     private Vibrator vibe;
     private GameEventViewModel gameEventViewModel;
@@ -519,6 +521,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -745,6 +755,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        totalPlayInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (totalPlayInSeconds > THRESHOLD_ALL)
+                    {
+                        totalPlayInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -966,6 +984,14 @@ public class ShadowGame extends AppCompatActivity implements  View.OnClickListen
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);

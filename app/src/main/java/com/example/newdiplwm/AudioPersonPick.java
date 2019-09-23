@@ -71,6 +71,9 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
     private static final String MSGHELPER = "MSGHELPER";
     private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
+
     private ImageView imgv1, imgv2, imgv3, imgv4, playAudio ,exit, replayTutorial;
     private MaterialButton startButton;
     private TextView textRounds, animPointsText, textMsg , textMsgTime;
@@ -449,6 +452,14 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -689,6 +700,14 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);

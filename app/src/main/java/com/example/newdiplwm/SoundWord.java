@@ -26,9 +26,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataPassSWEz,SoundWordMed.OnDataPassSWMed,SoundWordAdv.OnDataPassSWAdv{
 
-    private static final String USER_ID = "USER_ID";
-    private static final String GAME_ID = "GAME_ID";
-    private static final String DIFFICULTY = "DIFFICULTY";
+
+
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
 
     private ImageView playAudio , exit, replayTutorial;
     private MaterialButton startButton;
@@ -49,7 +50,7 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
 
     private boolean gameInit = false , soundPlayed = false;
 
-    private int pickedSound = 0 ,click = 0 ,limit = 0, limitReplay = 0;
+    private int click = 0 ,limit = 0, limitReplay = 0;
 
     private Timestamp startTime;
     private Timestamp endTime;
@@ -319,6 +320,14 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -566,6 +575,14 @@ public class SoundWord extends AppCompatActivity implements  SoundWordEz.OnDataP
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 0, totalPoints, (double) totalhit / (totalhit + totalmiss), totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
