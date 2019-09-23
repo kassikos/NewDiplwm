@@ -173,6 +173,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     {
                         disableReplayTut();
                         textMsg.setText(msgHelper);
+                        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
                         textsLinear.setVisibility(View.VISIBLE);
                         nextRoundTimer = userViewModel.getNextRoundTimer();
                         nextRoundTimer.cancel();
@@ -794,6 +795,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
 
     private void nextRound(){
         textsLinear.setVisibility(View.VISIBLE);
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
 
         disableReplayTut();
         nextRoundTimer = new CountDownTimer(5000,1000) {

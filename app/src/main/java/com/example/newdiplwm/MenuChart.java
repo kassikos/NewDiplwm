@@ -58,7 +58,8 @@ public class MenuChart extends AppCompatActivity {
 
         for (int i=0; i<allstats.size();i++)
         {
-            barEntries.add(new BarEntry(i , (int) allstats.get(i).statistic.getPlayTotalTime(),R.drawable.arrowdown24));
+            barEntries.add(new BarEntry(i , (float) ((allstats.get(i).statistic.getPlayTotalTime()%3600)/60)));
+           // gameHolder.textView3.setText(String.format("%.1f",((currentStatistic.statistic.getPlayTotalTime()%3600)/60)) + " (mins)");
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, getString(R.string.SecPerGame));

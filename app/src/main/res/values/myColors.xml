@@ -11,7 +11,9 @@
     <color name="statisticColor">#BEE9E4</color>
     <color name="red">#FF0000</color>
     <color name="rednext">#FF0040</color>
+    <color name="coral">#ff4500</color>
     <color name="green">#CCFFCC</color>
     <color name="gray">#848484</color>
     <color name="yellow">#ffff00</color>
+    <color name="greenStrong">#00CC00</color>
 </resources>

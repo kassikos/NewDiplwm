@@ -333,6 +333,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
 
     private void nextRound(){
+        textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
         textsLinear.setVisibility(View.VISIBLE);
 
         nextRoundTimer = new CountDownTimer(5000,1000) {
@@ -415,6 +416,7 @@ public class MemoryMatrix extends AppCompatActivity implements MemoryMatrixEz.On
 
         if (RoundsCounter >= TotalRounds)
         {
+            textMsg.setTextColor(getResources().getColor(R.color.greenStrong));
             textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
