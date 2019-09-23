@@ -43,6 +43,9 @@ import java.util.concurrent.TimeUnit;
 
 public class BucketGame extends AppCompatActivity {
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
+
     private ArrayList<Integer> fish = new ArrayList<>(3);
     private ArrayList<Integer> birds = new ArrayList<>(3);
     private ArrayList<Integer> insects = new ArrayList<>(3);
@@ -226,6 +229,14 @@ public class BucketGame extends AppCompatActivity {
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / TotalRounds, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -682,6 +693,14 @@ public class BucketGame extends AppCompatActivity {
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 0, totalPoints, (double) hit / (hit + miss), totalspeed / TotalRounds, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -710,7 +729,7 @@ public class BucketGame extends AppCompatActivity {
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

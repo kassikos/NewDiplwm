@@ -67,6 +67,9 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
     private static final String JANKFOODLIST = "JANKFOODLIST";
     private static final String CLOCK = "CLOCK";
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
+
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5 ,exit ,replayTutorial;
     private MaterialButton startButton, missingObj;
     private TextView textRounds, textTimer, animPointsText, textMsg, textMsgTime;
@@ -446,6 +449,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -736,6 +747,14 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        totalPlayInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (totalPlayInSeconds > THRESHOLD_ALL)
+                    {
+                        totalPlayInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -844,7 +863,7 @@ public class OrderGame extends AppCompatActivity implements View.OnClickListener
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

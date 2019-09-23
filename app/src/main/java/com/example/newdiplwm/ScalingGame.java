@@ -1,21 +1,20 @@
 package com.example.newdiplwm;
 
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.CountDownTimer;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -25,6 +24,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class ScalingGame extends AppCompatActivity {
+
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
 
     MaterialButton startButton,leftButton,rightButton,equalButton;//na ginoyn material buttons
     ImageView exit , replayTutorial;
@@ -187,7 +189,7 @@ public class ScalingGame extends AppCompatActivity {
         RoundTimer = new CountDownTimer(6000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                textMsgTime.setText("Επόμενος Γύρος σε: " + millisUntilFinished / 1000);
+                textMsgTime.setText(getResources().getString(R.string.nextRound)+millisUntilFinished/1000);
                 //roundTimerIsOn =true;
             }
 
@@ -264,6 +266,14 @@ public class ScalingGame extends AppCompatActivity {
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
+                    if (playTimeInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        playTimeInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (playTimeInSeconds > THRESHOLD_ALL)
+                    {
+                        playTimeInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -302,6 +312,14 @@ public class ScalingGame extends AppCompatActivity {
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
+                    if (playTimeInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        playTimeInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (playTimeInSeconds > THRESHOLD_ALL)
+                    {
+                        playTimeInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -339,6 +357,14 @@ public class ScalingGame extends AppCompatActivity {
                     endTime = new Timestamp(System.currentTimeMillis());
                     long playtime = endTime.getTime() - startTime.getTime();
                     double playTimeInSeconds = TimeUnit.MILLISECONDS.toSeconds(playtime);
+                    if (playTimeInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        playTimeInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (playTimeInSeconds > THRESHOLD_ALL)
+                    {
+                        playTimeInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/TotalRounds,playTimeInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -366,34 +392,7 @@ public class ScalingGame extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (RoundTimer != null)
-                {
-                    RoundTimer.cancel();
-                }
-
-
-                if (RoundsCounter == 1)
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / RoundsCounter, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+                onbackAndExitCode();
             }
         });
 
@@ -405,10 +404,11 @@ public class ScalingGame extends AppCompatActivity {
         });
     }
 
+    private void onbackAndExitCode(){
 
-    @Override
-    public void onBackPressed()
-    {
+        if (RoundTimer != null) {
+            RoundTimer.cancel();
+        }
 
         if (RoundsCounter == 1)
         {
@@ -425,6 +425,14 @@ public class ScalingGame extends AppCompatActivity {
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / RoundsCounter, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -432,6 +440,12 @@ public class ScalingGame extends AppCompatActivity {
 
         }
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        onbackAndExitCode();
     }
 
 

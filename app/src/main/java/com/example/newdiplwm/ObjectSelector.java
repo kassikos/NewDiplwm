@@ -33,6 +33,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ObjectSelector extends AppCompatActivity implements View.OnClickListener{
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
+
     private ImageView imagebutton1, imagebutton2, imagebutton3, imagebutton4, imagebutton5, imagebutton6,exit ,replayTutorial;
     private LinearLayout logoLinear, textsLinear;
     private MaterialButton startButton;
@@ -184,7 +187,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                                 }
                                 else
                                 {
-                                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                                 }
 
 
@@ -343,6 +346,14 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
@@ -610,6 +621,14 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        totalPlayInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (totalPlayInSeconds > THRESHOLD_ALL)
+                    {
+                        totalPlayInSeconds = THRESHOLD_ALL;
+                    }
                     GameEvent gameEvent = new GameEvent(game_id,user_id,hit,miss,0,totalPoints,(double)hit/(hit+miss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
                     gameEventViewModel.insertGameEvent(gameEvent);
                     userViewModel.updatestatsTest(user_id,game_id);
@@ -788,7 +807,7 @@ public class ObjectSelector extends AppCompatActivity implements View.OnClickLis
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 

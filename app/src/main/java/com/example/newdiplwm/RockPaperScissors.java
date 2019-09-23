@@ -4,7 +4,6 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -67,6 +65,9 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
     private static final String CURRENTROUND = "CURRENTROUND";
     private static final String MSGHELPER = "MSGHELPER";
     private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
+
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
 
 
 
@@ -211,6 +212,14 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                                 endTime = new Timestamp(System.currentTimeMillis());
                                 long longTime = endTime.getTime() - startTime.getTime();
                                 float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                                if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                                {
+                                    totalPlayInSeconds = THRESHOLD_EASY;
+                                }
+                                else if (totalPlayInSeconds > THRESHOLD_ALL)
+                                {
+                                    totalPlayInSeconds = THRESHOLD_ALL;
+                                }
                                 if (click == 0)
                                 {
                                     totalspeed =10;
@@ -252,7 +261,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                                     }
                                     else
                                     {
-                                        textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                                        textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                                     }
 
 
@@ -359,39 +368,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Advancedtimer != null)
-                {
-                    Advancedtimer.cancel();
-                }
-                if (nextRoundTimer != null)
-                {
-                    nextRoundTimer.cancel();
-                }
-                if (currentRound == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-                    if (startspeed == null || endspeed==null)
-                    {
-                        totalspeed +=0;
-                    }
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+                onbackAndExitCode();
             }
         });
 
@@ -399,24 +376,16 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 showTutorialPopUp();
-//                if(Advancedtimer != null)
-//                {
-//                    Advancedtimer.cancel();
-//                }
 
             }
         });
     }
 
-
-    @Override
-    public void onBackPressed()
-    {
+    private void onbackAndExitCode(){
         if(Advancedtimer != null)
         {
             Advancedtimer.cancel();
         }
-
         if (nextRoundTimer != null)
         {
             nextRoundTimer.cancel();
@@ -440,13 +409,28 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss, 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
+            GameEvent gameEvent = new GameEvent(game_id, user_id, hit, miss , 1, totalPoints, (double) hit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
         }
 
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        onbackAndExitCode();
     }
 
     private void createRound() {
@@ -587,6 +571,14 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                     endTime = new Timestamp(System.currentTimeMillis());
                     long longTime = endTime.getTime() - startTime.getTime();
                     float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+                    if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+                    {
+                        totalPlayInSeconds = THRESHOLD_EASY;
+                    }
+                    else if (totalPlayInSeconds > THRESHOLD_ALL)
+                    {
+                        totalPlayInSeconds = THRESHOLD_ALL;
+                    }
                     if (click == 0)
                     {
                         totalspeed =10;
@@ -682,7 +674,7 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 
@@ -764,6 +756,14 @@ public class RockPaperScissors extends AppCompatActivity implements View.OnClick
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             if (click == 0)
             {
                 totalspeed =10;

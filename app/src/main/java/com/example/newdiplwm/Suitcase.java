@@ -24,8 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPassEz, SuitcaseAdv.onDataPassAdv{
 
+    private static  final int THRESHOLD_EASY = 120;
+    private static  final int THRESHOLD_ALL = 180;
 
-    MaterialButton startbutton;
+
+    private MaterialButton startbutton;
     private ImageView exit , replayTutorial;
     private LinearLayout logoLinear, textsLinear;
 
@@ -137,34 +140,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (nextRoundTimer != null)
-                {
-                    nextRoundTimer.cancel();
-                }
-
-                if (RoundsCounter == 0 || click ==0 )
-                {
-                    startTime = new Timestamp(System.currentTimeMillis());
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, 0, 0, 1, 0, 0, 0, 0, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
-                else
-                {
-
-                    endTime = new Timestamp(System.currentTimeMillis());
-                    long longTime = endTime.getTime() - startTime.getTime();
-                    float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
-                    GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
-                    gameEventViewModel.insertGameEvent(gameEvent);
-                    userViewModel.updatestatsTest(user_id, game_id);
-                    finish();
-
-                }
+                onbackAndExitCode();
             }
         });
 
@@ -176,13 +152,12 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
         });
     }
 
-    @Override
-    public void onBackPressed() {
-
+    private void onbackAndExitCode(){
         if (nextRoundTimer != null)
         {
             nextRoundTimer.cancel();
         }
+
         if (RoundsCounter == 0 || click ==0 )
         {
             startTime = new Timestamp(System.currentTimeMillis());
@@ -199,12 +174,26 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id, user_id, totalhit, totalmiss, 1, totalPoints, (double) totalhit / TotalRounds, totalspeed / click, totalPlayInSeconds, menuDifficulty, startTime, endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id, game_id);
             finish();
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        onbackAndExitCode();
 
     }
 
@@ -342,6 +331,14 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
             float totalPlayInSeconds = TimeUnit.MILLISECONDS.toSeconds(longTime);
+            if (totalPlayInSeconds > THRESHOLD_EASY && currentDifficulty.equals(getResources().getString(R.string.easyValue)))
+            {
+                totalPlayInSeconds = THRESHOLD_EASY;
+            }
+            else if (totalPlayInSeconds > THRESHOLD_ALL)
+            {
+                totalPlayInSeconds = THRESHOLD_ALL;
+            }
             GameEvent gameEvent = new GameEvent(game_id,user_id,totalhit,totalmiss,0,totalPoints,(double)totalhit/(totalhit+totalmiss),totalspeed/click,totalPlayInSeconds,menuDifficulty,startTime,endTime);
             gameEventViewModel.insertGameEvent(gameEvent);
             userViewModel.updatestatsTest(user_id,game_id);
@@ -386,7 +383,7 @@ public class Suitcase extends AppCompatActivity implements SuitcaseEz.onDataPass
                 }
                 else
                 {
-                    textMsgTime.setText("Επομενος γυρος σε: "+l/1000);
+                    textMsgTime.setText(getResources().getString(R.string.nextRound)+l/1000);
                 }
 
 
