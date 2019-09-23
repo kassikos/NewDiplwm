@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/ExitRG"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -72,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/giatoselected"
-        android:layout_margin="24sp"
+        android:layout_margin="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topStripRotGame"
@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/border"
-            android:textSize="60sp"
+            android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -110,11 +110,7 @@
             android:id="@+id/RG_LL1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
 
             <TextView
@@ -122,11 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="40sp" />
 
 
         </LinearLayout>
@@ -135,22 +127,14 @@
             android:id="@+id/RG_LL2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/RG_rect2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/RG_KENO21"
@@ -158,22 +142,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="       "
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/RG_rect4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="60sp"
-                app:layout_constraintBottom_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="40sp" />
 
         </LinearLayout>
 
@@ -181,18 +157,14 @@
             android:id="@+id/RG_LL3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/RG_rect3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textSize="60sp" />
+                android:textSize="40sp" />
 
         </LinearLayout>
 
@@ -217,8 +189,8 @@
 
             <ImageView
                 android:id="@+id/RG_buttonrotate"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/border"
                 android:src="@drawable/ic_rotate_right_black_48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -228,8 +200,8 @@
 
             <ImageView
                 android:id="@+id/RG_buttoncheck"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/border"
                 android:src="@drawable/ic_check_bold_black_48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -245,7 +217,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/StartN"
                 android:textColor="@color/purple"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/RG_buttonrotate"
                 app:layout_constraintRight_toLeftOf="@+id/RG_buttoncheck"
@@ -277,7 +249,7 @@
             android:layout_gravity="center"
             android:text="@string/imageDesc"
             android:layout_margin="10dp"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="@color/black" />
 
         <TextView
@@ -287,7 +259,7 @@
             android:layout_gravity="center"
             android:text="@string/imageDesc"
             android:layout_margin="10dp"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="@color/black" />
 
 
