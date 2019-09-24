@@ -3,6 +3,7 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -272,8 +273,14 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_soundimage_landscape);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_soundimage_portrait);
+            }
 
         }
 
@@ -424,7 +431,14 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_soundimage_landscape);
+
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_soundimage_portrait);
+                }
             }
         });
 
@@ -978,8 +992,8 @@ public class SoundImage extends AppCompatActivity implements View.OnClickListene
         replayTutorial.setAlpha(0.5f);
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(SoundImage.this,R.raw.tutorial_soundimage,getPackageName());
+    private void showTutorialPopUp(int res){
+        DialogFragment dialogFragment = new Tutorial(SoundImage.this,res,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialSoundImage");
     }
 
