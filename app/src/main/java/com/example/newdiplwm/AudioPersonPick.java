@@ -3,6 +3,7 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -256,8 +257,14 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         pointsHashMap.put(getResources().getString(R.string.advancedValue), 10);
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-            showTutorialPopUp();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_audiopersonpick_landscape);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_audiopersonpick_portrait);
+            }
 
         }
 
@@ -411,7 +418,14 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_audiopersonpick_landscape);
+
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_audiopersonpick_portrait);
+                }
             }
         });
 
@@ -772,8 +786,8 @@ public class AudioPersonPick extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void showTutorialPopUp(){
-        DialogFragment dialogFragment = new Tutorial(AudioPersonPick.this,R.raw.tutorial_audiopersonpick,getPackageName());
+    private void showTutorialPopUp(int res){
+        DialogFragment dialogFragment = new Tutorial(AudioPersonPick.this,res,getPackageName());
         dialogFragment.show(getSupportFragmentManager(),"TutorialAudioPersonPick");
     }
 

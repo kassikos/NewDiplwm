@@ -414,6 +414,7 @@ public class RotationGame extends AppCompatActivity {
     private void checkifEnds() {
         if (currentRound == TotalRounds) {
             startButton.setVisibility(View.INVISIBLE);
+            textMsgTime.setText("");
             textsLinear.setVisibility(View.VISIBLE);
             endTime = new Timestamp(System.currentTimeMillis());
             long longTime = endTime.getTime() - startTime.getTime();
