@@ -11,15 +11,15 @@
             android:icon="@drawable/baseline_home_black_18dp"
             android:title="@string/home" />
     </group>
-    <group
-        android:id="@+id/grp1"
-        android:checkableBehavior="single">
+<!--    <group-->
+<!--        android:id="@+id/grp1"-->
+<!--        android:checkableBehavior="single">-->
 
-        <item
-            android:id="@+id/profile"
-            android:icon="@drawable/baseline_perm_identity_black_18dp"
-            android:title="@string/profile" />
-    </group>
+<!--        <item-->
+<!--            android:id="@+id/profile"-->
+<!--            android:icon="@drawable/baseline_perm_identity_black_18dp"-->
+<!--            android:title="@string/profile" />-->
+<!--    </group>-->
 
     <group
         android:id="@+id/grp2"
