@@ -919,7 +919,4 @@ public class RotationGame extends AppCompatActivity {
         outState.putInt(ROTATIONS,rotations);
 
     }
-    //TODO xanw to rect to check;
-
-
 }
