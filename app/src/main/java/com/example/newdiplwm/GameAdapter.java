@@ -72,7 +72,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         }
         else
         {
-            gameHolder.imageView.setImageResource(R.drawable.bucket_game);
+            gameHolder.imageView.setImageResource(R.drawable.rotation_game);
         }
 
 
