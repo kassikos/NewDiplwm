@@ -211,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/StartN"
+                android:text="@string/Start"
                 android:textColor="@color/purple"
                 android:textSize="35sp"
                 app:layout_constraintBottom_toBottomOf="parent"
