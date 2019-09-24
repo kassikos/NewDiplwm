@@ -173,10 +173,10 @@ public class RotationGame extends AppCompatActivity {
             } else if (rotations % 4 == 3) {
                 rectToCheck = rect4;
             }
+            ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
+            rotate.setDuration(0);
+            rotate.start();
             if (gameInit) {
-                ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
-                rotate.setDuration(0);
-                rotate.start();
                 click();
                 logoLinear.setVisibility(View.GONE);
                 buttonrotate.setVisibility(View.VISIBLE);
