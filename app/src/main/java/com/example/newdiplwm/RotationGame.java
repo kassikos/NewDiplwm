@@ -69,7 +69,6 @@ public class RotationGame extends AppCompatActivity {
     private static final String TODEGREES = "TODEGREES";
     private static final String FROMDEGREES = "FROMDEGREES";
     private static final String ROTATIONS = "ROTATIONS";
-    private static final String RECTTOCHECK = "RECTTOCHECK";
 
 
     private SparseIntArray rectColor = new SparseIntArray(4);

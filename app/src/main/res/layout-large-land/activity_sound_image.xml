@@ -171,7 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/thelogoSIG"
-            android:src="@drawable/clothes_game"
+            android:src="@drawable/sound_image_game"
             android:layout_gravity="center"
             android:contentDescription="@string/imageDesc" />
 

@@ -261,7 +261,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/thelogoBucket"
-            android:src="@drawable/clothes_game"
+            android:src="@drawable/bucket_game"
             android:layout_gravity="center"
             android:contentDescription="@string/imageDesc" />
 

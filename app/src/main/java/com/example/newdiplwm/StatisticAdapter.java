@@ -34,10 +34,10 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Stat
         images.add(R.drawable.suitcase_game);
         images.add(R.drawable.shadow_game);
         images.add(R.drawable.clothes_game);
+        images.add(R.drawable.soundword_game);
+        images.add(R.drawable.sound_image_game);
         images.add(R.drawable.scissors);
-        images.add(R.drawable.scissors);
-        images.add(R.drawable.scissors);
-        images.add(R.drawable.scissors);
+        images.add(R.drawable.bucket_game);
     }
 
 
