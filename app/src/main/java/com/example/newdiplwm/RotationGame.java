@@ -66,6 +66,10 @@ public class RotationGame extends AppCompatActivity {
     private static final String RECTCOLOR = "RECTCOLOR";
     private static final String MSGHELPER = "MSGHELPER";
     private static final String NEXTROUNDTIMER = "NEXTROUNDTIMER";
+    private static final String TODEGREES = "TODEGREES";
+    private static final String FROMDEGREES = "FROMDEGREES";
+    private static final String ROTATIONS = "ROTATIONS";
+    private static final String RECTTOCHECK = "RECTTOCHECK";
 
 
     private SparseIntArray rectColor = new SparseIntArray(4);
@@ -95,7 +99,7 @@ public class RotationGame extends AppCompatActivity {
 
     private int rotations = 0;
     private LinearLayout LL, logoLinear;
-    private Float fromDegrees = 0f, toDegrees = 90f;
+    private float fromDegrees = 0f, toDegrees = 0f;
 
     private ArrayList<Integer> easyColors = new ArrayList<>(4);
 
@@ -157,7 +161,23 @@ public class RotationGame extends AppCompatActivity {
             currentRound = savedInstanceState.getInt(CURRENTROUND);
             msgHelper = savedInstanceState.getString(MSGHELPER);
             timeLeftInMillisNextRound = savedInstanceState.getLong(NEXTROUNDTIMER);
+            toDegrees = savedInstanceState.getFloat(TODEGREES,0);
+            fromDegrees = savedInstanceState.getFloat(FROMDEGREES,0);
+            rotations = savedInstanceState.getInt(ROTATIONS,0);
+
+            if (rotations % 4 == 0) {
+                rectToCheck = rect1;
+            } else if (rotations % 4 == 1) {
+                rectToCheck = rect2;
+            } else if (rotations % 4 == 2) {
+                rectToCheck = rect3;
+            } else if (rotations % 4 == 3) {
+                rectToCheck = rect4;
+            }
             if (gameInit) {
+                ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
+                rotate.setDuration(0);
+                rotate.start();
                 click();
                 logoLinear.setVisibility(View.GONE);
                 buttonrotate.setVisibility(View.VISIBLE);
@@ -311,11 +331,12 @@ public class RotationGame extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 rotations++;
+                toDegrees += 90;
                 ObjectAnimator rotate = ObjectAnimator.ofFloat(LL, "rotation", fromDegrees, toDegrees);
                 rotate.setDuration(500);
                 rotate.start();
                 fromDegrees += 90;
-                toDegrees += 90;
+
 
             }
         });
@@ -323,6 +344,7 @@ public class RotationGame extends AppCompatActivity {
         buttonCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rectColor.clear();
 
                 unclick();
                 click++;
@@ -344,14 +366,12 @@ public class RotationGame extends AppCompatActivity {
 
 
                 if (rectToCheck.getCurrentTextColor() == rectToMatch.getCurrentTextColor()) {
-                    //buttonCheck.setColor(Color.GREEN, PorterDuff.Mode.OVERLAY);
                     startAnimation();
                     hit++;
                     trueCounter++;
 
 
                 } else {
-                    //buttonCheck.setColorFilter(Color.RED,PorterDuff.Mode.OVERLAY);
                     startAnimation();
                     Animation animShake = AnimationUtils.loadAnimation(RotationGame.this, R.anim.shake);
                     rectToCheck.startAnimation(animShake);
@@ -608,7 +628,7 @@ public class RotationGame extends AppCompatActivity {
         randomList = mediumColors.get(rand.nextInt(mediumColors.size()));
         Collections.shuffle(randomList);
         rectToMatch.setTextColor(randomList.get(0));
-        rectColor.put(rectToMatch.getId(), randomList.get(0));
+        rectColor.put(rectToMatch.getId(), rectToMatch.getCurrentTextColor());
 
         int i = 0;
         for (int rect : allrects) {
@@ -651,7 +671,7 @@ public class RotationGame extends AppCompatActivity {
         randomList = advancedColors.get(rand.nextInt(advancedColors.size()));
         Collections.shuffle(randomList);
         rectToMatch.setTextColor(randomList.get(0));
-        rectColor.put(rectToMatch.getId(), randomList.get(0));
+        rectColor.put(rectToMatch.getId(), rectToMatch.getCurrentTextColor());
 
         int i = 0;
         for (int rect : allrects) {
@@ -894,8 +914,12 @@ public class RotationGame extends AppCompatActivity {
         outState.putBoolean(GAMEINIT, gameInit);
         outState.putString(MSGHELPER, msgHelper);
         outState.putLong(NEXTROUNDTIMER, timeLeftInMillisNextRound);
+        outState.putFloat(TODEGREES,toDegrees);
+        outState.putFloat(FROMDEGREES, fromDegrees);
+        outState.putInt(ROTATIONS,rotations);
 
     }
+    //TODO xanw to rect to check;
 
 
 }
