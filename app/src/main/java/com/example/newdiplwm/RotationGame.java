@@ -3,8 +3,8 @@ package com.example.newdiplwm;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -315,7 +315,14 @@ public class RotationGame extends AppCompatActivity {
 
 
         if (!session.getPlayAgainVideo() && currentRound == 0) {
-            showTutorialPopUp();
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                showTutorialPopUp(R.raw.tutorial_rotationgame_landscape);
+
+            }
+            else
+            {
+                showTutorialPopUp(R.raw.tutorial_rotationgame_portrait);
+            }
 
         }
         FragmentManager fm = getSupportFragmentManager();
@@ -539,7 +546,14 @@ public class RotationGame extends AppCompatActivity {
         replayTutorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorialPopUp();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    showTutorialPopUp(R.raw.tutorial_rotationgame_landscape);
+
+                }
+                else
+                {
+                    showTutorialPopUp(R.raw.tutorial_rotationgame_portrait);
+                }
             }
         });
     }
@@ -866,8 +880,8 @@ public class RotationGame extends AppCompatActivity {
         replayTutorial.setAlpha(0.5f);
     }
 
-    private void showTutorialPopUp() {
-        DialogFragment dialogFragment = new Tutorial(RotationGame.this, R.raw.tutorial_rotationgame, getPackageName());
+    private void showTutorialPopUp(int res) {
+        DialogFragment dialogFragment = new Tutorial(RotationGame.this, res, getPackageName());
         dialogFragment.show(getSupportFragmentManager(), "TutorialRotationGame");
     }
 
