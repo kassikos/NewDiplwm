@@ -166,7 +166,7 @@
             android:layout_gravity="center"
             android:text="@string/imageDesc"
             android:layout_margin="10dp"
-            android:textSize="35sp"
+            android:textSize="40sp"
             android:textColor="@color/black" />
 
         <TextView
