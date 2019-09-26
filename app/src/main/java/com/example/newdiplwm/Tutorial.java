@@ -54,6 +54,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
         videoView = (VideoView) content.findViewById(R.id.videoview);
         checkBox = (CheckBox) content.findViewById(R.id.notAgain);
 
+
         fillViews();
         builder.setView(content)
                 .setPositiveButton("Κατάλαβα", new DialogInterface.OnClickListener() {
@@ -93,6 +94,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     public void onResume() {
         super.onResume();
         Log.d("onResume","onResume");
+        checkBox.setChecked(session.getPlayAgainVideo());
 
         videoView.setOnCompletionListener(this);
 
