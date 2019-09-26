@@ -45,6 +45,7 @@
 
     <!--settings-->
     <string name="settings">Ρυθμίσεις</string>
+    <string name="gamesSettings">Παιχνίδια</string>
     <string name="statistics">Στατιστικά %1$s</string>
     <string name="statisticsMenu">Στατιστικά</string>
     <string name="home">Αρχική</string>
@@ -57,11 +58,11 @@
     <!--labels-->
     <string name="difficultyLabel">Δυσκολία</string>
 
-    <string name="all"><big>Όλα τα επίπεδα</big></string>
-    <string name="easy"><big>Εύκολο</big></string>
-    <string name="medium"><big>Μεσαίο</big></string>
-    <string name="advanced"><big>Προχωρημένο</big></string>
-    <string name="easy_medium"><big>Εύκολο έως Μεσαίο</big></string>
+    <string name="all"><big>\nΌλα τα επίπεδα\n</big></string>
+    <string name="easy"><big>\nΕύκολο\n</big></string>
+    <string name="medium"><big>\nΜεσαίο\n</big></string>
+    <string name="advanced"><big>\nΠροχωρημένο\n</big></string>
+    <string name="easy_medium"><big>\nΕύκολο έως Μεσαίο\n</big></string>
 
 
     <!--values-->
@@ -142,7 +143,7 @@
 
     <!-- bars activity-->
     <string name="BarChart">Ραβδόγραμμα Χρόνου</string>
-    <string name="SecPerGame">Δευτερόλπεπτα / Παιχνίδι</string>
+    <string name="SecPerGame">Λεπτά της ώρας / Παιχνίδι</string>
 
     <!-- questionnaire-->
     <string name="agree">Συμφωνώ \nαπολύτως</string>

@@ -20,7 +20,6 @@
 <!--            android:icon="@drawable/baseline_perm_identity_black_18dp"-->
 <!--            android:title="@string/profile" />-->
 <!--    </group>-->
-
     <group
         android:id="@+id/grp2"
         android:checkableBehavior="single">

@@ -32,6 +32,7 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     private CheckBox checkBox;
     private Session session;
     private View content;
+    private boolean flag = true;
 
     public Tutorial() { }
 
@@ -92,9 +93,6 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     public void onResume() {
         super.onResume();
         Log.d("onResume","onResume");
-        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-//       // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
- //       getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         videoView.setOnCompletionListener(this);
 
@@ -106,17 +104,6 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
         boolean y = checkBox.isChecked();
         session.setPlayAgainVideo(y);
         videoView.stopPlayback();
-
-//        FragmentManager fm = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//
-//        Fragment prev = fm.findFragmentByTag("Tutorial");
-//        if (prev != null) {
-//            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-//            fragmentTransaction.remove(prev);
-//            fragmentTransaction.commit();
-//            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-//        }
 
 
     }

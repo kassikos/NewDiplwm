@@ -20,7 +20,7 @@
         app:title="@string/NotAgain" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings">
+    <PreferenceCategory android:title="@string/gamesSettings">
     <ListPreference
         android:positiveButtonText="@string/ok"
         android:defaultValue="@string/mediumValue"
