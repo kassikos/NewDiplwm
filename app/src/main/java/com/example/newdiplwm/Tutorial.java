@@ -32,7 +32,6 @@ public class Tutorial extends DialogFragment implements SharedPreferences.OnShar
     private CheckBox checkBox;
     private Session session;
     private View content;
-    private boolean flag = true;
 
     public Tutorial() { }
 

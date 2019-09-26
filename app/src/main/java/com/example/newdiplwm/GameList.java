@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,18 +40,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
-
 public class GameList extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener {
 
     public static String DB_FILEPATH = "/data/com.example.newdiplwm/databases/myDB";
-    public static String DB_DSTFILEPATH = "/data/com.example.newdiplwm/databases/backup/export.csv";
+    public static String DB_DSTFILEPATH = "export_db.csv";
 
     private GameViewModel gameViewModel;
     private Session session;
@@ -72,13 +67,10 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
         setupPreferences();
 
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.d("PERSMISSION","Permission error. You have permission");
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
             } else {
 
-                Log.d("PERSMISSION","You have asked for permission");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
             }
@@ -367,11 +359,7 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
                 Animatoo.animateFade(GameList.this);
                 break;
             case R.id.nav_export_db:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    new ExportDatabaseCSVTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } else {
-                    new ExportDatabaseCSVTask().execute();
-                }
+                new ExportDatabaseCSVTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 break;
             case R.id.nav_logout:
                 session.setRememberme(false);
@@ -432,23 +420,23 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
 
         protected Boolean doInBackground(final String... args) {
 
-            File exportDir = new File(Environment.getDataDirectory(), "/Roomcsv/");
-            File data = Environment.getDataDirectory();
-            File test = Environment.getExternalStorageDirectory();
+            File exportDir = new File("/sdcard/");
+//            File data = Environment.getDataDirectory();
+//            File test = Environment.getExternalStorageDirectory();
            // File dstDB = new File(data, DB_DSTFILEPATH);
-//            if (!exportDir.exists()) {
-//                exportDir.mkdir();
-//            }
+            if (!exportDir.exists()) {
+                exportDir.mkdir();
+            }
 
-            File file = new File("/sdcard/", "testing.csv");
+            File file = new File(exportDir, DB_DSTFILEPATH);
             try {
                 file.createNewFile();
-                CSVWriter csvWrite = new CSVWriter(new FileWriter(file));
-                String[] column = {"Id", "gameid", "nameid", "hit", "miss", "quits", "diff" , "score", "days", "playtotaltime", "accuracy"};
+                GameHelper.CSVWriter csvWrite = new GameHelper.CSVWriter(new FileWriter(file));
+                String[] column = {"gameName", "userName", "hit", "miss", "quits" , "score", "days", "playTotalTime", "accuracy"};
                 csvWrite.writeNext(column);
                 List<UserGameStats> statistics = userDatabase.userGameStatsDao().gellAllStats(session.getUserIdSession());
                 for (int i = 0; i < statistics.size(); i++) {
-                    String[] mySecondStringArray = {String.valueOf(statistics.get(i).statistic.getStatisticId()),String.valueOf(statistics.get(i).statistic.getGameIdForeign()),String.valueOf(statistics.get(i).statistic.getUserIdForeign()),String.valueOf(statistics.get(i).statistic.getHit()),String.valueOf(statistics.get(i).statistic.getMiss()),String.valueOf(statistics.get(i).statistic.getQuits())};
+                    String[] mySecondStringArray = {String.valueOf(statistics.get(i).name),String.valueOf(statistics.get(i).nickName),String.valueOf(statistics.get(i).statistic.getHit()),String.valueOf(statistics.get(i).statistic.getMiss()),String.valueOf(statistics.get(i).statistic.getQuits()),String.valueOf(statistics.get(i).statistic.getScore()),String.valueOf(statistics.get(i).statistic.getDays()),String.valueOf(statistics.get(i).statistic.getPlayTotalTime()),String.valueOf(statistics.get(i).statistic.getAccuracy())};
                     csvWrite.writeNext(mySecondStringArray);
                 }
                 csvWrite.close();
@@ -472,67 +460,6 @@ public class GameList extends AppCompatActivity implements SharedPreferences.OnS
     }
 
 
-    public class CSVWriter {
-        private PrintWriter pw;
-        private char separator;
-        private char escapechar;
-        private String lineEnd;
-        private char quotechar;
-        public static final char DEFAULT_SEPARATOR = ',';
-        public static final char NO_QUOTE_CHARACTER = '\u0000';
-        public static final char NO_ESCAPE_CHARACTER = '\u0000';
-        public static final String DEFAULT_LINE_END = "\n";
-        public static final char DEFAULT_QUOTE_CHARACTER = '"';
-        public static final char DEFAULT_ESCAPE_CHARACTER = '"';
-        public CSVWriter(Writer writer) {
-            this(writer, DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER,
-                    DEFAULT_ESCAPE_CHARACTER, DEFAULT_LINE_END);
-        }
-        public CSVWriter(Writer writer, char separator, char quotechar, char escapechar, String lineEnd) {
-            this.pw = new PrintWriter(writer);
-            this.separator = separator;
-            this.quotechar = quotechar;
-            this.escapechar = escapechar;
-            this.lineEnd = lineEnd;
-        }
-        public void writeNext(String[] nextLine) {
-            if (nextLine == null)
-                return;
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < nextLine.length; i++) {
-
-                if (i != 0) {
-                    sb.append(separator);
-                }
-                String nextElement = nextLine[i];
-                if (nextElement == null)
-                    continue;
-                if (quotechar != NO_QUOTE_CHARACTER)
-                    sb.append(quotechar);
-                for (int j = 0; j < nextElement.length(); j++) {
-                    char nextChar = nextElement.charAt(j);
-                    if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
-                        sb.append(escapechar).append(nextChar);
-                    } else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
-                        sb.append(escapechar).append(nextChar);
-                    } else {
-                        sb.append(nextChar);
-                    }
-                }
-                if (quotechar != NO_QUOTE_CHARACTER)
-                    sb.append(quotechar);
-            }
-            sb.append(lineEnd);
-            pw.write(sb.toString());
-        }
-        public void close() throws IOException {
-            pw.flush();
-            pw.close();
-        }
-        public void flush() throws IOException {
-            pw.flush();
-        }
-    }
 
 
 }
