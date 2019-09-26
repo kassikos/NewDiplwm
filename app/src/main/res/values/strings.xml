@@ -53,6 +53,7 @@
     <string name="logout">Αποσύνδεση</string>
     <string name="profile">Προφίλ</string>
     <string name="questionnaire">Αξιολόγηση</string>
+    <string name="export">Εξαγωγή Στατιστικών</string>
 
 
     <!--labels-->

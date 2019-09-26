@@ -57,6 +57,15 @@
     </group>
 
     <group
+        android:id="@+id/grp9"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_export_db"
+            android:icon="@drawable/ic_database_export_black_36dp"
+            android:title="@string/export" />
+    </group>
+
+    <group
         android:id="@+id/grp5"
         android:checkableBehavior="single">
         <item
