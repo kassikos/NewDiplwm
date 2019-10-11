@@ -79,6 +79,28 @@ The GameHelper class is a helper class. This class holds some global information
 
 -----------------GameList Activity-------------
 
+This Activity is the main Activity of the app. It holds the menu and the games. This activity also implements SharedPreferences.OnSharedPreferenceChangeListener, NavigationView.OnNavigationItemSelectedListener. The first one implementation is to save user's preferences and the second one is the menu item listener.
+In this activity we ask for permission to read and write in storage. In addition we handle user's game choise "gameAdapter.setOnClickListener" with this statement. We also override "onBackPressed" to display an alert dialog that exits the app.
+The " setupPreferences" function holds the user's preferences and we can retrieve them every single time that the user join our app.
+The "onSharedPreferenceChanged" save and display instantly if the user make some changes in his preefrences.
+The "onNavigationItemSelected" function handles the user's option in the menu.
+There is also a class ExportDatabaseCSVTask which extends Asynctask and create a .csv file with the user's stats.
+
+
+-----------------GameViewModel class-------------
+
+This class extends the "AndroidViewModel" and it holds a single game or a list of games it depends on the function which is called. 
+
+
+-----------------Login Activity-------------
+
+This activity is the first activity the user face up when join the app. First of all we check if his preference is to stay logged in , if so an intent will transfer him in the GameList otherwise he has to fill his username and if it exists in the db will successfully log in.
+
+-----------------MemoryMatrix Activity-------------
+
+MemoryMatrix activity is a game. As we mention before all games have the same template so we will not analyze all of the functions again. We will analyse the specialities. In this game there is a great difference in the layout between the difficulties. So it was necessary to create separate fragments for each difficulty. So in "checkMode" function we check the choosen difficulty and load the appropriate fragment. We load fragment using "fragment manager" then we create a "fragment transaction" and we provide the tag of the fragment in order to handle it later. The fragments communicate with the activity via an interface which the activity implements called "OnDataPass". It is an interface which pass data from fragment to the activity in order to handle the rounds and the points. There is also a "checkIfEnds" method which check if the game is over.
+
+The fragments we mention before are  "MemoryMatrixAdv" and "MemoryMatriEz"
 
 
 
