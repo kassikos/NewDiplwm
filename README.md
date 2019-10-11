@@ -18,7 +18,5 @@ For listening the description you have to tap the play button which is displayed
 The activity also implements the "OnClickListener" in order to handle the clicks using one "onClick" method. The "nextRound" function handles the rounds, the timer between the rounds and the messages.
 
 The "showTutorialPopUp" display the Turorial video with  the equivalent resource calling the Tutorial class.
-
 The "shopPopUp" functionraise the allertDialog that inform user about his progress.
-
 The "countPoints" function is responsible for counting the points and display the points of every single round 
