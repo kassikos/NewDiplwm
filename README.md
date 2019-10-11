@@ -24,6 +24,7 @@ The "shopPopUp" functionraise the allertDialog that inform user about his progre
 The "countPoints" function is responsible for counting the points and display the points of every single round 
 
 -----------------BucketGame activity-------------
+
 All games have the the same template. In this game there are some diferences as the player have to drag and drop the items. Every object implements a "custom TouchListener". The TouchListener detects the motion so we create a shadow of the objech which is selected from the user. From the other side the "buckets" objects have to implement a "custom DragListener" to interact with the objects we mention before. The DragListener has the following states
  "ACTION_DRAG_STARTED:" this state inform us that an object picked from the User.
 
@@ -40,8 +41,45 @@ All games have the the same template. In this game there are some diferences as 
 
 The graphic charts in our app are created with the powerfull library "implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'"
 The library is on github and gives you the chance to create easily graphic charts. We retrieve the data to display from our database  and create a "List<PieEntry>" then we pass the List<PieEntry> in a "PieDataSet" to edit the graphics. In the end we created the PieChart.
+
+
+-----------------DialogMsg  class-------------
+
+The DialogMsg class handle the allert dialog when the game is over. This class extends the "DialogFragment" but in our case a new .xml file is created which overrides the standard layout. In "onDismiss" method an intent will transfer the user in the gameActivity
+
+
   
-  
+-----------------Game class-------------
+
+This class is a model. The annotation "Entity" is required in order to be a table in the db. The annotation @PrimaryKey(autoGenerate = true) is used to autogenerate the id of each game
+
+
+-----------------GameAdapter class-------------
+
+The GameAdapter Class is required for the recycler view. We pass the data we need then we count the data and "onCreateViewHolder" create a Holder for each item. The "onBindViewHolder" binds the position with the holder. It was necessary to create a clickInterface beacuse we wanted each item to be clickable
+
+
+-----------------GameDao Interface-------------
+
+This interface hold the queries which are related with the games
+
+
+-----------------GameEvent class-------------
+
+This class is a model. It holds information about the relation between user and  game for every round. That is why we use the annotation "ForeignKye"
+
+
+-----------------GameEventViewModel  class-------------
+
+This class send data to the Asynk
+
+-----------------GameHelper  class-------------
+
+The GameHelper class is a helper class. This class holds some global information which are common everywhere in the app for example the  games instances, a map of greek - english game name and the csv writer class.
+
+-----------------GameList Activity-------------
+
+
 
 
 
