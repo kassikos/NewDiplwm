@@ -102,6 +102,12 @@ MemoryMatrix activity is a game. As we mention before all games have the same te
 
 The fragments we mention before are  "MemoryMatrixAdv" and "MemoryMatriEz"
 
+-----------------MemoryMatrixViewModel class-------------
+
+This class is a helper storage. It extends the ViewModel and we set and get the timer we use. It is a good way to handle the timer as it is keep running asynchronous which means if the fragment is destroyed the timer keep running until it run out of time. So if the fragment is destroyed we cancel the  timer and in this way there is no memory and cpu leaks.
+
+
+
 
 
 
