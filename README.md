@@ -208,6 +208,7 @@ The tutorial class extends "DialogFragment" because it is displayed as a pop up 
   
   
    -----------------UserRepository Class-------------
+   
   UserRepository is used in order to execute Async taks. All the queries about User are executed using different thread no the main one. The main thread supports the UI. All the other operations are executed from other threads.
 
 
