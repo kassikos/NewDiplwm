@@ -116,10 +116,99 @@ We mention everything about charts in charts activity above. See Charts Activity
 This activity is a game. There is nothing special in this activity. It follows the template of games.
 
 
+-----------------OrderGame Activity-------------
+
+This activity is a game. There is nothing special in this activity. It follows the template of games.
+
+
+-----------------Questionnaire Activity-------------
+
+The Questionaire Activity is the rate tab in out menu. This activity load the fragmanets which display the questions and the rate. There is a "loadFragment" method where the fragment manager replace the activity .xml file with the .xml file of the first question. So in this way when the user tap the next question button the new fragment display the old one. 
+
+
+-----------------Questions Fragments-------------
+
+Question1 ,Question2, Question3, Question4, Question5, Question6, Question7, Question8, Question9, Question10.
+
+The fragments above are the questions that the questionnaire activity display.
+There is a speciality in question10 where we dont load any fragment but we display an alertDialog to thanks the user for his time.
+
+
+-----------------Register Activity-------------
+
+In register activity user have to fill some fields. In education field there is a editTextFilledExposedDropdown where user has to pick one of the displayed values. In order to create the dropDown menu we use an editTextFilledExposedDropdown which is an option of the materialDesign library. This option get as parameter an arrayadapter in order to set the values. We set an "setOnItemClickListener" to get the picked value and set it to the field. We use a radioGroup component for gender option. RadioGroup has "setOnCheckedChangeListener" to display instantly any changes on the radioGroup. RadioGroup is also suitable for this reason because  you are not able to pick both of them.
+
+The datapickerDialog is used in order to help the user pick easily his birthdate and then we use a formatter in order to format the date for our database. 
+
+On Register button we check if the user fill the fields and if the user exists. If so then an error message is displayed otherwise the user is registered successfully and the login page replace the register one.
+
+
+
+-----------------RockPaperScissors Activity-------------
+This activity is a game. There is nothing special in this activity. It follows the template of games.
+
+
+-----------------Rotation Activity-------------
+This activity is a game. There is nothing special in this activity. It follows the template of games.
+
+
+-----------------ScallingGame Activity-------------
+This activity is a game. There is nothing special in this activity. It follows the template of games. In this game we do not support screen orientation.
+
+-----------------Session class-------------
+
+The session class is a storage class. We create a sharedPreferenceManager "PreferenceManager.getDefaultSharedPreferences()"in order to save user's options. 
+This line of code "prefs.edit().putInt("USERID", userid).apply()" save the userName in an .xml file. We use apply keyword to save asynchronous the data in the file.
+
+
+-----------------Settings Activity-------------
+
+This activity displays the setting's .xml file
+
+-----------------SettingsClass Class-------------
+
+The settingsClass class help us to edit the settings file. We get any option of the file using the option's key and the we are able to edit it. We also use a "setTheme(R.style.settingsTheme)" to set our custom theme.
 
 
 
 
+-----------------ShadowGame Activity , SoundImage Activity, SoundWordActivity, Suitcase Activity-------------
+
+They are games. There is nothing special to refer. They follow the template of games.
+
+
+-----------------Statistic Class-------------
+
+This class is a model. We mention everything about models in Game Class.
+
+
+-----------------StatisticHelper Class-------------
+
+This class is the same class as gameHelper we refer previously
+
+
+-----------------Tutorial Class-------------
+
+The tutorial class extends "DialogFragment" because it is displayed as a pop up window. The class also implements "SharedPreferences.OnSharedPreferenceChangeListener" because we have to save user's option to turn off the tutorials.
+ The "MediaPlayer.OnCompletionListener" help us to handle the  video when it is over.
+ 
+ 
+ -----------------User Class-------------
+ 
+ This class is a model. We mention everything about models in Game Class.
+ 
+ 
+ -----------------UserDao Interface-------------
+ 
+ The annotation Dao is to insert objects in the database. The dao interface communicates with the database and retrieves data. All the queries which are related with the user are executed within this file
+ 
+  -----------------UserGameStats Class-------------
+  
+  It is a helper model. We use ths class in order to retrieve data from different files. We needed data from statistic model and game model so we had to create this class. The Embedded annotation is used beacuse we need all the data from statistic model.
+  
+  
+   -----------------UserRepository Class-------------
+  UserRepository is used in order to execute Async taks. All the queries about User are executed using different thread no the main one. The main thread supports the UI. All the other operations are executed from other threads.
 
 
 
